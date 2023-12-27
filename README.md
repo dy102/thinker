@@ -1,5 +1,5 @@
 # THINKER
-https://raw.githubusercontent.com/dy102/thinker/master/image/thinker.jpeg
+![이미지 대체 텍스트](https://raw.githubusercontent.com/dy102/thinker/master/image/thinker.jpeg)
 ---
 ## Introduction  
 
