@@ -74,7 +74,6 @@ ex) 여기에서 이 부분 잘 모르겠는데 한번 봐주실 수 있나요?
 ```
 
 ### Contributor
-| <img src="https://github.com/pknu-wap/GLOG/assets/66813821/31fa8a99-7f76-49eb-99fc-d4695b107d2c" alt="3_jumo" width="100" height="100"> | <img src="https://github.com/pknu-wap/GLOG/assets/66813821/79de9800-c16d-4a7a-b306-c933d276cb2d" alt="3_simba" width="100" height="100">  |
+| <img src="https://github.com/pknu-wap/GLOG/raw/main/assets/66813821/31fa8a99-7f76-49eb-99fc-d4695b107d2c.png" alt="3_jumo" width="100" height="100"> [준서(F.E)](https://github.com/dev-junseo) | <img src="https://github.com/pknu-wap/GLOG/raw/main/assets/66813821/79de9800-c16d-4a7a-b306-c933d276cb2d.png" alt="3_simba" width="100" height="100"> [도연(B.E)](https://github.com/dy102) |
 | :------------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: |
-|                                  [준서(F.E)](https://github.com/dev-junseo)                                  |                                 [도연(B.E)](https://github.com/dy102)                                 |
-|  [![Anurag's github stats](https://github-readme-stats.vercel.app/api?username=dev-junseo&show_icons=true&theme=swift&hide_title=true)](https://github.com/anuraghazra/github-readme-stats) |  [![Anurag's github stats](https://github-readme-stats.vercel.app/api?username=dy102&show_icons=true&theme=swift&hide_title=true)](https://github.com/anuraghazra/github-readme-stats) 
+| [![Anurag's github stats](https://github-readme-stats.vercel.app/api?username=dev-junseo&show_icons=true&theme=swift&hide_title=true)](https://github.com/anuraghazra/github-readme-stats) | [![Anurag's github stats](https://github-readme-stats.vercel.app/api?username=dy102&show_icons=true&theme=swift&hide_title=true)](https://github.com/anuraghazra/github-readme-stats) |
