@@ -1,5 +1,5 @@
-
 # THINKER
+https://raw.githubusercontent.com/dy102/thinker/master/[이미지파일경로](https://t4.ftcdn.net/jpg/06/24/85/73/240_F_624857303_Yr9LqOFnsHIja0DeMV2q4EN6iiRndW63.jpg)
 ---
 ## Introduction  
 
