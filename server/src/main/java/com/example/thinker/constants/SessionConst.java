@@ -1,4 +1,4 @@
-package com.example.thinker.session;
+package com.example.thinker.constants;
 
 public class SessionConst {
     private SessionConst() {

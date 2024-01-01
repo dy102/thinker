@@ -11,7 +11,7 @@ public record MemberDataResponse(String customId, String pw,
                                  Grade grade) {
     public static MemberDataResponse form(Member member) {
         return new MemberDataResponse(member.getCustomId(), member.getPw(),
-                member.getName(), member.getBirthday(),
+                member.getName(), member.getBirthday().toString(),
                 member.getGender(), member.getPoint(), member.getGrade());
     }
 }
