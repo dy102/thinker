@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = new Member();
         makeMember(memberDataRequest, member);
         member.setPoint(0L);
-        member.setGrade(Grade.BEGINNER);
+        member.setGrade(Grade.BEGINNER.getName());
         memberRepository.save(member);
 
         return member;
@@ -125,7 +125,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void update(Member loginMember, MemberDataRequest memberDataRequest) {
         validateMemberDataRequest(memberDataRequest);
-
         makeMember(memberDataRequest, loginMember);
         memberRepository.save(loginMember);
     }

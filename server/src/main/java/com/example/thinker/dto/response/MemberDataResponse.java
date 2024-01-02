@@ -1,6 +1,5 @@
 package com.example.thinker.dto.response;
 
-import com.example.thinker.domain.Grade;
 import com.example.thinker.domain.Member;
 
 public record MemberDataResponse(String customId, String pw,
@@ -8,7 +7,7 @@ public record MemberDataResponse(String customId, String pw,
                                  String birthday,
                                  String gender,
                                  Long point,
-                                 Grade grade) {
+                                 String grade) {
     public static MemberDataResponse form(Member member) {
         return new MemberDataResponse(member.getCustomId(), member.getPw(),
                 member.getName(), member.getBirthday().toString(),

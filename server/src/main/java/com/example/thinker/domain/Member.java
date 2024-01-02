@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -27,7 +28,7 @@ public class Member {
 
     private Long point; //기본 자료형은 null처리가 안됨, Wrapper class가 더 안전하고 유연하다.
 
-    private Grade grade;
+    private String grade;
 
     private LocalDate birthday;
 
@@ -35,13 +36,8 @@ public class Member {
 
     private String imageUrl;
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
+    @ManyToOne
+    private Image image;
 
     public String getName() {
         return name;
@@ -75,11 +71,11 @@ public class Member {
         this.point = point;
     }
 
-    public Grade getGrade() {
+    public String getGrade() {
         return grade;
     }
 
-    public void setGrade(Grade grade) {
+    public void setGrade(String grade) {
         this.grade = grade;
     }
 
@@ -97,5 +93,21 @@ public class Member {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(Image image) {
+        this.image = image;
     }
 }
