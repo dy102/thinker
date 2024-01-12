@@ -1,21 +1,22 @@
-import Link, { LinkProps } from "next/link";
-import React, { ReactNode } from "react";
+import Link, { LinkProps } from 'next/link';
+import React, { ReactNode } from 'react';
 
 function PageLink({
   children,
-  color,
   style,
   ...rest
 }: LinkProps &
-  React.AnchorHTMLAttributes<HTMLAnchorElement> & {
-    children: ReactNode;
-    color?: string;
-  }) {
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & { children: ReactNode; }) {
   return (
     <Link
-      style={{ textDecoration: "none", color: color ?? "#000000", ...style }}
-      {...rest}
-    >
+      style={{
+        height: '100%',
+        textDecoration: 'none',
+        backgroundColor: 'transparent',
+        color: '#765AFF',
+        ...style,
+      }}
+      {...rest}>
       {children}
     </Link>
   );
