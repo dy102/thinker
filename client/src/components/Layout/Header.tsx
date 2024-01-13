@@ -1,9 +1,16 @@
 "use client";
-import { InputAdornment, Stack, TextField } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 import PageLink from "../PageLink/PageLink";
-import { HeaderMainTag, HeaderTag, LogInTag, LogoTag, SearchTag, SignInTag, SurveyTag, ThinkingTag } from "./Header.style";
+import {
+  HeaderMainTag,
+  HeaderTag,
+  LogInTag,
+  SignInTag,
+  SurveyTag,
+  ThinkingTag,
+} from "./Header.style";
 import Button from "../Button/Button";
-import SearchIcon from '@mui/icons-material/Search';
+import SearchIcon from "@mui/icons-material/Search";
 
 export default function Header() {
   return (
@@ -19,34 +26,33 @@ export default function Header() {
               </InputAdornment>
             ),
           }}
-          sx={{ color: '#765AFF', width: '50%', margin: '0 5px 0 10px' }}
+          sx={{ color: "#765AFF", width: "50%", margin: "0 5px 0 10px" }}
           variant="standard"
         />
 
         <SurveyTag>
           <Button>
-            <PageLink href='#'>Survey</PageLink>
+            <PageLink href="#">Survey</PageLink>
           </Button>
         </SurveyTag>
 
         <ThinkingTag>
           <Button>
-            <PageLink href='#'>Thinking</PageLink>
+            <PageLink href="#">Thinking</PageLink>
           </Button>
         </ThinkingTag>
 
         <LogInTag>
           <Button sx={{ border: "none" }}>
-            <PageLink href='#'>Log_In</PageLink>
+            <PageLink href="#">Log_In</PageLink>
           </Button>
         </LogInTag>
 
         <SignInTag>
           <Button sx={{ border: "none" }}>
-            <PageLink href='#'>Log_Out</PageLink>
+            <PageLink href="#">Log_Out</PageLink>
           </Button>
         </SignInTag>
-
       </HeaderMainTag>
     </HeaderTag>
   );
