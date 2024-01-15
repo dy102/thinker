@@ -1,6 +1,16 @@
 "use client";
 import { Stack } from "@mui/material";
-import { BorderLinear, Grade, GradeGage, Profile } from "./mypage.style";
+import {
+  BorderLinear,
+  Grade,
+  GradeGage,
+  MyRecord,
+  Profile,
+  SubProfile,
+} from "./mypage.style";
+import { mainColor, shadowColor } from "@/components/Themes/color";
+import Button from "@/components/Button/Button";
+import PageLink from "@/components/PageLink/PageLink";
 
 function page() {
   const memberDataDto = {
@@ -10,71 +20,100 @@ function page() {
     brithday: "string",
     gender: "string",
     point: 3500,
-    grade: "thinker",
-    gradeValue: 60,
+    grade: "THINKER",
+    gradeValue: 61,
   };
-  const imageData = "/profileImg.jpg";
+  const imageData =
+    "https://png.pngtree.com/png-vector/20191115/ourmid/pngtree-beautiful-profile-line-vector-icon-png-image_1990469.jpg";
   return (
     <Stack marginTop={"100px"}>
       <Profile>
-        <Stack flexDirection={"row"}>
+        <Stack flexDirection={"row"} marginBottom={"50px"}>
           <Stack
             width={"200px"}
-            height={"200px"}
+            height={"150px"}
             borderRadius={"50%"}
-            bgcolor={"#765AFF"}
             margin={"50px"}
           >
             <img
-              style={{ borderRadius: "50%" }}
+              style={{
+                borderRadius: "50%",
+                boxShadow: `0px 0px 20px 1px ${shadowColor.main}`,
+              }}
               src="https://png.pngtree.com/png-vector/20191115/ourmid/pngtree-beautiful-profile-line-vector-icon-png-image_1990469.jpg"
             />
             {/*[FIXME] 나중에 image 태그로 바꿔야함*/}
-            {/* <Image width={70} height={70} src={"/profileImg.jpg"} alt="" /> */}
+            {/* <Image width={70} height={70} src={`${imageData}`} alt="" /> */}
           </Stack>
-          <Stack margin={"120px 110px 0 0px"} fontSize={"17px"} spacing={8}>
-            <Stack>NICKNAME</Stack>
-            <Stack>POINT</Stack>
-          </Stack>
-          <Stack margin={"90px 0 0 0"} fontSize={"30px"} spacing={8}>
-            <Stack>{memberDataDto.nickname}</Stack>
-            <Stack>{memberDataDto.point}</Stack>
+          <Stack marginLeft={"30px"} flexDirection={"column"}>
+            <Stack margin={"40px auto 0 auto"} width={"200px"}>
+              <Button>
+                <PageLink href={"/mypage/changeInfo"}>
+                  내 정보 수정하기
+                </PageLink>
+              </Button>
+            </Stack>
+            <Stack flexDirection={"row"}>
+              <Stack margin={"55px 140px 0 0px"} fontSize={"17px"} spacing={7}>
+                <Stack>NICKNAME</Stack>
+                <Stack>POINT</Stack>
+              </Stack>
+              <Stack margin={"25px 0 0 0"} fontSize={"30px"} spacing={7}>
+                <Stack>{memberDataDto.nickname}</Stack>
+                <Stack>{memberDataDto.point}</Stack>
+              </Stack>
+            </Stack>
           </Stack>
         </Stack>
-        <Grade>
-          <Stack margin={"50px"}>
-            {/*[FIXME] 나중에 image 태그로 바꿔야함*/}
-            <img
-              style={{ width: "100px", height: "100px" }}
-              src="https://opgg-com-image.akamaized.net/attach/images/20190916020813.596917.jpg"
-            />
-          </Stack>
-          <GradeGage spacing={1}>
-            <Stack textAlign={"right"}>{memberDataDto.gradeValue}%</Stack>
-            <BorderLinear
-              variant="determinate"
-              value={memberDataDto.gradeValue}
-            ></BorderLinear>
-          </GradeGage>
-        </Grade>
       </Profile>
+      <Grade>
+        <Stack margin={"40px"}>
+          {/*[FIXME] 나중에 image 태그로 바꿔야함*/}
+          <img
+            style={{ width: "100px", height: "100px" }}
+            src="https://opgg-com-image.akamaized.net/attach/images/20190916020813.596917.jpg"
+          />
+          {/* <Image
+              width={40}
+              height={40}
+              src={
+                "https://opgg-com-image.akamaized.net/attach/images/20190916020813.596917.jpg"
+              }
+              alt=""
+            ></Image> */}
+        </Stack>
+        <GradeGage>
+          <Stack flexDirection={"row"} justifyContent={"space-between"}>
+            <Stack
+              color={`${mainColor}`}
+              fontWeight={"normal"}
+              fontSize={"25px"}
+            >
+              {memberDataDto.grade}
+            </Stack>
+            <MyRecord>{memberDataDto.gradeValue}%</MyRecord>
+          </Stack>
+          <BorderLinear
+            variant="determinate"
+            value={memberDataDto.gradeValue}
+          ></BorderLinear>
+        </GradeGage>
+      </Grade>
 
-      <Stack
-        bgcolor={"rgb(217,217,217)"}
-        width={"60%"}
-        height={"200px"}
-        borderRadius={"15px"}
-        margin={"auto"}
-        marginTop={"40px"}
-      ></Stack>
-      <Stack
-        bgcolor={"rgb(217,217,217)"}
-        width={"60%"}
-        height={"200px"}
-        borderRadius={"15px"}
-        margin={"auto"}
-        marginTop={"40px"}
-      ></Stack>
+      <SubProfile>
+        <Stack
+          margin={"30px 50px"}
+          flexDirection="row"
+          justifyContent="space-between"
+        >
+          <MyRecord>내 활동기록</MyRecord>
+          <Stack width={"145px"}>
+            <Button>
+              <PageLink href={"/mypage/record"}>{`보러가기 >>>`}</PageLink>
+            </Button>
+          </Stack>
+        </Stack>
+      </SubProfile>
     </Stack>
   );
 }

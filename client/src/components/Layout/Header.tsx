@@ -17,7 +17,7 @@ export default function Header() {
     <HeaderTag>
       <HeaderMainTag>
         {/*[FIXME : 나중에 로고로 바꿔야함]*/}
-        <PageLink href="#">LOGO</PageLink>
+        <PageLink href="/">LOGO</PageLink>
         <TextField
           InputProps={{
             startAdornment: (

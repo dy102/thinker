@@ -12,7 +12,6 @@ const MainStack = styled(Stack)({
   height: "auto",
   margin: "auto",
   minHeight: "100vh",
-  backgroundColor: "rgb(245, 245, 245)",
 });
 
 export default function FullLayout({ children }: Children) {
