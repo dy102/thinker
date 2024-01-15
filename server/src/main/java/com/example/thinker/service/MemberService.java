@@ -3,12 +3,12 @@ package com.example.thinker.service;
 import com.example.thinker.domain.Member;
 import com.example.thinker.dto.MemberSimpleDto;
 import com.example.thinker.dto.request.MemberDataRequest;
-import com.example.thinker.dto.response.MemberDataResponse;
+import com.example.thinker.dto.response.MemberDataDto;
 
 public interface MemberService {
     Member create(MemberDataRequest memberDataRequest);
 
-    MemberDataResponse read(Member loginMember);
+    MemberDataDto read(Member loginMember);
 
     MemberSimpleDto readSimple(Long memberId);
 
