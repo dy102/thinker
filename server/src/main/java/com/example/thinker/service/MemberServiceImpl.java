@@ -4,10 +4,10 @@ import com.example.thinker.domain.Grade;
 import com.example.thinker.domain.Member;
 import com.example.thinker.dto.MemberSimpleDto;
 import com.example.thinker.dto.request.MemberDataRequest;
-import com.example.thinker.dto.response.MemberDataResponse;
+import com.example.thinker.dto.response.MemberDataDto;
 import com.example.thinker.repository.MemberRepository;
 import com.example.thinker.util.Convertor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.DateTimeException;
@@ -17,10 +17,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
+@RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
 
-    @Autowired
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     @Override
     public Member create(MemberDataRequest memberDataRequest) {
@@ -109,8 +109,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDataResponse read(Member loginMember) {
-        return MemberDataResponse.form(loginMember);
+    public MemberDataDto read(Member loginMember) {
+        return MemberDataDto.form(loginMember);
     }
 
     @Override
