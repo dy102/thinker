@@ -5,24 +5,22 @@ import com.example.thinker.domain.Member;
 import com.example.thinker.domain.Thinking;
 import com.example.thinker.repository.ImageRepository;
 import com.example.thinker.repository.MemberRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ImageServiceImpl implements ImageService {
-    @Autowired
-    private ImageRepository imageRepository;
-    @Autowired
-    private MemberRepository memberRepository;
-    @PersistenceContext
-    private EntityManager entityManager;
+
+    private final ImageRepository imageRepository;
+    private final MemberRepository memberRepository;
 
 
     @Override
@@ -49,17 +47,26 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.findAll();
     }
 
-    // 이미지 조회 메서드
     @Override
     public Image getImageByMember(Member member) {
         return member.getImage();
     }
 
-    public void makeBasicImage(Member member) {
-        Optional<Image> image = imageRepository.findById(1L);
-        if (image.isPresent()) {
-            member.setImage(image.get());
-            memberRepository.save(member);
-        }
+    public void makeBasicImage(Member member, String filePath) throws IOException {
+        Image image = imageRepository.findByData(Files.readAllBytes(Paths.get(filePath)));
+        member.setImage(image);
+        memberRepository.save(member);
+    }
+
+    public void saveImage(String filePath) throws IOException {
+        // 파일을 읽어와서 데이터베이스에 저장
+        Path path = Paths.get(filePath);
+        byte[] data = Files.readAllBytes(path);
+
+        Image image = new Image();
+        image.setData(data);
+        image.setFileName(path.getFileName().toString());
+
+        imageRepository.save(image);
     }
 }

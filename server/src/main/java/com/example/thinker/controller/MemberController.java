@@ -4,12 +4,12 @@ import com.example.thinker.domain.Image;
 import com.example.thinker.domain.Member;
 import com.example.thinker.dto.MemberSimpleDto;
 import com.example.thinker.dto.request.MemberDataRequest;
-import com.example.thinker.dto.response.MemberDataResponse;
+import com.example.thinker.dto.response.MemberDataDto;
 import com.example.thinker.service.ImageService;
 import com.example.thinker.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -29,13 +29,11 @@ import java.net.URI;
 import static com.example.thinker.constants.SessionConst.LOGIN_MEMBER;
 
 @RestController
+@RequiredArgsConstructor
 public class MemberController {
 
-    @Autowired
-    private MemberService memberService;
-
-    @Autowired
-    private ImageService imageService;
+    private final MemberService memberService;
+    private final ImageService imageService;
 
     @GetMapping("/members/login")
     public ResponseEntity<String> login(@RequestParam String customId,
@@ -48,7 +46,7 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public ResponseEntity<MemberDataResponse> readMemberData(
+    public ResponseEntity<MemberDataDto> readMemberData(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember
     ) {
         if (loginMember == null) {
@@ -67,7 +65,11 @@ public class MemberController {
     @PostMapping("/members")
     public ResponseEntity<String> createMemberData(@RequestBody MemberDataRequest memberDataRequest) {
         Member member = memberService.create(memberDataRequest);
-        imageService.makeBasicImage(member);
+        try {
+            imageService.makeBasicImage(member, "server/image/person.jpeg");
+        } catch (IOException e) {
+            return new ResponseEntity<>("failed by IOException", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>("success create memberData", HttpStatus.OK);
     }
 
@@ -111,7 +113,7 @@ public class MemberController {
 
     }
 
-    private static HttpHeaders loginUriHeader() {
+    private static HttpHeaders loginUriHeader() {//변동 가능성
         URI loginPageUri = URI.create("/members/login");
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(loginPageUri);
