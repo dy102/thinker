@@ -9,7 +9,6 @@ import {
   YourInfo,
 } from "./changeInfo.style";
 import EditIcon from "@mui/icons-material/Edit";
-import Button from "@/components/Button/Button";
 import IconButton from "@/components/Button/IconButton";
 
 function page() {
@@ -25,6 +24,7 @@ function page() {
   const memberDataReqeustArr = [memberDataReqeust];
   return (
     <Stack>
+      {/* [FIXME : 글로그 참고해서 수정 onChange 확인해야함]*/}
       <MemberInfo>
         <Infoheader>Info</Infoheader>
         <Stack flexDirection={"column"} marginTop={"10px"}>
