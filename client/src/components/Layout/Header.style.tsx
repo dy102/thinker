@@ -1,15 +1,15 @@
 import { Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { mainColor } from "../Themes/color";
 
 export const HeaderTag = styled(Stack)({
   width: "100%",
-  maxWidth: "1440px",
   margin: "auto",
   height: "70px",
   alignItems: "center",
   justifyContent: "center",
   flexDirection: "row",
-  borderBottom: "1px solid #765AFF",
+  borderBottom: `1px solid ${mainColor}`,
 });
 
 export const HeaderMainTag = styled(Stack)({
@@ -23,7 +23,7 @@ export const HeaderMainTag = styled(Stack)({
 export const LogoTag = styled(Stack)({
   width: "45px",
   height: "45px",
-  backgroundColor: "#765AFF",
+  backgroundColor: `${mainColor}`,
   margin: "0 5px",
   alignItems: "center",
   justifyContent: "center",
@@ -50,16 +50,14 @@ export const ThinkingTag = styled(Stack)({
 });
 
 export const LogInTag = styled(Stack)({
-  backgroundColor: "rgb(245, 245, 245)",
   width: "80px",
   height: "40px",
-  color: "#765AFF",
+  color: `${mainColor}`,
   margin: "0 5px",
 });
 
 export const SignInTag = styled(Stack)({
-  backgroundColor: "rgb(245, 245, 245)",
   height: "40px",
-  color: "#765AFF",
+  color: `${mainColor}`,
   margin: "0 5px",
 });

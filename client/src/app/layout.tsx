@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/Layout/Header";
 import FullLayout from "@/components/Layout/FullLayout";
+import Footer from "@/components/Layout/Footer";
 
 export const metadata: Metadata = {
   title: "Thinker",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body>
         <Header />
         <FullLayout>{children}</FullLayout>
+        <Footer />
       </body>
     </html>
   );
