@@ -85,7 +85,8 @@ function page() {
           <Step>
             <StepLabel>Choose Your Privacy</StepLabel>
             <StepContent>
-              <Typography>
+              <Typography spacing={3}>
+                <TextField label="AGE" variant="standard" />
                 <Stack>
                   <FormLabel>Gender</FormLabel>
                   <RadioGroup row>
@@ -107,7 +108,7 @@ function page() {
                   </RadioGroup>
                 </Stack>
               </Typography>
-              <SignInBox>
+              <SignInBox marginTop={"30px"}>
                 <Button
                   sx={{ width: "120px", marginRight: "10px" }}
                   onClick={handleNext}
