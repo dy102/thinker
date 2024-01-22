@@ -1,6 +1,6 @@
 import { boxColor, mainColor, shadowColor } from "@/components/Themes/color";
 import { Stack } from "@mui/material";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 
 export const MemberInfo = styled(Stack)({
   width: "750px",

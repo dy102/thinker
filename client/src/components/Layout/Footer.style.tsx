@@ -1,5 +1,5 @@
 import { Stack } from "@mui/material";
-import styled from "styled-components";
+import { styled } from "@mui/material/styles";
 import { mainColor } from "../Themes/color";
 
 export const FooterTag = styled(Stack)({
