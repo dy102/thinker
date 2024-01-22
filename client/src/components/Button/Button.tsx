@@ -9,6 +9,7 @@ export const ButtonStyled = styled(MuiButton)({
   borderRadius: "15px",
   border: "1px solid #765AFF",
   overflow: "auto",
+  backgroundColor: "transparent",
   ":hover": {
     backgroundColor: "rgba(118,90,255,0.3)",
     transition: "background-color 0.5s ease, border 0.5s ease",

@@ -44,7 +44,7 @@ export default function Header() {
 
         <LogInTag>
           <Button sx={{ border: "none" }}>
-            <PageLink href="#">Log_In</PageLink>
+            <PageLink href="/logIn">Log_In</PageLink>
           </Button>
         </LogInTag>
 
