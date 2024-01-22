@@ -13,7 +13,7 @@ import PageLink from "@/components/PageLink/PageLink";
 import React from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
-function page() {
+function Page() {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -61,4 +61,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

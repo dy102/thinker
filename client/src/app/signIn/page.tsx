@@ -1,6 +1,5 @@
 "use client";
 import {
-  FormControl,
   FormControlLabel,
   FormLabel,
   Paper,
@@ -19,7 +18,7 @@ import { mainColor } from "@/components/Themes/color";
 import React from "react";
 import { Box, LastTypography, SignInBox, Typography } from "./signIn.style";
 
-function page() {
+function Page() {
   const [activeStep, setActiveStep] = React.useState(0);
 
   const handleNext = () => {
@@ -124,9 +123,7 @@ function page() {
         </Stepper>
         {activeStep === 3 && (
           <Paper square elevation={0} sx={{ p: 3 }}>
-            <LastTypography>
-              All steps completed - you're finished
-            </LastTypography>
+            <LastTypography>All steps completed</LastTypography>
             <Stack width={"500px"}>
               <Button>
                 <PageLink href={"/"}>Create Account</PageLink>
@@ -139,4 +136,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
