@@ -32,7 +32,7 @@ export default function Header() {
 
         <SurveyTag>
           <Button>
-            <PageLink href="#">Survey</PageLink>
+            <PageLink href="/survey">Survey</PageLink>
           </Button>
         </SurveyTag>
 
