@@ -1,5 +1,11 @@
 "use client";
 import {
+  LeftInnerTrapezoid,
+  LeftTrapezoid,
+  RightInnerTrapezoid,
+  RightTrapezoid,
+} from "@/components/Layout/Header.style";
+import {
   AnimatedTitle,
   Content,
   GoToSurvey,
@@ -66,24 +72,58 @@ export default function Home() {
       },
     ],
   };
+  const rightImage =
+    "https://img.freepik.com/premium-photo/renaissance-architecture-of-hd-minimalist-mosque-in-sancaclaar_899449-4734.jpg?w=2000";
 
   return (
     <Stack display={"flex"} flexDirection={"column"}>
-      <Stack height={"200px"} marginTop={"40px"}>
+      <Stack height={"200px"}>
         <Thinker fontSize={"130px"}>THINKER</Thinker>
-        <AnimatedTitle>
-          <Track>
-            <Content>
-              <Stack>
-                나만의 설문조사를 만들어보세요 평소의 생각들, 시사, 경제 등
-                다양한 주제들을 THINKING에 적어주세요 설문조사에 참여해 포인트를
-                쌓아 프리미엄 설문조사, THINKING으로 만들어보세요 다양한
-                정보들과 설문조사들이 넘처나는 THINKER 입니다!!
-              </Stack>
-            </Content>
-          </Track>
-        </AnimatedTitle>
       </Stack>
+      <Stack height="500px" flexDirection="row" position={"relative"}>
+        <LeftTrapezoid
+          imageSrc={
+            "https://studiocroissant.com/wp-content/uploads/2023/08/The-School-of-Athens.jpg"
+          }
+        >
+          <LeftInnerTrapezoid>
+            <GoToSurvey>
+              <Stack width="300px" textAlign="center">
+                <PageLink href={"/survey"}>
+                  <Stack color={"white"} fontWeight={550} fontSize={"25px"}>
+                    {"Get More SURVEY >>>"}
+                  </Stack>
+                </PageLink>
+              </Stack>
+            </GoToSurvey>
+          </LeftInnerTrapezoid>
+        </LeftTrapezoid>
+        <RightTrapezoid imageSrc={rightImage}>
+          <RightInnerTrapezoid>
+            <GoToThinking>
+              <Stack width="300px" textAlign="center">
+                <PageLink href={"/thinking"}>
+                  <Stack color={"white"} fontWeight={550} fontSize={"25px"}>
+                    {"<<< Get More THINKING"}
+                  </Stack>
+                </PageLink>
+              </Stack>
+            </GoToThinking>
+          </RightInnerTrapezoid>
+        </RightTrapezoid>
+      </Stack>
+      <AnimatedTitle>
+        <Track>
+          <Content>
+            <Stack>
+              나만의 설문조사를 만들어보세요 평소의 생각들, 시사, 경제 등 다양한
+              주제들을 THINKING에 적어주세요 설문조사에 참여해 포인트를 쌓아
+              프리미엄 설문조사, THINKING으로 만들어보세요 다양한 정보들과
+              설문조사들이 넘처나는 THINKER 입니다!!
+            </Stack>
+          </Content>
+        </Track>
+      </AnimatedTitle>
       <Stack marginTop="200px" height="400px" flexDirection="row">
         <IntroComment>
           <Stack>설문조사에 참여해 포인트를 쌓아보세요!!</Stack>
@@ -121,16 +161,7 @@ export default function Home() {
           );
         })}
       </Stack>
-      <GoToSurvey>
-        <Stack width="300px" textAlign="center">
-          <PageLink href={"/survey"}>{"Get More SURVEY >>>"}</PageLink>
-        </Stack>
-      </GoToSurvey>
-      <GoToThinking>
-        <Stack width="300px" textAlign="center">
-          <PageLink href={"/thinking"}>{"<<< Get More THINKING"}</PageLink>
-        </Stack>
-      </GoToThinking>
+
       <Stack flexDirection={"row"}>
         {premiumThinkingResponse.premiumThinkingDtos.map((thinking) => {
           return (

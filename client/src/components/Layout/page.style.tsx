@@ -85,6 +85,8 @@ export const GoToSurvey = styled(Stack)({
   alignItems: "flex-end",
   justifyContent: "center",
   fontSize: "20px",
+  position: "absolute",
+  bottom: "100px",
 });
 
 export const GoToThinking = styled(Stack)({
@@ -94,4 +96,6 @@ export const GoToThinking = styled(Stack)({
   justifyContent: "center",
   fontSize: "20px",
   marginTop: "50px",
+  position: "absolute",
+  right: "100px",
 });

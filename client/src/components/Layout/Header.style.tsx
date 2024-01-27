@@ -61,3 +61,52 @@ export const SignInTag = styled(Stack)({
   color: `${mainColor}`,
   margin: "0 5px",
 });
+
+export const LeftTrapezoid = styled(Stack)(
+  ({ imageSrc }: { imageSrc: string }) => ({
+    backgroundImage: `url(${imageSrc})`,
+    backgroundSize: "100% 500px",
+    backgroundRepeat: "no-repeat",
+    width: "100%",
+  })
+);
+
+export const RightTrapezoid = styled(Stack)(
+  ({ imageSrc }: { imageSrc: string }) => ({
+    backgroundImage: `url(${imageSrc})`,
+    borderBottom: `500px solid ${mainColor}`,
+    borderLeft: "250px solid transparent",
+    backgroundSize: "100% 500px",
+    backgroundRepeat: "no-repeat",
+    width: "40%",
+    position: "absolute",
+    right: 0,
+  })
+);
+
+export const LeftInnerTrapezoid = styled(Stack)({
+  borderTop: "200px solid rgba(128,128,128, 0.5)",
+  borderRight: "100px solid transparent",
+  width: "50%",
+  margin: "auto 0",
+  position: "absolute",
+  top: "150px",
+  transition: "all .35s ease-in-out",
+  ":hover": {
+    transform: "translateY(-20px)",
+  },
+});
+
+export const RightInnerTrapezoid = styled(Stack)({
+  borderBottom: `200px solid rgba(128,128,128, 0.5)`,
+  borderLeft: "100px solid transparent",
+  width: "111%",
+  margin: "auto 0",
+  position: "absolute",
+  right: 0,
+  top: "150px",
+  transition: "all .35s ease-in-out",
+  ":hover": {
+    transform: "translateY(-20px)",
+  },
+});
