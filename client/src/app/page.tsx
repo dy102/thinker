@@ -1,15 +1,9 @@
 "use client";
-import {
-  LeftInnerTrapezoid,
-  LeftTrapezoid,
-  RightInnerTrapezoid,
-  RightTrapezoid,
-} from "@/components/Layout/Header.style";
+
+import { GoToSurvey, GoToThinking, LeftInnerTrapezoid, LeftTrapezoid, RightInnerTrapezoid, RightTrapezoid } from "@/components/Layout/Mainpage.style";
 import {
   AnimatedTitle,
   Content,
-  GoToSurvey,
-  GoToThinking,
   IntroComment,
   Thinker,
   Track,
@@ -72,34 +66,26 @@ export default function Home() {
       },
     ],
   };
-  const rightImage =
-    "https://img.freepik.com/premium-photo/renaissance-architecture-of-hd-minimalist-mosque-in-sancaclaar_899449-4734.jpg?w=2000";
 
   return (
     <Stack display={"flex"} flexDirection={"column"}>
-      <Stack height={"200px"}>
-        <Thinker fontSize={"130px"}>THINKER</Thinker>
-      </Stack>
-      <Stack height="500px" flexDirection="row" position={"relative"}>
-        <LeftTrapezoid
-          imageSrc={
-            "https://studiocroissant.com/wp-content/uploads/2023/08/The-School-of-Athens.jpg"
-          }
-        >
-          <LeftInnerTrapezoid>
-            <GoToSurvey>
-              <Stack width="300px" textAlign="center">
-                <PageLink href={"/survey"}>
-                  <Stack color={"white"} fontWeight={550} fontSize={"25px"}>
-                    {"Get More SURVEY >>>"}
-                  </Stack>
-                </PageLink>
-              </Stack>
-            </GoToSurvey>
-          </LeftInnerTrapezoid>
-        </LeftTrapezoid>
-        <RightTrapezoid imageSrc={rightImage}>
-          <RightInnerTrapezoid>
+      <LeftTrapezoid imagesrc="https://i0.wp.com/cdn.tiqets.com/wordpress/blog/wp-content/uploads/2023/01/05125828/Creation_of_Adam_Michelangelo_1475%E2%80%931564_circa_1511-1024x465.jpg?resize=1024%2C465&ssl=1" height={'95vh'} bgcolor={'wheat'} position={'relative'}>
+        <Stack zIndex={1} width={'100%'} height={"200px"} position={'absolute'} margin={'auto'}>
+          <Thinker fontSize={"130px"}>THINKER</Thinker>
+        </Stack>
+        <LeftInnerTrapezoid width={'100%'} height={'25vh'} bgcolor={'rgba(128,128,128, 0.5)'} margin={'auto'}>
+          <GoToSurvey>
+            <Stack width="300px" textAlign="center">
+              <PageLink href={"/survey"}>
+                <Stack color={"white"} fontWeight={550} fontSize={"25px"}>
+                  {"Get More SURVEY >>>"}
+                </Stack>
+              </PageLink>
+            </Stack>
+          </GoToSurvey>
+        </LeftInnerTrapezoid>
+        <RightTrapezoid imagesrc="https://c1.wallpaperflare.com/preview/502/735/779/art-school-of-athens-rapha%C3%ABl-italian-painter-fresco.jpg" width={'50%'} height={'95vh'} bgcolor={'teal'} position={'absolute'} right={0}>
+          <RightInnerTrapezoid width={'100%'} height={'25vh'} bgcolor={'rgba(128,128,128, 0.5)'} margin={'auto'}>
             <GoToThinking>
               <Stack width="300px" textAlign="center">
                 <PageLink href={"/thinking"}>
@@ -110,8 +96,10 @@ export default function Home() {
               </Stack>
             </GoToThinking>
           </RightInnerTrapezoid>
+
         </RightTrapezoid>
-      </Stack>
+      </LeftTrapezoid>
+
       <AnimatedTitle>
         <Track>
           <Content>

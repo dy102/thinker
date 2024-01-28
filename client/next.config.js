@@ -12,7 +12,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "studiocroissant.com",
+        hostname: "s2.best-wallpaper.net",
       },
       {
         protocol: "https",

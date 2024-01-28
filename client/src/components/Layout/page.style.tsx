@@ -38,7 +38,7 @@ export const leftToRight = keyframes`
 export const Thinker = styled(Stack)`
   fontweight: bolder;
   margin: auto;
-  color: ${mainColor};
+  color: white;
   animation: ${trackingInContract} 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     both;
   fontsize: 100px;
@@ -79,23 +79,3 @@ export const IntroComment = styled(Stack)({
   fontSize: "20px",
 });
 
-export const GoToSurvey = styled(Stack)({
-  height: "50px",
-  display: "flex",
-  alignItems: "flex-end",
-  justifyContent: "center",
-  fontSize: "20px",
-  position: "absolute",
-  bottom: "100px",
-});
-
-export const GoToThinking = styled(Stack)({
-  height: "50px",
-  display: "flex",
-  alignItems: "flex-start",
-  justifyContent: "center",
-  fontSize: "20px",
-  marginTop: "50px",
-  position: "absolute",
-  right: "100px",
-});
