@@ -28,7 +28,7 @@ function PremiumSurvey({
           </Stack>
 
         </Stack>
-        <Stack marginTop={'15px'} fontSize={'23px'}>{surveyTitle}</Stack>
+        <Stack marginTop={'15px'} fontSize={'20px'} overflow={'hidden'} textOverflow={'ellipsis'} whiteSpace={'nowrap'}>{surveyTitle}</Stack>
 
         <Stack width={'200px'} margin={'10px auto auto auto'}>
           <Button sx={{ position: 'relative' }}>
