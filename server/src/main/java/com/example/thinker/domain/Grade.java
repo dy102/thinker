@@ -8,8 +8,9 @@ public enum Grade {
     ADVANCED("ADVANCED"),
     EXPERT("EXPERT"),
     MASTER("MASTER"),
-    THINKER("THINKER");
-    
+    THINKER("THINKER"),
+    MANAGER("MANAGER");
+
     private final String name;
 
     private Grade(String name) {

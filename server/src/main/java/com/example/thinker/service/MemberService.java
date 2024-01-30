@@ -1,9 +1,9 @@
 package com.example.thinker.service;
 
 import com.example.thinker.domain.Member;
+import com.example.thinker.dto.MemberDataDto;
 import com.example.thinker.dto.MemberSimpleDto;
 import com.example.thinker.dto.request.MemberDataRequest;
-import com.example.thinker.dto.response.MemberDataDto;
 
 public interface MemberService {
     Member create(MemberDataRequest memberDataRequest);

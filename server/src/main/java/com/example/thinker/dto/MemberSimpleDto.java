@@ -29,4 +29,15 @@ public record MemberSimpleDto(String memberName,
     public int hashCode() {
         return Objects.hash(Arrays.hashCode(memberProfile), memberName, memberGrade);
     }
+
+    @Override
+    public String toString() {
+        // Arrays 클래스의 toString 메서드를 사용하여 배열의 내용을 문자열로 변환
+        return "MemberSimpleDto{" +
+                "memberName=" + memberName +
+                "memberProfile=" + Arrays.toString(memberProfile) +
+                "memberGrade=" + memberGrade +
+                '}';
+    }
+
 }

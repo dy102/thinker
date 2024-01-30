@@ -10,4 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface ImageRepository extends JpaRepository<Image, Long> {
     @Query("SELECT i FROM Image i WHERE i.data=:data")
     Image findByData(@Param("data") byte[] data);
+
+    @Query("SELECT i FROM Image i WHERE i.fileName=:fileName")
+    Image findByFileName(@Param("fileName") String fileName);
 }

@@ -2,9 +2,9 @@ package com.example.thinker.controller;
 
 import com.example.thinker.domain.Image;
 import com.example.thinker.domain.Member;
+import com.example.thinker.dto.MemberDataDto;
 import com.example.thinker.dto.MemberSimpleDto;
 import com.example.thinker.dto.request.MemberDataRequest;
-import com.example.thinker.dto.response.MemberDataDto;
 import com.example.thinker.service.ImageService;
 import com.example.thinker.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,7 +64,12 @@ public class MemberController {
 
     @PostMapping("/members")
     public ResponseEntity<String> createMemberData(@RequestBody MemberDataRequest memberDataRequest) {
-        Member member = memberService.create(memberDataRequest);
+        Member member;
+        try {
+            member = memberService.create(memberDataRequest);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         try {
             imageService.makeBasicImage(member, "server/image/person.jpeg");
         } catch (IOException e) {
@@ -95,7 +100,7 @@ public class MemberController {
         try {
             imageService.uploadImage(fileName, file, loginMember);
         } catch (IOException e) {
-            return new ResponseEntity<>("fail update memberImage", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("failed by IOException", HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return new ResponseEntity<>("success update memberImage", HttpStatus.OK);
     }
