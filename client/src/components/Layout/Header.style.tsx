@@ -9,7 +9,6 @@ export const HeaderTag = styled(Stack)({
   alignItems: "center",
   justifyContent: "center",
   flexDirection: "row",
-  borderBottom: `1px solid ${mainColor}`,
 });
 
 export const HeaderMainTag = styled(Stack)({
@@ -30,7 +29,7 @@ export const LogoTag = styled(Stack)({
 });
 
 export const SearchTag = styled(Stack)({
-  backgroundColor: "#D9D9D9",
+  backgroundColor: 'none',
   width: "50%",
   height: "40px",
   borderRadius: "15px",
@@ -61,3 +60,4 @@ export const SignInTag = styled(Stack)({
   color: `${mainColor}`,
   margin: "0 5px",
 });
+
