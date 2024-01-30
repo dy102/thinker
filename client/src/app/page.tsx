@@ -1,6 +1,13 @@
 "use client";
 
-import { GoToSurvey, GoToThinking, LeftInnerTrapezoid, LeftTrapezoid, RightInnerTrapezoid, RightTrapezoid } from "@/components/Layout/Mainpage.style";
+import {
+  GoToSurvey,
+  GoToThinking,
+  LeftInnerTrapezoid,
+  LeftTrapezoid,
+  RightInnerTrapezoid,
+  RightTrapezoid,
+} from "@/components/Layout/Mainpage.style";
 import {
   AnimatedTitle,
   Content,
@@ -27,7 +34,7 @@ export default function Home() {
         surveyWriter: "jsjsjsjs",
         surveyTitle: "Is Thinker good?",
         surveyItemCount: 5,
-        isDone: false,
+        isDone: true,
         isPremium: true,
       },
       {
@@ -45,35 +52,64 @@ export default function Home() {
     premiumThinkingCount: 2,
     premiumThinkingDtos: [
       {
-        thinkingId: 11,
-        thinkingThumbnail: "string",
-        thinkingWriter: "string",
-        thinkingTitle: "string",
+        thinkingId: 4,
+        thinkingThumbnail:
+          "https://assets.paintingco.com/dev-3/wp-content/uploads/20230802110655/shutterstock_1561397020-scaled.jpg",
+        thinkingWriter: "Jun Seo",
+        thinkingTitle: "Is Thinker good?",
         isPremium: true,
-        likeCount: 12,
-        repliesCount: 24,
-        viewCount: 36,
+        likeCount: 5,
+        repliesCount: 10,
+        viewCount: 123,
       },
       {
-        thinkingId: 12,
-        thinkingThumbnail: "string",
-        thinkingWriter: "string",
-        thinkingTitle: "string",
+        thinkingId: 5,
+        thinkingThumbnail:
+          "https://t4.ftcdn.net/jpg/00/93/83/93/240_F_93839373_JT5cpdRmTyuOg6eert4Kexq8aO63iD5r.jpg",
+        thinkingWriter: "Jun Seo",
+        thinkingTitle: "Is Thinker good?",
         isPremium: true,
-        likeCount: 12,
-        repliesCount: 24,
-        viewCount: 36,
+        likeCount: 5,
+        repliesCount: 10,
+        viewCount: 123,
+      },
+      {
+        thinkingId: 6,
+        thinkingThumbnail:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3l2fb-6xT3Krier-wokMNXGNpM-t6qvSghg&usqp=CAU",
+        thinkingWriter: "Jun Seo",
+        thinkingTitle: "Is Thinker good?",
+        isPremium: true,
+        likeCount: 5,
+        repliesCount: 10,
+        viewCount: 123,
       },
     ],
   };
 
   return (
     <Stack display={"flex"} flexDirection={"column"}>
-      <LeftTrapezoid imagesrc="https://i0.wp.com/cdn.tiqets.com/wordpress/blog/wp-content/uploads/2023/01/05125828/Creation_of_Adam_Michelangelo_1475%E2%80%931564_circa_1511-1024x465.jpg?resize=1024%2C465&ssl=1" height={'95vh'} bgcolor={'wheat'} position={'relative'}>
-        <Stack zIndex={1} width={'100%'} height={"200px"} position={'absolute'} margin={'auto'}>
+      <LeftTrapezoid
+        imagesrc="https://i0.wp.com/cdn.tiqets.com/wordpress/blog/wp-content/uploads/2023/01/05125828/Creation_of_Adam_Michelangelo_1475%E2%80%931564_circa_1511-1024x465.jpg?resize=1024%2C465&ssl=1"
+        height={"95vh"}
+        bgcolor={"wheat"}
+        position={"relative"}
+      >
+        <Stack
+          zIndex={1}
+          width={"100%"}
+          height={"200px"}
+          position={"absolute"}
+          margin={"auto"}
+        >
           <Thinker fontSize={"130px"}>THINKER</Thinker>
         </Stack>
-        <LeftInnerTrapezoid width={'100%'} height={'25vh'} bgcolor={'rgba(128,128,128, 0.5)'} margin={'auto'}>
+        <LeftInnerTrapezoid
+          width={"100%"}
+          height={"25vh"}
+          bgcolor={"rgba(128,128,128, 0.5)"}
+          margin={"auto"}
+        >
           <GoToSurvey>
             <Stack width="300px" textAlign="center">
               <PageLink href={"/survey"}>
@@ -84,8 +120,20 @@ export default function Home() {
             </Stack>
           </GoToSurvey>
         </LeftInnerTrapezoid>
-        <RightTrapezoid imagesrc="https://c1.wallpaperflare.com/preview/502/735/779/art-school-of-athens-rapha%C3%ABl-italian-painter-fresco.jpg" width={'50%'} height={'95vh'} bgcolor={'teal'} position={'absolute'} right={0}>
-          <RightInnerTrapezoid width={'100%'} height={'25vh'} bgcolor={'rgba(128,128,128, 0.5)'} margin={'auto'}>
+        <RightTrapezoid
+          imagesrc="https://c1.wallpaperflare.com/preview/502/735/779/art-school-of-athens-rapha%C3%ABl-italian-painter-fresco.jpg"
+          width={"50%"}
+          height={"95vh"}
+          bgcolor={"teal"}
+          position={"absolute"}
+          right={0}
+        >
+          <RightInnerTrapezoid
+            width={"100%"}
+            height={"25vh"}
+            bgcolor={"rgba(128,128,128, 0.5)"}
+            margin={"auto"}
+          >
             <GoToThinking>
               <Stack width="300px" textAlign="center">
                 <PageLink href={"/thinking"}>
@@ -96,7 +144,6 @@ export default function Home() {
               </Stack>
             </GoToThinking>
           </RightInnerTrapezoid>
-
         </RightTrapezoid>
       </LeftTrapezoid>
 
@@ -155,10 +202,11 @@ export default function Home() {
           return (
             <PremiumThinking
               key={thinking.thinkingId}
-              thinkingImg={thinking.thinkingThumbnail}
+              thinkingThumbnail={thinking.thinkingThumbnail}
               thinkingWriter={thinking.thinkingWriter}
               thinkingTitle={thinking.thinkingTitle}
-              likeCount={thinking.repliesCount}
+              likecount={thinking.likeCount}
+              repliesCount={thinking.repliesCount}
               viewCount={thinking.viewCount}
             />
           );

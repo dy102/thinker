@@ -18,7 +18,7 @@ function page() {
         thinkingWriter: "Jun Seo",
         thinkingTitle: "Is Thinker good?",
         isPremium: true,
-        likecount: 5,
+        likeCount: 5,
         repliesCount: 10,
         viewCount: 123,
       },
@@ -29,7 +29,7 @@ function page() {
         thinkingWriter: "Jun Seo",
         thinkingTitle: "Is Thinker good?",
         isPremium: true,
-        likecount: 5,
+        likeCount: 5,
         repliesCount: 10,
         viewCount: 123,
       },
@@ -40,7 +40,7 @@ function page() {
         thinkingWriter: "Jun Seo",
         thinkingTitle: "Is Thinker good?",
         isPremium: true,
-        likecount: 5,
+        likeCount: 5,
         repliesCount: 10,
         viewCount: 123,
       },
@@ -92,7 +92,7 @@ function page() {
                 thinkingThumbnail={thinking.thinkingThumbnail}
                 thinkingWriter={thinking.thinkingWriter}
                 thinkingTitle={thinking.thinkingTitle}
-                likecount={thinking.likecount}
+                likecount={thinking.likeCount}
                 repliesCount={thinking.repliesCount}
                 viewCount={thinking.viewCount}
               />

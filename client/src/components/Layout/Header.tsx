@@ -38,7 +38,7 @@ export default function Header() {
 
         <ThinkingTag>
           <Button>
-            <PageLink href="#">Thinking</PageLink>
+            <PageLink href="/thinking">Thinking</PageLink>
           </Button>
         </ThinkingTag>
 
