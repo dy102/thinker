@@ -8,7 +8,6 @@ type Children = {
 
 const MainStack = styled(Stack)({
   width: "100%",
-  maxWidth: "1440px",
   height: "auto",
   margin: "auto",
   minHeight: "100vh",

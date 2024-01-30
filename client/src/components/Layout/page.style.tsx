@@ -1,5 +1,6 @@
 import { Stack } from "@mui/material";
 import styled, { keyframes } from "styled-components";
+import { mainColor } from "../Themes/color";
 
 export const marquee = keyframes`
     from {
@@ -8,6 +9,39 @@ export const marquee = keyframes`
     to {
         transform: translateX(-50%);
     }
+`;
+
+export const trackingInContract = keyframes`
+0% {
+  letter-spacing: -0.5em;
+  opacity: 0;
+}
+40% {
+  opacity: 0.6;
+}
+100% {
+  opacity: 1;
+}
+`;
+
+export const leftToRight = keyframes`
+0%{
+  transform: translateX(0);
+  opacity: 0;
+}
+100%{
+  transform: translateX(100px);
+  opacity: 1;
+}
+`;
+
+export const Thinker = styled(Stack)`
+  fontweight: bolder;
+  margin: auto;
+  color: white;
+  animation: ${trackingInContract} 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)
+    both;
+  fontsize: 100px;
 `;
 
 export const AnimatedTitle = styled.div`
@@ -29,10 +63,19 @@ export const Track = styled(Stack)`
   will-change: transform;
   animation: ${marquee} 20s linear infinite;
 `;
-export const Content = styled(Stack)`
-  &:hover {
-    @media (hover: hover) and (min-width: 1000px) {
-      transform: translateY(calc(100% - 8rem));
-    }
-  }
-`;
+export const Content = styled(Stack)``;
+
+export const ServeyCollect = styled(Stack)({
+  display: "flex",
+  flexWrap: "wrap",
+});
+
+export const IntroComment = styled(Stack)({
+  width: "55%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  fontSize: "20px",
+});
+

@@ -11,8 +11,14 @@ import {
 import { mainColor, shadowColor } from "@/components/Themes/color";
 import Button from "@/components/Button/Button";
 import PageLink from "@/components/PageLink/PageLink";
+import Image from "next/image";
+import { BorderRight } from "@mui/icons-material";
 
 function page() {
+  const ImageStyle = {
+    borderRadius: "50%",
+    boxShadow: `0px 0px 20px 1px ${shadowColor.main}`,
+  };
   const memberDataDto = {
     customId: "string",
     pw: "string",
@@ -29,21 +35,22 @@ function page() {
     <Stack marginTop={"100px"}>
       <Profile>
         <Stack flexDirection={"row"} marginBottom={"50px"}>
-          <Stack
-            width={"200px"}
-            height={"150px"}
-            borderRadius={"50%"}
-            margin={"50px"}
-          >
-            <img
+          <Stack width={"200px"} height={"150px"} margin={"50px"}>
+            {/* <img
               style={{
                 borderRadius: "50%",
                 boxShadow: `0px 0px 20px 1px ${shadowColor.main}`,
               }}
               src="https://png.pngtree.com/png-vector/20191115/ourmid/pngtree-beautiful-profile-line-vector-icon-png-image_1990469.jpg"
-            />
+            /> */}
             {/*[FIXME] 나중에 image 태그로 바꿔야함*/}
-            {/* <Image width={70} height={70} src={`${imageData}`} alt="" /> */}
+            <Image
+              width={200}
+              height={200}
+              style={ImageStyle}
+              src={`${imageData}`}
+              alt=""
+            />
           </Stack>
           <Stack marginLeft={"30px"} flexDirection={"column"}>
             <Stack margin={"40px auto 0 auto"} width={"200px"}>
@@ -67,20 +74,20 @@ function page() {
         </Stack>
       </Profile>
       <Grade>
-        <Stack margin={"40px"}>
+        <Stack width={"100px"} height={"100px"} margin={"40px"}>
           {/*[FIXME] 나중에 image 태그로 바꿔야함*/}
-          <img
+          {/* <img
             style={{ width: "100px", height: "100px" }}
             src="https://opgg-com-image.akamaized.net/attach/images/20190916020813.596917.jpg"
+          /> */}
+          <Image
+            width={100}
+            height={100}
+            src={
+              "https://opgg-com-image.akamaized.net/attach/images/20190916020813.596917.jpg"
+            }
+            alt=""
           />
-          {/* <Image
-              width={40}
-              height={40}
-              src={
-                "https://opgg-com-image.akamaized.net/attach/images/20190916020813.596917.jpg"
-              }
-              alt=""
-            ></Image> */}
         </Stack>
         <GradeGage>
           <Stack flexDirection={"row"} justifyContent={"space-between"}>
