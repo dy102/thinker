@@ -89,44 +89,53 @@ export default function Home() {
 
   return (
     <Stack display={"flex"} flexDirection={"column"}>
-      <LeftTrapezoid
-        imagesrc="https://i0.wp.com/cdn.tiqets.com/wordpress/blog/wp-content/uploads/2023/01/05125828/Creation_of_Adam_Michelangelo_1475%E2%80%931564_circa_1511-1024x465.jpg?resize=1024%2C465&ssl=1"
-        height={"95vh"}
-        bgcolor={"wheat"}
-        position={"relative"}
-      >
-        <Stack
-          zIndex={1}
-          width={"100%"}
-          height={"200px"}
+      <Stack flexDirection={"row"} position={"relative"}>
+        <Thinker
+          fontSize={"130px"}
           position={"absolute"}
-          margin={"auto"}
+          right={"37%"}
+          top={"50px"}
+          zIndex={1000}
         >
-          <Thinker fontSize={"130px"}>THINKER</Thinker>
-        </Stack>
-        <LeftInnerTrapezoid
-          width={"100%"}
-          height={"25vh"}
-          bgcolor={"rgba(128,128,128, 0.5)"}
-          margin={"auto"}
+          THINKER
+        </Thinker>
+        <LeftTrapezoid
+          imagesrc="https://st2.depositphotos.com/4097503/47272/v/1600/depositphotos_472726658-stock-illustration-people-filling-online-survey-form.jpg"
+          width={"50%"}
+          height={"95vh"}
+          bgcolor={"wheat"}
+          position={"relative"}
         >
-          <GoToSurvey>
-            <Stack width="300px" textAlign="center">
-              <PageLink href={"/survey"}>
-                <Stack color={"white"} fontWeight={550} fontSize={"25px"}>
-                  {"Get More SURVEY >>>"}
-                </Stack>
-              </PageLink>
-            </Stack>
-          </GoToSurvey>
-        </LeftInnerTrapezoid>
+          <Stack
+            zIndex={1}
+            width={"100%"}
+            height={"200px"}
+            position={"absolute"}
+            margin={"auto"}
+          ></Stack>
+          <LeftInnerTrapezoid
+            width={"100%"}
+            height={"25vh"}
+            bgcolor={"rgba(128,128,128, 0.5)"}
+            margin={"auto"}
+          >
+            <GoToSurvey>
+              <Stack width="300px" textAlign="center">
+                <PageLink href={"/survey"}>
+                  <Stack color={"white"} fontWeight={550} fontSize={"25px"}>
+                    {"Get More SURVEY >>>"}
+                  </Stack>
+                </PageLink>
+              </Stack>
+            </GoToSurvey>
+          </LeftInnerTrapezoid>
+        </LeftTrapezoid>
         <RightTrapezoid
-          imagesrc="https://c1.wallpaperflare.com/preview/502/735/779/art-school-of-athens-rapha%C3%ABl-italian-painter-fresco.jpg"
+          imagesrc="https://i.pinimg.com/originals/66/9c/17/669c17917cf7845d93f933dbe8976995.jpg"
           width={"50%"}
           height={"95vh"}
           bgcolor={"teal"}
-          position={"absolute"}
-          right={0}
+          position={"relative"}
         >
           <RightInnerTrapezoid
             width={"100%"}
@@ -145,7 +154,7 @@ export default function Home() {
             </GoToThinking>
           </RightInnerTrapezoid>
         </RightTrapezoid>
-      </LeftTrapezoid>
+      </Stack>
 
       <AnimatedTitle>
         <Track>

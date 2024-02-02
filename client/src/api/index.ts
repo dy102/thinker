@@ -24,5 +24,5 @@ const unAxiosApi = (url: string, data?: any) => {
 };
 
 export const defaultInstance = axiosApi(
-  "http://54.180.90.236:8080/swagger-ui/index.html"
+  "http://3.34.46.79:8081/swagger-ui/index.html#/"
 );

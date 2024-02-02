@@ -3,9 +3,11 @@ import Button from "@/components/Button/Button";
 import PremiumSurvey from "@/components/Premium/PremiumSurvey/PremiumSurvey";
 import { mainColor } from "@/components/Themes/color";
 import { Menu, MenuItem, Stack } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
 import PremiumThinking from "@/components/Premium/PremiumThinking/PremiumThinking";
+import { useGetThinkingPremiumQuery } from "@/api/thinkingPremium-api";
+import { IThinkingPremium } from "@/components/types/dto";
 
 function page() {
   const premiumThinkingResponse = {
@@ -50,6 +52,14 @@ function page() {
   //정렬기준
   const [kind, setKind] = useState("recent");
   const kindList = ["recent", "popular"];
+
+  const [page, setPage] = useState(0);
+  const [backendSendPage, setBackendSendPage] = useState(1);
+
+  const [thinkingPremium, setThinkingPremium] = useState<IThinkingPremium>();
+  const { data: thinkingPremiumData } = useGetThinkingPremiumQuery({
+    page: backendSendPage,
+  });
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const friendopen = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -58,6 +68,9 @@ function page() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {
+    setThinkingPremium(thinkingPremiumData);
+  }, [thinkingPremiumData]);
 
   return (
     <Stack margin={"0 auto"}>
