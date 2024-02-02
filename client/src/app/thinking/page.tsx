@@ -1,76 +1,44 @@
 "use client";
 import Button from "@/components/Button/Button";
-import PremiumSurvey from "@/components/Premium/PremiumSurvey/PremiumSurvey";
 import { mainColor } from "@/components/Themes/color";
 import { Menu, MenuItem, Stack } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
-import PremiumThinking from "@/components/Premium/PremiumThinking/PremiumThinking";
-import { useGetThinkingPremiumQuery } from "@/api/thinkingPremium-api";
-import { IThinkingPremium } from "@/components/types/dto";
+import PremiumThinkingCollect from "@/components/collect/PremiumThinkingCollect";
 
 function page() {
-  const premiumThinkingResponse = {
-    premiumThinkingCount: 2,
-    premiumThinkingDtos: [
-      {
-        thinkingId: 4,
-        thinkingThumbnail:
-          "https://assets.paintingco.com/dev-3/wp-content/uploads/20230802110655/shutterstock_1561397020-scaled.jpg",
-        thinkingWriter: "Jun Seo",
-        thinkingTitle: "Is Thinker good?",
-        isPremium: true,
-        likeCount: 5,
-        repliesCount: 10,
-        viewCount: 123,
-      },
-      {
-        thinkingId: 5,
-        thinkingThumbnail:
-          "https://t4.ftcdn.net/jpg/00/93/83/93/240_F_93839373_JT5cpdRmTyuOg6eert4Kexq8aO63iD5r.jpg",
-        thinkingWriter: "Jun Seo",
-        thinkingTitle: "Is Thinker good?",
-        isPremium: true,
-        likeCount: 5,
-        repliesCount: 10,
-        viewCount: 123,
-      },
-      {
-        thinkingId: 6,
-        thinkingThumbnail:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3l2fb-6xT3Krier-wokMNXGNpM-t6qvSghg&usqp=CAU",
-        thinkingWriter: "Jun Seo",
-        thinkingTitle: "Is Thinker good?",
-        isPremium: true,
-        likeCount: 5,
-        repliesCount: 10,
-        viewCount: 123,
-      },
-    ],
+
+  const normalThinkingResponse = {
+    contents: {
+      dtos: [
+        {
+          thinkingId: 0,
+          thinkingThumbnail: [
+            'string'
+          ],
+          thinkingWriter: "string",
+          thinkingTitle: "string",
+          isPremium: false,
+          likeCount: 0,
+          repliesCount: 0,
+          viewCount: 0
+        }
+      ]
+    },
+    totalElements: 0,
+    nextCursor: 0
   };
-
-  //정렬기준
+  // 정렬기준
   const [kind, setKind] = useState("recent");
-  const kindList = ["recent", "popular"];
-
-  const [page, setPage] = useState(0);
-  const [backendSendPage, setBackendSendPage] = useState(1);
-
-  const [thinkingPremium, setThinkingPremium] = useState<IThinkingPremium>();
-  const { data: thinkingPremiumData } = useGetThinkingPremiumQuery({
-    page: backendSendPage,
-  });
+  const kindList = ["recent", "like", 'view'];
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const friendopen = Boolean(anchorEl);
+  const sortopen = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  useEffect(() => {
-    setThinkingPremium(thinkingPremiumData);
-  }, [thinkingPremiumData]);
 
   return (
     <Stack margin={"0 auto"}>
@@ -97,21 +65,7 @@ function page() {
         >
           Premium Thinking
         </Stack>
-        <Stack flexDirection={"row"}>
-          {premiumThinkingResponse.premiumThinkingDtos.map((thinking) => {
-            return (
-              <PremiumThinking
-                key={thinking.thinkingId}
-                thinkingThumbnail={thinking.thinkingThumbnail}
-                thinkingWriter={thinking.thinkingWriter}
-                thinkingTitle={thinking.thinkingTitle}
-                likecount={thinking.likeCount}
-                repliesCount={thinking.repliesCount}
-                viewCount={thinking.viewCount}
-              />
-            );
-          })}
-        </Stack>
+        <PremiumThinkingCollect />
       </Stack>
       <Stack
         marginTop={"50px"}
@@ -127,7 +81,7 @@ function page() {
               <AlignHorizontalLeftIcon fontSize="medium" />
               정렬기준
             </Button>
-            <Menu anchorEl={anchorEl} open={friendopen} onClose={handleClose}>
+            <Menu anchorEl={anchorEl} open={sortopen} onClose={handleClose}>
               <MenuItem
                 onClick={() => {
                   handleClose();
@@ -144,9 +98,28 @@ function page() {
               >
                 인기순
               </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  setKind(kindList[2]);
+                }}
+              >
+                조회순
+              </MenuItem>
             </Menu>
           </Stack>
         </Stack>
+      </Stack>
+      <Stack height={'100%'} bgcolor={`${mainColor}`} display={'grid'} gridTemplateColumns={'auto auto'}>
+        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
+        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
+        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
+        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
+        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
+        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
+        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
+        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
+        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
       </Stack>
     </Stack>
   );
