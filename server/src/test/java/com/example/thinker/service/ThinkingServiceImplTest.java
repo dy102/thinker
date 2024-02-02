@@ -76,7 +76,7 @@ class ThinkingServiceImplTest {
     @Test
     @DisplayName("무한스크롤 테스트")
     void scrollThinking() {
-        ThinkingResponse thinkingResponse = thinkingService.findThinking("like", 8, 4L);
+        ThinkingResponse thinkingResponse = thinkingService.findThinking("like", 2, 5L);
         System.out.println(thinkingResponse);
         assertThat(thinkingResponse.getContents().dtos().get(1).thinkingId()).isEqualTo(7L);
     }

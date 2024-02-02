@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,37 +17,37 @@ public interface ThinkingRepository extends JpaRepository<Thinking, Long> {
 
     Page<Thinking> findAllByIdLessThanOrderByIdDesc(Long lastId, Pageable pageable);
 
-    Page<Thinking> findAllByLikeCountIsLessThanEqualOrderByLikeCountDesc(Long likeCount, Pageable pageable);
+    Page<Thinking> findAllByLikeCountIsLessThanOrderByLikeCountDesc(Long likeCount, Pageable pageable);
 
-    Page<Thinking> findAllByViewCountLessThanEqualOrderByViewCountDesc(Long viewCount, Pageable pageable);
+    Page<Thinking> findAllByViewCountLessThanOrderByViewCountDesc(Long viewCount, Pageable pageable);
 
     Long countThinkingByIdIsNotNull();
 
     //search title
-    Page<Thinking> searchAllByTitleContainingIgnoreCaseAndIdIsLessThanEqualOrderByIdDesc(String title, Long lastId, Pageable pageable);
+    Page<Thinking> searchAllByTitleContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(String title, Long lastId, Pageable pageable);
 
-    Page<Thinking> searchAllByTitleContainingIgnoreCaseAndLikeCountIsLessThanEqualOrderByLikeCountDesc(String title, Long lastId, Pageable pageable);
+    Page<Thinking> searchAllByTitleContainingIgnoreCaseAndLikeCountIsLessThanOrderByLikeCountDesc(String title, Long lastId, Pageable pageable);
 
-    Page<Thinking> searchAllByTitleContainingIgnoreCaseAndViewCountIsLessThanEqualOrderByViewCountDesc(String title, Long lastId, Pageable pageable);
+    Page<Thinking> searchAllByTitleContainingIgnoreCaseAndViewCountIsLessThanOrderByViewCountDesc(String title, Long lastId, Pageable pageable);
 
     //search contents
-    Page<Thinking> searchAllByContentsContainingIgnoreCaseAndIdIsLessThanEqualOrderByIdDesc(String content, Long lastId, Pageable pageable);
+    Page<Thinking> searchAllByContentsContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(String content, Long lastId, Pageable pageable);
 
-    Page<Thinking> searchAllByContentsContainingIgnoreCaseAndLikeCountIsLessThanEqualOrderByLikeCountDesc(String content, Long lastId, Pageable pageable);
+    Page<Thinking> searchAllByContentsContainingIgnoreCaseAndLikeCountIsLessThanOrderByLikeCountDesc(String content, Long lastId, Pageable pageable);
 
-    Page<Thinking> searchAllByContentsContainingIgnoreCaseAndViewCountIsLessThanEqualOrderByViewCountDesc(String content, Long lastId, Pageable pageable);
+    Page<Thinking> searchAllByContentsContainingIgnoreCaseAndViewCountIsLessThanOrderByViewCountDesc(String content, Long lastId, Pageable pageable);
 
     //search writer //writer 바꿔줘야함?
-    @Query("SELECT t FROM Thinking t WHERE t.writer.name=:writer")
-    Page<Thinking> searchAllByWriterContainingIgnoreCaseAndIdIsLessThanEqualOrderByIdDesc(String writer, Long lastId, Pageable pageable);
+    @Query("SELECT t FROM Thinking t WHERE t.writer.name=:name AND t.id <= :lastId")
+    Page<Thinking> searchAllByNameContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(@Param("name") String name, Long lastId, Pageable pageable);
 
-    @Query("SELECT t FROM Thinking t WHERE t.writer.name=:writer")
-    Page<Thinking> searchAllByWriterContainingIgnoreCaseAndLikeCountIsLessThanEqualOrderByLikeCountDesc(String writer, Long lastId, Pageable pageable);
+    @Query("SELECT t FROM Thinking t WHERE t.writer.name=:name AND t.id <= :lastId")
+    Page<Thinking> searchAllByNameContainingIgnoreCaseAndLikeCountIsLessThanOrderByLikeCountDesc(@Param("name") String name, Long lastId, Pageable pageable);
 
-    @Query("SELECT t FROM Thinking t WHERE t.writer.name=:writer")
-    Page<Thinking> searchAllByWriterContainingIgnoreCaseAndViewCountIsLessThanEqualOrderByViewCountDesc(String writer, Long lastId, Pageable pageable);
+    @Query("SELECT t FROM Thinking t WHERE t.writer.name=:name AND t.id <= :lastId")
+    Page<Thinking> searchAllByNameContainingIgnoreCaseAndViewCountIsLessThanOrderByViewCountDesc(@Param("name") String name, @Param("lastId") Long lastId, Pageable pageable);
 
-    Page<Thinking> findAllByWriterAndIdLessThanEqualOrderByIdDesc(Member member, Long lastId, Pageable pageable);
+    Page<Thinking> findAllByWriterAndIdLessThanOrderByIdDesc(Member member, Long lastId, Pageable pageable);
 
     //내가 쓴 글
     Page<Thinking> findAllByWriterOrderByIdDesc(Member writer, Pageable pageable);
