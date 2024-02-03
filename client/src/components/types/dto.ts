@@ -7,7 +7,7 @@ export interface IThinkingPremiumParams {
 // thinking premium 반환값
 export interface ThinkingDtos {
   thinkingId?: number;
-  thinkingThumbnail?: string | null;
+  thinkingThumbnail: string | null;
   thinkingWriter?: string;
   thinkingTitle?: string;
   isPremium?: boolean;
@@ -25,7 +25,7 @@ export interface IThinkingPremium {
 export interface IThinkingParams {
   kind: string;
   size: number;
-  lastId: number;
+  lastId: number | null;
 }
 
 // thinking 반환값
