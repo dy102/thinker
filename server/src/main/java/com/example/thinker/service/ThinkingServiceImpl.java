@@ -14,11 +14,6 @@ import com.example.thinker.repository.MemberRepository;
 import com.example.thinker.repository.ReplyRepository;
 import com.example.thinker.repository.ThinkingRepository;
 import com.example.thinker.util.ScrollPaginationCollection;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.StringExpressions;
-import com.querydsl.core.types.dsl.StringTemplate;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -42,7 +37,6 @@ public class ThinkingServiceImpl implements ThinkingService {
     private final ThinkingRepository thinkingRepository;
     private final ReplyRepository replyRepository;
     private final ImageRepository imageRepository;
-    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public PremiumThinkingResponse findPremiumThinking(int page, int size) {
@@ -187,11 +181,6 @@ public class ThinkingServiceImpl implements ThinkingService {
                     thinkingRepository
                             .searchAllByNameContainingIgnoreCaseAndLikeCountIsLessThanOrderByLikeCountDesc(writer, lastId, pageRequest);
             thinkings = thinkingPage.getContent();
-
-//            thinkings = jpaQueryFactory.selectFrom(thinking)
-//                    .where(customCursor(lastId,))
-//                    .limit(pageRequest.getPageSize())
-//                    .fetch();
         } else if (kind.equals("view")) {
             thinkingPage =
                     thinkingRepository
@@ -200,23 +189,6 @@ public class ThinkingServiceImpl implements ThinkingService {
         }
         ScrollPaginationCollection<Thinking> cursor = new ScrollPaginationCollection<>(thinkings, size);
         return ThinkingResponse.of(cursor, thinkingRepository.countThinkingByIdIsNotNull());
-    }
-
-    private BooleanExpression customCursor(String customCursor, Thinking thinking) {
-        if (customCursor == null) {
-            return null;
-        }
-
-        StringTemplate stringTemplate = Expressions.stringTemplate(
-                "FORMAT({0}, %d)",
-                thinking.getLikeCount()
-        );
-
-        return StringExpressions.lpad(stringTemplate, 10, '0')
-                .concat(StringExpressions
-                        .lpad(Expressions
-                                .stringTemplate("CAST({0} AS STRING)", thinking.getId()), 10, '0'))
-                .gt(customCursor);
     }
 
     @Override
