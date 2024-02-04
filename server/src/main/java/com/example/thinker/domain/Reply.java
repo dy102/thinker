@@ -20,32 +20,24 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "thinking")
-public class Thinking {
+@Table(name = "reply")
+public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    private Member writer;
+    private Thinking thinking;
 
-    @OneToMany
-    private List<Image> image;
-
-    private String title;
+    @ManyToOne
+    private Member member;
 
     private String contents;
-
-    private Timestamp dateTime;
-
-    private Boolean isPremium;
 
     private Long likeCount;
 
     @OneToMany
-    private List<ThinkingLikeCount> likeCountList;
+    private List<ReplyLikeCount> likeCountList;
 
-    private Long repliesCount;
-
-    private Long viewCount;
+    private Timestamp createdAt;
 }

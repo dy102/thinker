@@ -41,3 +41,6 @@ out/
 /gradlew
 /gradlew.bat
 /settings.gradle
+
+### Querydsl
+/src/main/generated

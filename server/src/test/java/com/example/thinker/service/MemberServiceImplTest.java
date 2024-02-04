@@ -1,8 +1,8 @@
 package com.example.thinker.service;
 
 import com.example.thinker.domain.Member;
+import com.example.thinker.dto.MemberDataDto;
 import com.example.thinker.dto.request.MemberDataRequest;
-import com.example.thinker.dto.response.MemberDataDto;
 import com.example.thinker.repository.MemberRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;

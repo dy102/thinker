@@ -1,4 +1,4 @@
-package com.example.thinker.dto.response;
+package com.example.thinker.dto;
 
 import com.example.thinker.domain.Member;
 

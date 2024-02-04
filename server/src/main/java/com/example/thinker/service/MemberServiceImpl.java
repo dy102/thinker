@@ -2,9 +2,9 @@ package com.example.thinker.service;
 
 import com.example.thinker.domain.Grade;
 import com.example.thinker.domain.Member;
+import com.example.thinker.dto.MemberDataDto;
 import com.example.thinker.dto.MemberSimpleDto;
 import com.example.thinker.dto.request.MemberDataRequest;
-import com.example.thinker.dto.response.MemberDataDto;
 import com.example.thinker.repository.MemberRepository;
 import com.example.thinker.util.Convertor;
 import lombok.RequiredArgsConstructor;
