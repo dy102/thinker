@@ -5,6 +5,8 @@ import { Menu, MenuItem, Stack } from "@mui/material";
 import React, { useState } from "react";
 import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
 import PremiumThinkingCollect from "@/components/collect/PremiumThinkingCollect";
+import NormalThinkingCollect from "@/components/Normal/NormalThinking/NormalThinkingCollect";
+import PageLink from "@/components/PageLink/PageLink";
 
 function page() {
 
@@ -72,7 +74,11 @@ function page() {
         flexDirection={"row"}
         justifyContent={"flex-end"}
       >
-        <Stack justifyContent={"center"}>
+        <Stack flexDirection={'row'} justifyContent={"space-between"} alignItems={'center'} width={'100%'}>
+          <Button>
+            <PageLink href={'#'} style={{ fontSize: '18px', alignItems: 'center' }}>
+              게시물 작성하기
+            </PageLink></Button>
           <Stack flexDirection={"row"} justifyContent={"left"}>
             <Button
               onClick={handleClick}
@@ -110,17 +116,7 @@ function page() {
           </Stack>
         </Stack>
       </Stack>
-      <Stack height={'100%'} bgcolor={`${mainColor}`} display={'grid'} gridTemplateColumns={'auto auto'}>
-        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
-        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
-        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
-        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
-        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
-        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
-        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
-        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
-        <Stack width={'300px'} height={'200px'} bgcolor={'wheat'}></Stack>
-      </Stack>
+      <NormalThinkingCollect kind={kind}></NormalThinkingCollect>
     </Stack>
   );
 }
