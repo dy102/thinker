@@ -50,7 +50,7 @@ jobs:
        ./gradlew build
 
     - name: Initialize Gradle build
-      run: cd server && ./gradlew init
+      run: cd server && ls
 
     - run: |
        cd server
