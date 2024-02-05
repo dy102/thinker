@@ -32,6 +32,7 @@ jobs:
     - name: Change directory to /server
       run: |
        cd server
+       ls
        chmod +x gradlew
 
     # - name: Grant execute permission for gradlew # gradlew에 대한 권한 부여 설명
