@@ -38,9 +38,6 @@ out/
 
 ### VS Code ###
 .vscode/
-/build.gradle
-/gradlew.bat
-/settings.gradle
 
 ### Querydsl
 /src/main/generated
