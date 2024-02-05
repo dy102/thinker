@@ -65,7 +65,11 @@ jobs:
 
     steps:
     - name: test
-      run: ls
+      run: |
+       cd server
+       cd build
+       cd libs
+       ls
        
     - name: Download artifact
       uses: actions/download-artifact@v2
