@@ -38,17 +38,24 @@ jobs:
     # - name: Grant execute permission for gradlew # gradlew에 대한 권한 부여 설명
     #   run: chmod +x gradlew # gradlew에 대한 권한 부여 설정
 
+    # - name: Build with Gradle # Gradle에 대한 빌드 (일반적으로 기본 설정을 사용)
+    #   uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+    #   with:
+    #     arguments: build
+      #run : ./gradlew clean build
+
     - name: Build with Gradle # Gradle에 대한 빌드 (일반적으로 기본 설정을 사용)
       uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
       with:
         arguments: build
-      #run : ./gradlew clean build
+        build-root-directory: ./server
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: testServer
-        path: server/build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
+        build-root-directory: ./server
+        path: build/libs/team14project-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
 
   deploy:
     needs: build # 배포를 위해 필요한 과정
@@ -59,7 +66,8 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: testServer
-        path: server/build/libs/ # 배포에 활용할 경로
+        build-root-directory: ./server
+        path: build/libs/ # 배포에 활용할 경로
 
     - name: Deploy to EC2 # EC2를 활용한 배포 설명
       run: | 
