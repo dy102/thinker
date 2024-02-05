@@ -52,9 +52,6 @@ jobs:
     - name: Change directory to /server
       run: |
        cd server
-       cd build
-       cd libs
-       ls
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
