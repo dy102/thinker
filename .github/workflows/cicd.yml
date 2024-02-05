@@ -49,11 +49,13 @@ jobs:
        cd server
        ./gradlew build
 
-    - name: Upload artifact
-      uses: actions/upload-artifact@v2
+    - run: |
+       cd server
+      id: upload-artifact
+    - uses: actions/upload-artifact@v2
       with:
         name: testServer
-        path: server/build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
+        path: build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
 
   deploy:
     needs: build # 배포를 위해 필요한 과정
