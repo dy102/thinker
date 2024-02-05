@@ -9,7 +9,7 @@ on:
 
 
 jobs:
-  SSH:
+ deploy_backend:
     runs-on: ubuntu-latest
 
     steps:
