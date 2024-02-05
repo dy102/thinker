@@ -30,7 +30,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Change directory to /server
-      run: cd /server
+      run: ls
 
 
     - name: Grant execute permission for gradlew # gradlew에 대한 권한 부여 설명
