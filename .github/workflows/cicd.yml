@@ -34,3 +34,12 @@ jobs:
             git pull # 자동으로 pull해서 주기적 업데이트
             ./gradlew build
             java -jar build/libs/thinker-0.0.1-SNAPSHOT.jar
+
+      - name: Build with Gradle Wrapper
+        run: ./gradlew build
+
+      - name: Archive Gradle build results
+        uses: actions/upload-artifact@v3
+        with:
+          name: gradle-build-results
+          path: build/libs
