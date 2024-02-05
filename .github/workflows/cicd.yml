@@ -29,6 +29,10 @@ jobs:
         java-version: '17' # 사용할 Java언어 버전
         distribution: 'temurin'
 
+    - name: Change directory to /server
+      run: cd /server
+
+
     - name: Grant execute permission for gradlew # gradlew에 대한 권한 부여 설명
       run: chmod +x gradlew # gradlew에 대한 권한 부여 설정
 
