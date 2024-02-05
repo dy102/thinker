@@ -61,12 +61,17 @@ jobs:
     needs: build # 배포를 위해 필요한 과정
     runs-on: ubuntu-latest # 배포시 사용 환경
 
+   
+
     steps:
+    - name: test
+      run: ls
+       
     - name: Download artifact
       uses: actions/download-artifact@v2
       with:
         name: testServer
-        path: ./server/build/libs/ # 배포에 활용할 경로
+        path: server/build/libs/ # 배포에 활용할 경로
 
     - name: Deploy to EC2 # EC2를 활용한 배포 설명
       run: | 
