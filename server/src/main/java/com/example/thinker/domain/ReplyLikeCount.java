@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "reply_like_count")
+@Table(name = "reply_likes")
 public class ReplyLikeCount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

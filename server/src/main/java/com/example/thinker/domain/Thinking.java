@@ -43,7 +43,7 @@ public class Thinking {
     private Long likeCount;
 
     @OneToMany
-    private List<ThinkingLikeCount> likeCountList;
+    private List<ThinkingLikeCount> likeCounts;
 
     private Long repliesCount;
 
