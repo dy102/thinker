@@ -49,6 +49,9 @@ jobs:
        cd server
        ./gradlew build
 
+    - name: Initialize Gradle build
+      run: cd server && ./gradlew init
+
     - run: |
        cd server
       id: upload-artifact
