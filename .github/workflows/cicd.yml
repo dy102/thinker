@@ -46,20 +46,16 @@ jobs:
 
     - name: Build with Gradle
       run: |
-       cd server
-       ./gradlew build
-       ls
-
-    - name: Initialize Gradle build
-      run: cd server && ls
-
-    - run: |
+       cd server && ./gradlew build
+       
+    - name : jar
+      run: |
        cd server
       id: upload-artifact
     - uses: actions/upload-artifact@v2
       with:
         name: testServer
-        path: build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
+        path: server/build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
 
   deploy:
     needs: build # 배포를 위해 필요한 과정
