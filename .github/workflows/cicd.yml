@@ -53,7 +53,6 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: testServer
-        #build-root-directory: ./server
         path: build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
 
   deploy:
@@ -65,8 +64,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: testServer
-        build-root-directory: ./server
-        path: build/libs/ # 배포에 활용할 경로
+        path: build/libs/thinker-0.0.1-SNAPSHOT.jar # 배포에 활용할 경로
 
     - name: Deploy to EC2 # EC2를 활용한 배포 설명
       run: | 
