@@ -32,7 +32,6 @@ jobs:
     - name: Change directory to /server
       run: |
        cd server
-       ls
        chmod +x gradlew
 
     # - name: Grant execute permission for gradlew # gradlew에 대한 권한 부여 설명
@@ -54,7 +53,7 @@ jobs:
       uses: actions/upload-artifact@v2
       with:
         name: testServer
-        build-root-directory: ./server
+        #build-root-directory: ./server
         path: build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
 
   deploy:
