@@ -27,7 +27,7 @@ jobs:
           host: ${{ secrets.HOST }} # 내가 변수로 저장한 ip
           username: ${{ secrets.USER }} # 내가 변수로 저장한 User
           script: |
-            cd Github/thinker # 내가 Clone한 폴더 안으로 들어간다.
+            cd Github/thinker/server # 내가 Clone한 폴더 안으로 들어간다.
             git pull # 자동으로 pull해서 주기적 업데이트
 
   # 깃허브 레파지토리가 프라이빗으로 만들어져 있을때. 
