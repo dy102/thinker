@@ -79,7 +79,7 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > mykey.pem # 사용할 SSH키를 mykey.pem으로 저장
         chmod 600 mykey.pem # mykey.pem를 사용할 수 있도록 권한 설정      
         # 배포할 jar파일 이름 + 사용할 유저 IP (두 과정에서 모두 SSH 유저 정보 명기)
-        scp -i mykey.pem -o StrictHostKeyChecking=no server/build/libs/thinker-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/testServer.jar && \
-        # nohup 활용 (SSH서버 연결이 없어도 서버가 계석 돌기 위함)
-        ssh -i mykey.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar /home/${{ secrets.SSH_USER }}/testServer.jar > app.log 2>&1 &" && \
+        scp -i mykey.pem -o StrictHostKeyChecking=no server/build/libs/thinker-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/testServer.jar
+        # nohup 활용 (SSH서버 연결이 없어도 서버가 계속 돌기 위함)
+        ssh -i mykey.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar /home/${{ secrets.SSH_USER }}/testServer.jar > app.log 2>&1 &"
         rm -f mykey.pem
