@@ -55,6 +55,7 @@ jobs:
        cd build
        cd libs
        ls
+       chmod +x thinker-0.0.1-SNAPSHOT.jar
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
