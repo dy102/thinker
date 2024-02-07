@@ -74,6 +74,17 @@ jobs:
         name: testServer
         path: server/build/libs # 배포에 활용할 경로
 
+    - name: Build and deploy
+      env:
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      run: |
+          # 데이터베이스 연결 정보를 환경 변수로 설정
+          export DATABASE_URL="jdbc:mysql://${DB_HOST}:${DB_PORT}/mydatabase?user=${DB_USER}&password=${DB_PASSWORD}"
+
+
     - name: Deploy to EC2 # EC2를 활용한 배포 설명
       run: | 
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > mykey.pem # 사용할 SSH키를 mykey.pem으로 저장
