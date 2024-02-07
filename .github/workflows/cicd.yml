@@ -84,15 +84,6 @@ jobs:
           # 데이터베이스 연결 정보를 환경 변수로 설정
           export DATABASE_URL="jdbc:mysql://${DB_HOST}:${DB_PORT}/mydatabase?user=${DB_USER}&password=${DB_PASSWORD}"
 
-    - name: Install ufw
-      run: sudo apt-get install ufw -y
-
-    - name: Open port 8081
-      run: sudo ufw allow 8081/tcp
-
-    - name: Start ufw service
-      run: sudo ufw --force enable
-
 
     - name: Deploy to EC2 # EC2를 활용한 배포 설명
       env:
