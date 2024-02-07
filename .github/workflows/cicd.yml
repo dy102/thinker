@@ -87,8 +87,8 @@ jobs:
     - name: Install ufw
       run: sudo apt-get install ufw -y
 
-    - name: Open port 8080
-      run: sudo ufw allow 8080/tcp
+    - name: Open port 8081
+      run: sudo ufw allow 8081/tcp
 
     - name: Start ufw service
       run: sudo ufw --force enable
