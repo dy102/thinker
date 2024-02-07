@@ -84,6 +84,15 @@ jobs:
           # 데이터베이스 연결 정보를 환경 변수로 설정
           export DATABASE_URL="jdbc:mysql://${DB_HOST}:${DB_PORT}/mydatabase?user=${DB_USER}&password=${DB_PASSWORD}"
 
+    - name: Install ufw
+      run: sudo apt-get install ufw -y
+
+    - name: Open port 8080
+      run: sudo ufw allow 8080/tcp
+
+    - name: Start ufw service
+      run: sudo ufw --force enable
+
 
     - name: Deploy to EC2 # EC2를 활용한 배포 설명
       env:
@@ -95,7 +104,4 @@ jobs:
         scp -i mykey.pem -o StrictHostKeyChecking=no server/build/libs/thinker-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/testServer.jar
         # nohup 활용 (SSH서버 연결이 없어도 서버가 계속 돌기 위함)
           ssh -i mykey.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar -Dserver.port=${SERVER_PORT} /home/${{ secrets.SSH_USER }}/testServer.jar > app.log 2>&1 &"
-        sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
-        sudo firewall-cmd --reload
-        EOF
         rm -f mykey.pem
