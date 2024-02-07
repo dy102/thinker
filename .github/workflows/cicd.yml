@@ -95,4 +95,7 @@ jobs:
         scp -i mykey.pem -o StrictHostKeyChecking=no server/build/libs/thinker-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/testServer.jar
         # nohup 활용 (SSH서버 연결이 없어도 서버가 계속 돌기 위함)
           ssh -i mykey.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar -Dserver.port=${SERVER_PORT} /home/${{ secrets.SSH_USER }}/testServer.jar > app.log 2>&1 &"
+        sudo firewall-cmd --zone=public --add-port=8080/tcp --permanent
+        sudo firewall-cmd --reload
+        EOF
         rm -f mykey.pem
