@@ -79,7 +79,7 @@ jobs:
       with:
         files: ${{ env.RESOURCE_PATH }} 
       env:
-        RESOURCE_PATH: './server/src/main/resource/application.yml'
+        RESOURCE_PATH: './server/src/main/resource'
         spring.datasource.url: ${{ secrets.DB_HOST }} 
         spring.datasource.username: ${{ secrets.DB_USERNAME }} 
         spring.datasource.password: ${{ secrets.DB_PASSWORD }} 
