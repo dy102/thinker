@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "thinking_like_count")
+@Table(name = "thinking_likes")
 public class ThinkingLikeCount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

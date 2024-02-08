@@ -68,9 +68,7 @@ public class MemberController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
-
         imageService.makeBasicImage(member, "server/image/person.jpeg");
-
         return new ResponseEntity<>("success create memberData", HttpStatus.OK);
     }
 
@@ -100,12 +98,10 @@ public class MemberController {
     @GetMapping("members/image")
     public ResponseEntity<byte[]> getImage(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember
-    ) throws IOException {
+    ) {
+        checkAuthorization(loginMember);
         Image image = imageService.getImageByMember(loginMember);
-        if (image == null) {
-            imageService.makeBasicImage(loginMember, "server/image/person.jpeg");
-        }
-        image = imageService.getImageByMember(loginMember);
+
         byte[] imageData = image.getData();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_JPEG); // 이미지 유형에 맞게 수정
@@ -118,4 +114,5 @@ public class MemberController {
             throw new IllegalArgumentException(NEED_TO_LOGIN);
         }
     }
+
 }

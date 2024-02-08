@@ -4,6 +4,7 @@ build/
 !server/gradle/wrapper/gradle-wrapper.jar
 !server/src/main/**/build/
 !server/src/test/**/build/
+gradle/wrapper/gradle-wrapper.properties
 
 ### STS ###
 .apt_generated
@@ -37,10 +38,6 @@ out/
 
 ### VS Code ###
 .vscode/
-/build.gradle
-/gradlew
-/gradlew.bat
-/settings.gradle
 
 ### Querydsl
 /src/main/generated
