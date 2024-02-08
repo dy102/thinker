@@ -31,7 +31,7 @@ jobs:
         run: echo $DEV_APPLICATION_YML | base64 --decode > $DEV_APPLICATION_YML_DIR/$DEV_APPLICATION_YML_FILE_NAME
 
   build:
-
+    needs: create-application-yml
     runs-on: ubuntu-latest #빌드할 환경
 
     steps:
