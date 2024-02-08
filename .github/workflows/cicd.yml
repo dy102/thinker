@@ -74,10 +74,6 @@ jobs:
         name: testServer
         path: server/build/libs # 배포에 활용할 경로
 
-    - uses: actions/checkout@v2
-    - run: touch ./server/src/main/resources/application.properties
-    - run: echo
-
     - name: Set yml file 
       uses: microsoft/variable-substitution@v1
       with:
