@@ -17,6 +17,19 @@ permissions:
   contents: read #권한 설정
 
 jobs:
+  create-application-yml:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create directory if not exists
+        run: mkdir -p server/src/main/resources
+
+      - name: Set yml file 
+        env:
+          DEV_APPLICATION_YML: ${{ secrets.DB_APPLICATION_YML }}
+          DEV_APPLICATION_YML_DIR: server/src/main/resources
+          DEV_APPLICATION_YML_FILE_NAME: application.yml
+        run: echo $DEV_APPLICATION_YML | base64 --decode > $DEV_APPLICATION_YML_DIR/$DEV_APPLICATION_YML_FILE_NAME
+
   build:
 
     runs-on: ubuntu-latest #빌드할 환경
@@ -73,13 +86,6 @@ jobs:
       with:
         name: testServer
         path: server/build/libs # 배포에 활용할 경로
-
-    - name: Set yml file 
-      env:
-        DEV_APPLICATION_YML: ${{ secrets.DB_APPLICATION_YML }}
-        DEV_APPLICATION_YML_DIR: src/main/resources
-        DEV_APPLICATION_YML_FILE_NAME: application.yml
-      run: echo $DEV_APPLICATION_YML | base64 --decode > $DEV_APPLICATION_YML_DIR/$DEV_APPLICATION_YML_FILE_NAME
 
     - name: Deploy to EC2 # EC2를 활용한 배포 설명
       env:
