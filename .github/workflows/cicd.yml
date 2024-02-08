@@ -77,7 +77,7 @@ jobs:
     - name: Set yml file 
       env:
         DEV_APPLICATION_YML: ${{ secrets.DB_APPLICATION_YML }}
-        DEV_APPLICATION_YML_DIR: server/src/main/resources
+        DEV_APPLICATION_YML_DIR: src/main/resources
         DEV_APPLICATION_YML_FILE_NAME: application.yml
       run: echo $DEV_APPLICATION_YML | base64 --decode > $DEV_APPLICATION_YML_DIR/$DEV_APPLICATION_YML_FILE_NAME
 
