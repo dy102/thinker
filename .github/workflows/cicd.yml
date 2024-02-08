@@ -75,25 +75,11 @@ jobs:
         path: server/build/libs # 배포에 활용할 경로
 
     - name: Set yml file 
-      uses: microsoft/variable-substitution@v1
-      with:
-        files: ${{ env.RESOURCE_PATH }} 
       env:
-        RESOURCE_PATH: 'server/src/main/resource'
-        spring.datasource.url: ${{ secrets.DB_HOST }} 
-        spring.datasource.username: ${{ secrets.DB_USERNAME }} 
-        spring.datasource.password: ${{ secrets.DB_PASSWORD }} 
-
-    # - name: Build and deploy
-    #   env:
-    #       DB_HOST: ${{ secrets.DB_HOST }}
-    #       DB_PORT: ${{ secrets.DB_PORT }}
-    #       DB_USER: ${{ secrets.DB_USER }}
-    #       DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-    #   run: |
-    #       # 데이터베이스 연결 정보를 환경 변수로 설정
-    #       export DATABASE_URL="jdbc:mysql://${DB_HOST}:${DB_PORT}/mydatabase?user=${DB_USER}&password=${DB_PASSWORD}"
-
+        DEV_APPLICATION_YML: ${{ secrets.DB_APPLICATION_YML }}
+        DEV_APPLICATION_YML_DIR: server/src/main/resources
+        DEV_APPLICATION_YML_FILE_NAME: application.yml
+      run: echo $DEV_APPLICATION_YML | base64 --decode > $DEV_APPLICATION_YML_DIR/$DEV_APPLICATION_YML_FILE_NAME
 
     - name: Deploy to EC2 # EC2를 활용한 배포 설명
       env:
