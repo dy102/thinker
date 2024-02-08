@@ -54,6 +54,10 @@ public class ImageServiceImpl implements ImageService {
 
     public void makeBasicImage(Member member, String filePath) throws IOException {
         Image image = imageRepository.findByData(Files.readAllBytes(Paths.get(filePath)));
+        if (image == null) {
+            saveImage(filePath);
+            image = imageRepository.findByData(Files.readAllBytes(Paths.get(filePath)));
+        }
         member.setImage(image);
         memberRepository.save(member);
     }

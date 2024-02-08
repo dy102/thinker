@@ -24,13 +24,13 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.net.URI;
 
 import static com.example.thinker.constants.SessionConst.LOGIN_MEMBER;
 
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
+    private static final String NEED_TO_LOGIN = "로그인이 필요합니다.";
 
     private final MemberService memberService;
     private final ImageService imageService;
@@ -49,9 +49,7 @@ public class MemberController {
     public ResponseEntity<MemberDataDto> readMemberData(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember
     ) {
-        if (loginMember == null) {
-            return new ResponseEntity<>(loginUriHeader(), HttpStatus.SEE_OTHER);
-        }
+        checkAuthorization(loginMember);
         return new ResponseEntity<>(memberService.read(loginMember), HttpStatus.OK);
     }
 
@@ -63,18 +61,14 @@ public class MemberController {
     }
 
     @PostMapping("/members")
-    public ResponseEntity<String> createMemberData(@RequestBody MemberDataRequest memberDataRequest) {
+    public ResponseEntity<String> createMemberData(@RequestBody MemberDataRequest memberDataRequest) throws IOException {
         Member member;
         try {
             member = memberService.create(memberDataRequest);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        try {
-            imageService.makeBasicImage(member, "server/image/person.jpeg");
-        } catch (IOException e) {
-            return new ResponseEntity<>("failed by IOException", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        imageService.makeBasicImage(member, "server/image/person.jpeg");
         return new ResponseEntity<>("success create memberData", HttpStatus.OK);
     }
 
@@ -82,9 +76,7 @@ public class MemberController {
     public ResponseEntity<String> updateMemberData(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember,
             @RequestBody MemberDataRequest memberDataRequest) {
-        if (loginMember == null) {
-            return new ResponseEntity<>(loginUriHeader(), HttpStatus.SEE_OTHER);
-        }
+        checkAuthorization(loginMember);
         memberService.update(loginMember, memberDataRequest);
         return new ResponseEntity<>("success update memberData", HttpStatus.OK);
     }
@@ -93,9 +85,7 @@ public class MemberController {
     public ResponseEntity<String> updateImage(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember,
             @RequestParam MultipartFile file) {
-        if (loginMember == null) {
-            return new ResponseEntity<>(loginUriHeader(), HttpStatus.SEE_OTHER);
-        }
+        checkAuthorization(loginMember);
         String fileName = file.getOriginalFilename();
         try {
             imageService.uploadImage(fileName, file, loginMember);
@@ -109,6 +99,7 @@ public class MemberController {
     public ResponseEntity<byte[]> getImage(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember
     ) {
+        checkAuthorization(loginMember);
         Image image = imageService.getImageByMember(loginMember);
 
         byte[] imageData = image.getData();
@@ -118,11 +109,10 @@ public class MemberController {
 
     }
 
-    private static HttpHeaders loginUriHeader() {//변동 가능성
-        URI loginPageUri = URI.create("/members/login");
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(loginPageUri);
-        return headers;
+    private static void checkAuthorization(Member loginMember) {
+        if (loginMember == null) {
+            throw new IllegalArgumentException(NEED_TO_LOGIN);
+        }
     }
 
 }
