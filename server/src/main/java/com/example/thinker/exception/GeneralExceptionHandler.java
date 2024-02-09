@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 @RestControllerAdvice
 public class GeneralExceptionHandler {
@@ -16,6 +18,10 @@ public class GeneralExceptionHandler {
 
     @ExceptionHandler({IOException.class})
     private ResponseEntity<String> handleIOException(IOException e) {
-        return new ResponseEntity<>(e.toString(), HttpStatus.INTERNAL_SERVER_ERROR);
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        String exceptionAsString = sw.toString();
+        return new ResponseEntity<>(exceptionAsString, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
