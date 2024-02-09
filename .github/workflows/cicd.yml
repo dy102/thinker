@@ -41,7 +41,7 @@ jobs:
         chmod 400 server/src/main/resources/application.yml
 
     - name: Permission about image
-      run: chmod 400 server/image/person.jpeg
+      run: chmod +x server/image/person.jpeg
 
     - name: Change directory to /server
       run: |
