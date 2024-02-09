@@ -43,6 +43,7 @@ jobs:
     - name: Permission about image
       run: |
        chmod +x server/image
+       chmod +x server/image/person.jpeg
       
     - name: Change directory to /server
       run: |
