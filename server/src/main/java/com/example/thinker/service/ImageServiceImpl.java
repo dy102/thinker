@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -53,12 +54,12 @@ public class ImageServiceImpl implements ImageService {
     }
 
     public void makeBasicImage(Member member, String filePath) throws IOException {
-        Image image = imageRepository.findByData(Files.readAllBytes(Paths.get(filePath)));
-        if (image == null) {
+        Optional<Image> image = Optional.ofNullable(imageRepository.findByData(Files.readAllBytes(Paths.get(filePath))));
+        if (image.isEmpty()) {
             saveImage(filePath);
-            image = imageRepository.findByData(Files.readAllBytes(Paths.get(filePath)));
+            image = Optional.ofNullable(imageRepository.findByData(Files.readAllBytes(Paths.get(filePath))));
         }
-        member.setImage(image);
+        member.setImage(image.get());
         memberRepository.save(member);
     }
 
