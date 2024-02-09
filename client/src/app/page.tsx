@@ -3,6 +3,8 @@
 import {
   GoToSurvey,
   GoToThinking,
+  IntroComment,
+  IntroImage,
   LeftInnerTrapezoid,
   LeftTrapezoid,
   RightInnerTrapezoid,
@@ -11,7 +13,6 @@ import {
 import {
   AnimatedTitle,
   Content,
-  IntroComment,
   Thinker,
   Track,
 } from "@/components/Layout/page.style";
@@ -21,6 +22,8 @@ import { mainColor } from "@/components/Themes/color";
 import PremiumThinkingCollect from "@/components/collect/PremiumThinkingCollect";
 import { Stack, Typography } from "@mui/material";
 import { useState } from "react";
+import IntroImg from "./premium_thinking.jpg";
+import Image from "next/image";
 
 export default function Home() {
   const [result, setResult] = useState(0);
@@ -130,17 +133,37 @@ export default function Home() {
           </Content>
         </Track>
       </AnimatedTitle>
-      <Stack marginTop="200px" height="400px" flexDirection="row">
+      <Stack
+        width={"100%"}
+        marginTop="200px"
+        height="400px"
+        flexDirection="row"
+      >
         <IntroComment>
           <Stack>설문조사에 참여해 포인트를 쌓아보세요!!</Stack>
         </IntroComment>
-        <Stack width={"45%"} height={"100%"} bgcolor={`${mainColor}`}></Stack>
+        <Stack width={"60%"} height={"100%"} bgcolor={`${mainColor}`}></Stack>
       </Stack>
-      <Stack marginTop="80px" height="400px" flexDirection="row">
-        <Stack width={"45%"} height={"100%"} bgcolor={`${mainColor}`}></Stack>
-        <IntroComment>
-          <Stack>
-            포인트를 이용해 프리미엄 설문조사/게시물을 만들어보세요!!
+      <Stack width={"100%"} marginTop="80px" height="400px" flexDirection="row">
+        <Stack
+          width={"60%"}
+          height={"100%"}
+          bgcolor={`${mainColor}`}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Image alt="" src={IntroImg} width={780} height={300}></Image>
+        </Stack>
+        <IntroComment bgcolor={mainColor} color={"white"}>
+          <Stack fontSize={"35px"} fontWeight={"bolder"} marginBottom={"15px"}>
+            포인트를 이용해
+          </Stack>
+          <Stack fontSize={"35px"} fontWeight={"bolder"} marginBottom={"15px"}>
+            프리미엄 설문조사/게시물을
+          </Stack>
+          <Stack fontSize={"35px"} fontWeight={"bolder"} marginBottom={"15px"}>
+            만들어보세요!!
           </Stack>
           <Stack>프리미엄 설문조사/게시물은 상단에 노출됩니다</Stack>
         </IntroComment>

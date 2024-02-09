@@ -69,12 +69,3 @@ export const ServeyCollect = styled(Stack)({
   display: "flex",
   flexWrap: "wrap",
 });
-
-export const IntroComment = styled(Stack)({
-  width: "55%",
-  height: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  fontSize: "20px",
-});

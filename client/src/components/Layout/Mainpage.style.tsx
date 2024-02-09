@@ -48,3 +48,21 @@ export const GoToThinking = styled(Stack)({
   fontSize: "20px",
   marginTop: "50px",
 });
+
+export const IntroImage = styled(Stack)(
+  ({ imagesrc }: { imagesrc: string }) => ({
+    backgroundImage: `url(${imagesrc})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "100% 95vh",
+  })
+);
+
+export const IntroComment = styled(Stack)({
+  width: "40%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "flex-end",
+  fontSize: "20px",
+  paddingRight: "50px",
+});
