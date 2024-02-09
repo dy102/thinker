@@ -42,8 +42,9 @@ jobs:
 
     - name: Permission about image
       run: |
-       chmod +x server/image
-       chmod 644 server/image/person.jpeg
+       cd server
+       cd image
+       ls
        
     - name: Change directory to /server
       run: |
