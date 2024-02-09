@@ -1,4 +1,4 @@
-import { PremiumThinkingType } from "@/components/types/common";
+import { ThinkingType } from "@/components/types/common";
 import { Stack } from "@mui/material";
 import { mainColor } from "@/components/Themes/color";
 import Button from "@/components/Button/Button";
@@ -7,7 +7,7 @@ import {
   PopularCount,
   ThinkingThumbnail,
   ThinkingyBox,
-} from "./PremiumSurvey.style";
+} from "./PremiumThinking.style";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
@@ -19,7 +19,7 @@ function PremiumThinking({
   likecount,
   repliesCount,
   viewCount,
-}: PremiumThinkingType) {
+}: ThinkingType) {
   return (
     <ThinkingyBox>
       <ThinkingThumbnail

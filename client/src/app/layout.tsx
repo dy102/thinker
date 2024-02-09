@@ -3,6 +3,7 @@ import "./globals.css";
 import Header from "@/components/Layout/Header";
 import FullLayout from "@/components/Layout/FullLayout";
 import Footer from "@/components/Layout/Footer";
+import ReactQueryProviders from "@/components/Layout/ReactQueryProviders";
 
 export const metadata: Metadata = {
   title: "Thinker",
@@ -17,9 +18,11 @@ export default function RootLayout({
   return (
     <html>
       <body>
-        <Header />
-        <FullLayout>{children}</FullLayout>
-        <Footer />
+        <ReactQueryProviders>
+          <Header />
+          <FullLayout>{children}</FullLayout>
+          <Footer />
+        </ReactQueryProviders>
       </body>
     </html>
   );
