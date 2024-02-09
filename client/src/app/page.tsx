@@ -4,7 +4,6 @@ import {
   GoToSurvey,
   GoToThinking,
   IntroComment,
-  IntroImage,
   LeftInnerTrapezoid,
   LeftTrapezoid,
   RightInnerTrapezoid,
