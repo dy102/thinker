@@ -43,7 +43,6 @@ jobs:
     - name: Permission about image
       run: |
        cd server
-       cd image
        ls -l
        chmod -R 400 server/image
       
