@@ -15,7 +15,12 @@ public class GeneralExceptionHandler {
     }
 
     @ExceptionHandler({IOException.class})
-    private ResponseEntity<String> handleIOException() {
-        return new ResponseEntity<>("failed by IOException", HttpStatus.BAD_REQUEST);
+    private ResponseEntity<Throwable> handleIOException(IOException e) {
+        Throwable cause = e.getCause();
+        if (cause != null) {
+            return new ResponseEntity<>(cause, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
     }
 }
