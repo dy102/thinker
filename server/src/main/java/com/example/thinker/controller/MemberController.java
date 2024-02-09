@@ -68,7 +68,7 @@ public class MemberController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        imageService.makeBasicImage(member, "thinker/image/person.jpeg");
+        imageService.makeBasicImage(member, "image/person.jpeg");
         return new ResponseEntity<>("success create memberData", HttpStatus.OK);
     }
 
