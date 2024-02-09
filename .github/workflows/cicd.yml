@@ -15,7 +15,8 @@ on:
 
 permissions:
   contents: read #권한 설정
-  
+
+jobs: 
   build:
     runs-on: ubuntu-latest #빌드할 환경
 
