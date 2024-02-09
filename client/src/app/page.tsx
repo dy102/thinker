@@ -3,6 +3,7 @@
 import {
   GoToSurvey,
   GoToThinking,
+  IntroComment,
   LeftInnerTrapezoid,
   LeftTrapezoid,
   RightInnerTrapezoid,
@@ -11,16 +12,17 @@ import {
 import {
   AnimatedTitle,
   Content,
-  IntroComment,
   Thinker,
   Track,
 } from "@/components/Layout/page.style";
 import PageLink from "@/components/PageLink/PageLink";
 import PremiumSurvey from "@/components/Premium/PremiumSurvey/PremiumSurvey";
-import PremiumThinking from "@/components/Premium/PremiumThinking/PremiumThinking";
 import { mainColor } from "@/components/Themes/color";
+import PremiumThinkingCollect from "@/components/collect/PremiumThinkingCollect";
 import { Stack, Typography } from "@mui/material";
 import { useState } from "react";
+import IntroImg from "./premium_thinking.jpg";
+import Image from "next/image";
 
 export default function Home() {
   const [result, setResult] = useState(0);
@@ -48,85 +50,56 @@ export default function Home() {
       },
     ],
   };
-  const premiumThinkingResponse = {
-    premiumThinkingCount: 2,
-    premiumThinkingDtos: [
-      {
-        thinkingId: 4,
-        thinkingThumbnail:
-          "https://assets.paintingco.com/dev-3/wp-content/uploads/20230802110655/shutterstock_1561397020-scaled.jpg",
-        thinkingWriter: "Jun Seo",
-        thinkingTitle: "Is Thinker good?",
-        isPremium: true,
-        likeCount: 5,
-        repliesCount: 10,
-        viewCount: 123,
-      },
-      {
-        thinkingId: 5,
-        thinkingThumbnail:
-          "https://t4.ftcdn.net/jpg/00/93/83/93/240_F_93839373_JT5cpdRmTyuOg6eert4Kexq8aO63iD5r.jpg",
-        thinkingWriter: "Jun Seo",
-        thinkingTitle: "Is Thinker good?",
-        isPremium: true,
-        likeCount: 5,
-        repliesCount: 10,
-        viewCount: 123,
-      },
-      {
-        thinkingId: 6,
-        thinkingThumbnail:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3l2fb-6xT3Krier-wokMNXGNpM-t6qvSghg&usqp=CAU",
-        thinkingWriter: "Jun Seo",
-        thinkingTitle: "Is Thinker good?",
-        isPremium: true,
-        likeCount: 5,
-        repliesCount: 10,
-        viewCount: 123,
-      },
-    ],
-  };
 
   return (
     <Stack display={"flex"} flexDirection={"column"}>
-      <LeftTrapezoid
-        imagesrc="https://i0.wp.com/cdn.tiqets.com/wordpress/blog/wp-content/uploads/2023/01/05125828/Creation_of_Adam_Michelangelo_1475%E2%80%931564_circa_1511-1024x465.jpg?resize=1024%2C465&ssl=1"
-        height={"95vh"}
-        bgcolor={"wheat"}
-        position={"relative"}
-      >
-        <Stack
-          zIndex={1}
-          width={"100%"}
-          height={"200px"}
+      <Stack flexDirection={"row"} position={"relative"}>
+        <Thinker
+          fontSize={"130px"}
           position={"absolute"}
-          margin={"auto"}
+          right={"37%"}
+          top={"50px"}
+          zIndex={1000}
         >
-          <Thinker fontSize={"130px"}>THINKER</Thinker>
-        </Stack>
-        <LeftInnerTrapezoid
-          width={"100%"}
-          height={"25vh"}
-          bgcolor={"rgba(128,128,128, 0.5)"}
-          margin={"auto"}
+          THINKER
+        </Thinker>
+        <LeftTrapezoid
+          imagesrc="https://st2.depositphotos.com/4097503/47272/v/1600/depositphotos_472726658-stock-illustration-people-filling-online-survey-form.jpg"
+          width={"50%"}
+          height={"95vh"}
+          bgcolor={"wheat"}
+          position={"relative"}
         >
-          <GoToSurvey>
-            <Stack width="300px" textAlign="center">
-              <PageLink href={"/survey"}>
-                <Stack color={"white"} fontWeight={550} fontSize={"25px"}>
-                  {"Get More SURVEY >>>"}
-                </Stack>
-              </PageLink>
-            </Stack>
-          </GoToSurvey>
-        </LeftInnerTrapezoid>
+          <Stack
+            zIndex={1}
+            width={"100%"}
+            height={"200px"}
+            position={"absolute"}
+            margin={"auto"}
+          ></Stack>
+          <LeftInnerTrapezoid
+            width={"100%"}
+            height={"25vh"}
+            bgcolor={"rgba(128,128,128, 0.5)"}
+            margin={"auto"}
+          >
+            <GoToSurvey>
+              <Stack width="300px" textAlign="center">
+                <PageLink href={"/survey"}>
+                  <Stack color={"white"} fontWeight={550} fontSize={"25px"}>
+                    {"Get More SURVEY >>>"}
+                  </Stack>
+                </PageLink>
+              </Stack>
+            </GoToSurvey>
+          </LeftInnerTrapezoid>
+        </LeftTrapezoid>
         <RightTrapezoid
-          imagesrc="https://c1.wallpaperflare.com/preview/502/735/779/art-school-of-athens-rapha%C3%ABl-italian-painter-fresco.jpg"
+          imagesrc="https://i.pinimg.com/originals/66/9c/17/669c17917cf7845d93f933dbe8976995.jpg"
           width={"50%"}
           height={"95vh"}
           bgcolor={"teal"}
-          position={"absolute"}
-          right={0}
+          position={"relative"}
         >
           <RightInnerTrapezoid
             width={"100%"}
@@ -145,7 +118,7 @@ export default function Home() {
             </GoToThinking>
           </RightInnerTrapezoid>
         </RightTrapezoid>
-      </LeftTrapezoid>
+      </Stack>
 
       <AnimatedTitle>
         <Track>
@@ -159,17 +132,37 @@ export default function Home() {
           </Content>
         </Track>
       </AnimatedTitle>
-      <Stack marginTop="200px" height="400px" flexDirection="row">
+      <Stack
+        width={"100%"}
+        marginTop="200px"
+        height="400px"
+        flexDirection="row"
+      >
         <IntroComment>
           <Stack>설문조사에 참여해 포인트를 쌓아보세요!!</Stack>
         </IntroComment>
-        <Stack width={"45%"} height={"100%"} bgcolor={`${mainColor}`}></Stack>
+        <Stack width={"60%"} height={"100%"} bgcolor={`${mainColor}`}></Stack>
       </Stack>
-      <Stack marginTop="80px" height="400px" flexDirection="row">
-        <Stack width={"45%"} height={"100%"} bgcolor={`${mainColor}`}></Stack>
-        <IntroComment>
-          <Stack>
-            포인트를 이용해 프리미엄 설문조사/게시물을 만들어보세요!!
+      <Stack width={"100%"} marginTop="80px" height="400px" flexDirection="row">
+        <Stack
+          width={"60%"}
+          height={"100%"}
+          bgcolor={`${mainColor}`}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+        >
+          <Image alt="" src={IntroImg} width={780} height={300}></Image>
+        </Stack>
+        <IntroComment bgcolor={mainColor} color={"white"}>
+          <Stack fontSize={"35px"} fontWeight={"bolder"} marginBottom={"15px"}>
+            포인트를 이용해
+          </Stack>
+          <Stack fontSize={"35px"} fontWeight={"bolder"} marginBottom={"15px"}>
+            프리미엄 설문조사/게시물을
+          </Stack>
+          <Stack fontSize={"35px"} fontWeight={"bolder"} marginBottom={"15px"}>
+            만들어보세요!!
           </Stack>
           <Stack>프리미엄 설문조사/게시물은 상단에 노출됩니다</Stack>
         </IntroComment>
@@ -197,21 +190,7 @@ export default function Home() {
         })}
       </Stack>
 
-      <Stack flexDirection={"row"}>
-        {premiumThinkingResponse.premiumThinkingDtos.map((thinking) => {
-          return (
-            <PremiumThinking
-              key={thinking.thinkingId}
-              thinkingThumbnail={thinking.thinkingThumbnail}
-              thinkingWriter={thinking.thinkingWriter}
-              thinkingTitle={thinking.thinkingTitle}
-              likecount={thinking.likeCount}
-              repliesCount={thinking.repliesCount}
-              viewCount={thinking.viewCount}
-            />
-          );
-        })}
-      </Stack>
+      <PremiumThinkingCollect />
     </Stack>
   );
 }
