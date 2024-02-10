@@ -45,7 +45,7 @@ jobs:
        cd server
        cd image
        ls
-       chmod -R +x server/image
+       chmod -R +x image
        
     - name: Change directory to /server
       run: |
