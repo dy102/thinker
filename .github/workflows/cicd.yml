@@ -42,7 +42,10 @@ jobs:
 
     - name: Permission about image
       run: |
-       chmod -R +x server/image
+       cd server
+       cd image
+       ls
+       chmod +x person.jpeg
        
     - name: Change directory to /server
       run: |
