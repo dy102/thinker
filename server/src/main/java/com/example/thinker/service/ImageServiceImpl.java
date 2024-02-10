@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,14 +53,14 @@ public class ImageServiceImpl implements ImageService {
         return member.getImage();
     }
 
-    public void makeBasicImage(Member member, String filePath) throws IOException {
-        Image image = imageRepository.findByData(Files.readAllBytes(Paths.get(filePath)));
-        if (image == null) {
-            saveImage(filePath);
-            image = imageRepository.findByData(Files.readAllBytes(Paths.get(filePath)));
+    public void makeBasicImage(Member member, Long imageId) {
+        Optional<Image> image = imageRepository.findById(imageId);
+        if (image.isPresent()) {
+            member.setImage(image.get());
+            memberRepository.save(member);
+        } else {
+            throw new IllegalArgumentException("기본 이미지가 설정되지 않았습니다.");
         }
-        member.setImage(image);
-        memberRepository.save(member);
     }
 
     public void saveImage(String filePath) throws IOException {

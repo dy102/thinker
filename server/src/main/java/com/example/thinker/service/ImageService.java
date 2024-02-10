@@ -17,7 +17,7 @@ public interface ImageService {
 
     public Image getImageByMember(Member member);
 
-    public void makeBasicImage(Member member, String filePath) throws IOException;
+    public void makeBasicImage(Member member, Long imageId) throws IOException;
 
     public void saveImage(String filePath) throws IOException;
 }
