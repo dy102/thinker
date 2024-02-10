@@ -31,6 +31,7 @@ import static com.example.thinker.constants.SessionConst.LOGIN_MEMBER;
 @RequiredArgsConstructor
 public class MemberController {
     private static final String NEED_TO_LOGIN = "로그인이 필요합니다.";
+    private static final Long BASIC_IMAGE_ID = 1L;
 
     private final MemberService memberService;
     private final ImageService imageService;
@@ -68,7 +69,7 @@ public class MemberController {
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
-        imageService.makeBasicImage(member, "server/image/person.jpeg");
+        imageService.makeBasicImage(member, BASIC_IMAGE_ID);
         return new ResponseEntity<>("success create memberData", HttpStatus.OK);
     }
 
@@ -101,6 +102,9 @@ public class MemberController {
     ) {
         checkAuthorization(loginMember);
         Image image = imageService.getImageByMember(loginMember);
+        if (image == null) {
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
 
         byte[] imageData = image.getData();
         HttpHeaders headers = new HttpHeaders();

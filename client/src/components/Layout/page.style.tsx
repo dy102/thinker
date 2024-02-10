@@ -38,7 +38,7 @@ export const leftToRight = keyframes`
 export const Thinker = styled(Stack)`
   fontweight: bolder;
   margin: auto;
-  color: white;
+  color: ${mainColor};
   animation: ${trackingInContract} 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)
     both;
   fontsize: 100px;
@@ -69,13 +69,3 @@ export const ServeyCollect = styled(Stack)({
   display: "flex",
   flexWrap: "wrap",
 });
-
-export const IntroComment = styled(Stack)({
-  width: "55%",
-  height: "100%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  fontSize: "20px",
-});
-
