@@ -1,6 +1,13 @@
 package com.example.thinker.dto;
 
-import java.util.List;
+import com.example.thinker.domain.SubjectiveForm;
 
-public record SubjectiveDto(List<String> questions) {
+public record SubjectiveDto(
+        Long subjectiveFormId,
+        String question,
+        String answer
+) {
+    public static SubjectiveDto form(SubjectiveForm subjectiveForm, String answer) {
+        return new SubjectiveDto(subjectiveForm.getId(), subjectiveForm.getQuestion(), answer);
+    }
 }

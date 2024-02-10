@@ -39,4 +39,6 @@ public class Survey {
 
     @OneToMany
     private List<SubjectiveForm> subjectiveForms;
+
+    private boolean isPremium;
 }
