@@ -1,4 +1,3 @@
-
 // thinking premiumn 요청값
 export interface IThinkingPremiumParams {
   page: number;
@@ -21,19 +20,17 @@ export interface IThinkingPremium {
   dtos?: ThinkingDtos[];
 }
 
-// thinking 요청값
-export interface IThinkingParams {
+// normal thinking 요청값
+export interface IThinkingNormalParams {
   kind: string;
   size: number;
   lastId: number | null;
 }
 
-// thinking 반환값
-export interface IThinkingDtos {
-  thinkingId: 0,
-  thinkingThumbnail: [
-    string
-  ];
+// normal thinking 반환값
+export interface IThinkingNormalDtos {
+  thinkingId: 0;
+  thinkingThumbnail: [string];
   thinkingWriter: string;
   thinkingTitle: string;
   isPremium: boolean;
@@ -41,10 +38,15 @@ export interface IThinkingDtos {
   repliesCount: number;
   viewCount: number;
 }
-export interface IThinking {
+export interface IThinkingNormal {
   contents: {
-    dtos: IThinkingDtos[];
+    dtos: IThinkingNormalDtos[];
   };
   totalElements: number;
   nextCursor: number;
+}
+
+// thinking 보기 요청값
+export interface IThinkingParams {
+  thinkingId: number;
 }

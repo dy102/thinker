@@ -4,35 +4,32 @@ import { mainColor } from "@/components/Themes/color";
 import { Menu, MenuItem, Stack } from "@mui/material";
 import React, { useState } from "react";
 import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
-import PremiumThinkingCollect from "@/components/collect/PremiumThinkingCollect";
-import NormalThinkingCollect from "@/components/Normal/NormalThinking/NormalThinkingCollect";
+import PremiumThinkingCollect from "@/components/collect/Thinking/PremiumThinkingCollect";
+import NormalThinkingCollect from "@/components/collect/Thinking/NormalThinkingCollect";
 import PageLink from "@/components/PageLink/PageLink";
 
 function page() {
-
   const normalThinkingResponse = {
     contents: {
       dtos: [
         {
           thinkingId: 0,
-          thinkingThumbnail: [
-            'string'
-          ],
+          thinkingThumbnail: ["string"],
           thinkingWriter: "string",
           thinkingTitle: "string",
           isPremium: false,
           likeCount: 0,
           repliesCount: 0,
-          viewCount: 0
-        }
-      ]
+          viewCount: 0,
+        },
+      ],
     },
     totalElements: 0,
-    nextCursor: 0
+    nextCursor: 0,
   };
   // 정렬기준
   const [kind, setKind] = useState("recent");
-  const kindList = ["recent", "like", 'view'];
+  const kindList = ["recent", "like", "view"];
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const sortopen = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -74,11 +71,20 @@ function page() {
         flexDirection={"row"}
         justifyContent={"flex-end"}
       >
-        <Stack flexDirection={'row'} justifyContent={"space-between"} alignItems={'center'} width={'100%'}>
+        <Stack
+          flexDirection={"row"}
+          justifyContent={"space-between"}
+          alignItems={"center"}
+          width={"100%"}
+        >
           <Button>
-            <PageLink href={'#'} style={{ fontSize: '18px', alignItems: 'center' }}>
+            <PageLink
+              href={"#"}
+              style={{ fontSize: "18px", alignItems: "center" }}
+            >
               게시물 작성하기
-            </PageLink></Button>
+            </PageLink>
+          </Button>
           <Stack flexDirection={"row"} justifyContent={"left"}>
             <Button
               onClick={handleClick}

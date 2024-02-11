@@ -18,7 +18,7 @@ import {
 import PageLink from "@/components/PageLink/PageLink";
 import PremiumSurvey from "@/components/Premium/PremiumSurvey/PremiumSurvey";
 import { mainColor } from "@/components/Themes/color";
-import PremiumThinkingCollect from "@/components/collect/PremiumThinkingCollect";
+import PremiumThinkingCollect from "@/components/collect/Thinking/PremiumThinkingCollect";
 import { Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import IntroImg from "./premium_thinking.jpg";
