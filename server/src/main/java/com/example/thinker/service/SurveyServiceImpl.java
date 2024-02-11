@@ -189,7 +189,26 @@ public class SurveyServiceImpl implements SurveyService {
         if (survey.isPresent()) {
             if (survey.get().getWriter().equals(loginMember)) {
                 surveyRepository.delete(survey.get());
-                //설문조사에 딸린 모든 도메인 정보를 삭제해야한다....
+                for (MultipleChoiceForm multipleChoiceForm : survey.get().getMultipleChoiceForms()) {
+                    multipleChoiceFormRepository.delete(multipleChoiceForm);
+                    for (ChoiceForm choiceForm : multipleChoiceForm.getItems()) {
+                        choiceFormRepository.delete(choiceForm);
+                        List<Choice> choicesByParticipants = choiceRepository.findAllByChoiceForm_Id(choiceForm.getId());
+                        for (Choice choice : choicesByParticipants) {
+                            choiceRepository.delete(choice);
+                        }
+                    }
+                }
+                for (SubjectiveForm subjectiveForm : survey.get().getSubjectiveForms()) {
+                    subjectiveFormRepository.delete(subjectiveForm);
+                    List<Subjective> subjectivesByParticipants
+                            = subjectiveRepository.findAllBySubjectiveForm_Id(subjectiveForm.getId());
+                    for (Subjective subjective : subjectivesByParticipants) {
+                        subjectiveRepository.delete(subjective);
+                    }
+                }
+                //설문조사에 딸린 모든 도메인 정보를 삭제해야한다.....//참여한 내용도 전부 삭제해야하는데, 함께 삭제해야할까?
+                //그러면 3중 for문을 사용해야하는데, 시간이 너무 오래걸리는 건 아닐까?
             }
             throw new IllegalArgumentException("권한이 없습니다.");
         }
