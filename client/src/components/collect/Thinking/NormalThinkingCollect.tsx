@@ -79,6 +79,7 @@ function NormalThinkingCollect({ kind }: { kind: string }) {
         return (
           <NormalThinking
             key={normal.thinkingId}
+            thinkingId={normal.thinkingId}
             thinkingThumbnail={normal.thinkingThumbnail[0]}
             thinkingWriter={normal.thinkingWriter}
             thinkingTitle={normal.thinkingTitle}

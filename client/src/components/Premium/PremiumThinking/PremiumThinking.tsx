@@ -5,6 +5,7 @@ import Button from "@/components/Button/Button";
 import PageLink from "@/components/PageLink/PageLink";
 import {
   PopularCount,
+  PremiumThinkingTitle,
   ThinkingThumbnail,
   ThinkingyBox,
 } from "./PremiumThinking.style";
@@ -13,6 +14,7 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 function PremiumThinking({
+  thinkingId,
   thinkingThumbnail,
   thinkingWriter,
   thinkingTitle,
@@ -76,15 +78,9 @@ function PremiumThinking({
             </Stack>
           </Stack>
         </Stack>
-        <Stack
-          marginTop={"10px"}
-          fontSize={"20px"}
-          overflow={"hidden"}
-          textOverflow={"ellipsis"}
-          whiteSpace={"nowrap"}
-        >
+        <PremiumThinkingTitle href={`/thinking/${thinkingId}`}>
           {thinkingTitle}
-        </Stack>
+        </PremiumThinkingTitle>
 
         <Stack width={"200px"} margin={"10px auto auto auto"}>
           <Button sx={{ position: "relative" }}>

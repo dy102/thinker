@@ -16,6 +16,7 @@ export type PremiumSurveyType = {
 // PremiumThinking Type
 export type ThinkingType = {
   thinkingThumbnail: string | null;
+  thinkingId: number;
   thinkingWriter?: string;
   thinkingTitle?: string;
   likecount?: number;

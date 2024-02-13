@@ -82,6 +82,7 @@ export default function PremiumThinkingCollect() {
         return (
           <PremiumThinking
             key={thinking.thinkingId}
+            thinkingId={thinking.thinkingId}
             thinkingThumbnail={thinking.thinkingThumbnail}
             thinkingWriter={thinking.thinkingWriter}
             thinkingTitle={thinking.thinkingTitle}

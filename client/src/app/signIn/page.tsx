@@ -90,7 +90,7 @@ function Page() {
                   <FormLabel>Gender</FormLabel>
                   <RadioGroup row>
                     <FormControlLabel
-                      value="male"
+                      value="man"
                       control={<Radio />}
                       label="Male"
                       sx={{
@@ -100,7 +100,7 @@ function Page() {
                       }}
                     />
                     <FormControlLabel
-                      value="female"
+                      value="women"
                       control={<Radio />}
                       label="Female"
                     />

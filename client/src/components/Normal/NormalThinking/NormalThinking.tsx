@@ -4,6 +4,7 @@ import {
   NormalThinkingBox,
   NormalThinkingNonThumbnail,
   NormalThinkingThumbnail,
+  ThinkingTitle,
 } from "./NormalThinking.style";
 import { PopularCount } from "@/components/Premium/PremiumThinking/PremiumThinking.style";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -12,6 +13,7 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 
 function NormalThinking({
   thinkingThumbnail,
+  thinkingId,
   thinkingWriter,
   thinkingTitle,
   likecount,
@@ -19,16 +21,16 @@ function NormalThinking({
   viewCount,
 }: ThinkingType) {
   return (
-    <NormalThinkingBox href={"#"}>
+    <NormalThinkingBox>
       <Stack
         width={"70%"}
         paddingTop={"50px"}
         paddingLeft={"20px"}
         flexDirection={"column"}
       >
-        <Stack fontSize={"25px"} marginBottom={"60px"}>
+        <ThinkingTitle href={`/thinking/${thinkingId}`}>
           {thinkingTitle}
-        </Stack>
+        </ThinkingTitle>
         <Stack>by. {thinkingWriter}</Stack>
         <Stack
           flexDirection={"row"}
