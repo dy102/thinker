@@ -23,3 +23,12 @@ export type ThinkingType = {
   repliesCount?: number;
   viewCount?: number;
 };
+
+// Reply Type
+export type ReplyType = {
+  userId: number;
+  replyContent: string;
+  likeCount: number;
+  createdAt: string;
+  isLiked: boolean;
+};

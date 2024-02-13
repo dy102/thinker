@@ -17,6 +17,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
+import Reply from "@/components/Reply/Reply";
 
 function page({ params }: { params: { thinkingId: number } }) {
   // get main thinking contents
@@ -149,6 +150,20 @@ function page({ params }: { params: { thinkingId: number } }) {
           />
           <Button onClick={() => ReplyOnClick()}>게시하기</Button>
         </Stack>
+      </Stack>
+      <Stack marginTop={"50px"}>
+        {replies?.ReplyDtos.map((reply) => {
+          return (
+            <Reply
+              key={reply.replyId}
+              userId={reply.userId}
+              replyContent={reply.replyContents}
+              likeCount={reply.likeCount}
+              createdAt={reply.createdAt}
+              isLiked={reply.isLiked}
+            />
+          );
+        })}
       </Stack>
     </Stack>
   );
