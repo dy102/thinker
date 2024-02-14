@@ -1,3 +1,0 @@
-ALTER TABLE image
-    ALTER COLUMN data SET DATA TYPE LONGBLOB;
--- h2 DB는 MODIFY를 지원하지 않는다.
