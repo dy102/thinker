@@ -65,7 +65,7 @@ function NormalThinkingCollect({ kind }: { kind: string }) {
     if (kindToLastId === "recent") {
       setLastId(normalThinking?.nextCursor ?? 0);
     }
-  }, [kind, normalThinkingData]);
+  }, [kind, normalThinkingData, kindToLastId, normalThinking?.nextCursor]);
 
   return (
     <Stack

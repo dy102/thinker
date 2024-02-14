@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { IMemberSimple } from "../types/dto";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import Button from "../Button/Button";
 import IconButton from "../Button/IconButton";
 
 export const ReplyContent = styled(Stack)({

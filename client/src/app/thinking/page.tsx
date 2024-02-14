@@ -8,7 +8,7 @@ import PremiumThinkingCollect from "@/components/collect/Thinking/PremiumThinkin
 import NormalThinkingCollect from "@/components/collect/Thinking/NormalThinkingCollect";
 import PageLink from "@/components/PageLink/PageLink";
 
-function page() {
+function Page() {
   const normalThinkingResponse = {
     contents: {
       dtos: [
@@ -126,4 +126,4 @@ function page() {
     </Stack>
   );
 }
-export default page;
+export default Page;

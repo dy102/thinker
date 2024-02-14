@@ -12,14 +12,10 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import Button from "@/components/Button/Button";
 import ThinkingImageTag from "./ThinkingImage";
 import { PostReplyApi, useGetRepliesQuery } from "@/api/reply-api";
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Reply from "@/components/Reply/Reply";
 
-function page({ params }: { params: { thinkingId: number } }) {
+function Page({ params }: { params: { thinkingId: number } }) {
   const repliesDatas = {
     ReplyDtos: [
       {
@@ -127,7 +123,12 @@ function page({ params }: { params: { thinkingId: number } }) {
       </Stack>
       <Stack flexDirection={"row"}>
         {thinkingImage.map((image) => {
-          return <ThinkingImageTag ImageSrc={image} />;
+          return (
+            <ThinkingImageTag
+              key={thinkingImage.indexOf(image)}
+              ImageSrc={image}
+            />
+          );
         })}
       </Stack>
       <Stack
@@ -204,4 +205,4 @@ function page({ params }: { params: { thinkingId: number } }) {
   );
 }
 
-export default page;
+export default Page;

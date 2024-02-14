@@ -6,7 +6,7 @@ import { Menu, MenuItem, Stack } from "@mui/material";
 import React, { useState } from "react";
 import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
 
-function page() {
+function Page() {
   const premiumSurveysResponse = {
     premiumSurveysCount: 2,
     SurveyDtos: [
@@ -133,4 +133,4 @@ function page() {
     </Stack>
   );
 }
-export default page;
+export default Page;
