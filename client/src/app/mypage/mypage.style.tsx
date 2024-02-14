@@ -8,7 +8,7 @@ export const Profile = styled(Stack)({
   margin: "auto",
   backgroundColor: `${boxColor}`,
   borderRadius: "15px",
-  boxShadow: `0px 0px 20px 1px red`,
+  boxShadow: `0px 0px 20px 1px ${shadowColor.mid}`,
 });
 
 export const Grade = styled(Stack)({

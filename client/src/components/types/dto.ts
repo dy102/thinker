@@ -1,3 +1,14 @@
+// simple user 요청값
+export interface IMemberSimpleParams {
+  memberId: number;
+}
+
+// simple user 반환값
+export interface IMemberSimple {
+  memberName: string;
+  memberProfile: [string];
+  memberGrade: string;
+}
 
 // thinking premiumn 요청값
 export interface IThinkingPremiumParams {
@@ -21,19 +32,17 @@ export interface IThinkingPremium {
   dtos?: ThinkingDtos[];
 }
 
-// thinking 요청값
-export interface IThinkingParams {
+// normal thinking 요청값
+export interface IThinkingNormalParams {
   kind: string;
   size: number;
   lastId: number | null;
 }
 
-// thinking 반환값
-export interface IThinkingDtos {
-  thinkingId: 0,
-  thinkingThumbnail: [
-    string
-  ];
+// normal thinking 반환값
+export interface IThinkingNormalDtos {
+  thinkingId: 0;
+  thinkingThumbnail: [string];
   thinkingWriter: string;
   thinkingTitle: string;
   isPremium: boolean;
@@ -41,10 +50,60 @@ export interface IThinkingDtos {
   repliesCount: number;
   viewCount: number;
 }
-export interface IThinking {
+export interface IThinkingNormal {
   contents: {
-    dtos: IThinkingDtos[];
+    dtos: IThinkingNormalDtos[];
   };
   totalElements: number;
   nextCursor: number;
+}
+
+// thinking 보기 요청값
+export interface IThinkingParams {
+  thinkingId: number;
+}
+
+// thinking 보기 반환값
+export interface IThinking {
+  isManager: boolean;
+  ThinkingDetailDto: {
+    thinkingId: number;
+    thinkingImage: string[] | null;
+    thinkingWriter: string;
+    thinkingTitle: string;
+    thinkingContents: string;
+    thinkingDate: string;
+    isPremium: boolean;
+    likeCount: number;
+    repliesCount: number;
+    viewCount: number;
+  };
+}
+
+// replies 요청값
+export interface IRepliesParams {
+  thinkingId: number;
+}
+
+interface ReplyDto {
+  thinkingId: number;
+  replyId: number;
+  userId: number;
+  replyContents: string;
+  likeCount: number;
+  createdAt: string;
+  isLiked: boolean;
+  who: string; //"author" | "me(author)" | "me" | "other"
+}
+
+// replies 반환값
+export interface IReplies {
+  isManager: boolean;
+  ReplyDtos: ReplyDto[];
+}
+
+// reply post
+export interface IReply {
+  thinkingId: number;
+  replyContent: string;
 }
