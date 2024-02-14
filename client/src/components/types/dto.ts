@@ -1,3 +1,15 @@
+// simple user 요청값
+export interface IMemberSimpleParams {
+  memberId: number;
+}
+
+// simple user 반환값
+export interface IMemberSimple {
+  memberName: string;
+  memberProfile: [string];
+  memberGrade: string;
+}
+
 // thinking premiumn 요청값
 export interface IThinkingPremiumParams {
   page: number;

@@ -20,6 +20,41 @@ import {
 import Reply from "@/components/Reply/Reply";
 
 function page({ params }: { params: { thinkingId: number } }) {
+  const repliesDatas = {
+    ReplyDtos: [
+      {
+        thinkingId: 1,
+        replyId: 101,
+        userId: 35,
+        replyContents:
+          " 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데? 와 이거 정말 좋은데?",
+        likeCount: 12,
+        createdAt: "2024-02-14",
+        isLiked: true,
+        who: "author", //"author" | "me(author)" | "me" | "other"
+      },
+      {
+        thinkingId: 1,
+        replyId: 102,
+        userId: 35,
+        replyContents: "wow",
+        likeCount: 12,
+        createdAt: "2024-02-14",
+        isLiked: false,
+        who: "author", //"author" | "me(author)" | "me" | "other"
+      },
+      {
+        thinkingId: 1,
+        replyId: 103,
+        userId: 35,
+        replyContents: "amazing",
+        likeCount: 12,
+        createdAt: "2024-02-14",
+        isLiked: false,
+        who: "author", //"author" | "me(author)" | "me" | "other"
+      },
+    ],
+  };
   // get main thinking contents
   const { data: thinkingData } = useGetThinkingQuery({
     thinkingId: params.thinkingId,
@@ -152,7 +187,7 @@ function page({ params }: { params: { thinkingId: number } }) {
         </Stack>
       </Stack>
       <Stack marginTop={"50px"}>
-        {replies?.ReplyDtos.map((reply) => {
+        {repliesDatas.ReplyDtos.map((reply) => {
           return (
             <Reply
               key={reply.replyId}
