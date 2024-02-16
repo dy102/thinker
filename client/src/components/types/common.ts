@@ -5,12 +5,14 @@ export type ModalType = {
 };
 
 // PremiumSurvey Type
-export type PremiumSurveyType = {
-  surveyImg: string;
+export type SurveyType = {
+  surveyId: number;
+  surveyImg: string | null;
   surveyWriter: string;
   surveyTitle: string;
   surveyItemCount: number;
   isDone: boolean;
+  isPremium: boolean;
 };
 
 // PremiumThinking Type
