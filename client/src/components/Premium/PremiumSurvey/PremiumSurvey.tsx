@@ -1,4 +1,4 @@
-import { SurveyType } from "@/components/types/common";
+import { PremiumSurveyType } from "@/components/types/common";
 import { Stack, Tooltip } from "@mui/material";
 import { SurveyBox, SurveyThumbnail } from "./PremiumSurvey.style";
 import { mainColor } from "@/components/Themes/color";
@@ -7,14 +7,12 @@ import PageLink from "@/components/PageLink/PageLink";
 import VerifiedIcon from "@mui/icons-material/Verified";
 
 function PremiumSurvey({
-  surveyId,
   surveyImg,
   surveyWriter,
   surveyTitle,
   surveyItemCount,
   isDone,
-  isPremium,
-}: SurveyType) {
+}: PremiumSurveyType) {
   return (
     <SurveyBox>
       <SurveyThumbnail
@@ -58,7 +56,7 @@ function PremiumSurvey({
 
         <Stack width={"200px"} margin={"10px auto auto auto"}>
           <Button sx={{ position: "relative" }}>
-            <PageLink href={`/survey/${surveyId}`}>참여하기</PageLink>
+            <PageLink href={"#"}>참여하기</PageLink>
           </Button>
           {isDone ? (
             <Tooltip title="이미 참여했어요" placement="bottom">

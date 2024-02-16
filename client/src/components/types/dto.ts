@@ -107,36 +107,3 @@ export interface IReply {
   thinkingId: number;
   replyContent: string;
 }
-
-// premium survey 요청값
-export interface ISurveyPremiumParams {
-  page: number;
-}
-
-interface SurveyDto {
-  surveyId: number;
-  surveyImage: string;
-  surveyWriter: string;
-  surveyTitle: string;
-  surveyItemCount: number;
-  isDone: boolean;
-  isPremium: boolean;
-}
-
-// premium survey 반환값
-export interface ISurveyPremium {
-  premiumSurveysCount: number;
-  SurveyDtos: SurveyDto[];
-}
-
-// normal survey 요청값
-export interface ISurveyNormalParams {
-  lastId: number | null;
-  kind: string;
-}
-
-// normal survey 반환값
-export interface ISurveyNormal {
-  surveyDtos: SurveyDto[];
-  nextCursor: number;
-}

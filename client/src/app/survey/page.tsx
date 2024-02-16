@@ -5,9 +5,6 @@ import { mainColor } from "@/components/Themes/color";
 import { Menu, MenuItem, Stack } from "@mui/material";
 import React, { useState } from "react";
 import AlignHorizontalLeftIcon from "@mui/icons-material/AlignHorizontalLeft";
-import PremiumSurveyCollect from "@/components/collect/Survey/PremiumSurveyCollect";
-import PageLink from "@/components/PageLink/PageLink";
-import NormalSurveyCollect from "@/components/collect/Survey/NormalSurveyCollect";
 
 function Page() {
   const premiumSurveysResponse = {
@@ -83,27 +80,27 @@ function Page() {
         >
           Premium Survey
         </Stack>
-        <PremiumSurveyCollect />
+        <Stack flexDirection={"row"}>
+          {premiumSurveysResponse.SurveyDtos.map((survey) => {
+            return (
+              <PremiumSurvey
+                key={survey.surveyId}
+                surveyImg={survey.surveyImage}
+                surveyWriter={survey.surveyWriter}
+                surveyTitle={survey.surveyTitle}
+                surveyItemCount={survey.surveyItemCount}
+                isDone={survey.isDone}
+              />
+            );
+          })}
+        </Stack>
       </Stack>
       <Stack
         marginTop={"50px"}
         flexDirection={"row"}
         justifyContent={"flex-end"}
       >
-        <Stack
-          flexDirection={"row"}
-          justifyContent={"space-between"}
-          alignItems={"center"}
-          width={"100%"}
-        >
-          <Button>
-            <PageLink
-              href={"#"}
-              style={{ fontSize: "18px", alignItems: "center" }}
-            >
-              설문조사 작성하기
-            </PageLink>
-          </Button>
+        <Stack justifyContent={"center"}>
           <Stack flexDirection={"row"} justifyContent={"left"}>
             <Button
               onClick={handleClick}
@@ -133,7 +130,6 @@ function Page() {
           </Stack>
         </Stack>
       </Stack>
-      <NormalSurveyCollect kind={kind} />
     </Stack>
   );
 }
