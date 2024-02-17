@@ -140,3 +140,31 @@ export interface ISurveyNormal {
   surveyDtos: SurveyDto[];
   nextCursor: number;
 }
+
+
+// survey 요청값
+export interface ISurveyParams {
+  surveyId: number;
+}
+
+export interface ISurvey {
+  isDone: boolean;
+  isManager: boolean;
+  surveyDto: {
+    surveyId: number;
+    multipleChoiceDto: {
+      multipleChoiceId: number;
+      question: string;
+      items: {
+        itemId: number;
+        item: string;
+        isCheck: boolean;
+      };
+    };
+    subjectiveDto: {
+      subjectiveId: number;
+      question: string;
+      answer: string;
+    };
+  };
+};

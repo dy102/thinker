@@ -1,6 +1,7 @@
 import { defaultInstance } from "@/api";
 import {
   ISurveyNormalParams,
+  ISurveyParams,
   ISurveyPremiumParams,
 } from "@/components/types/dto";
 import { useQuery } from "@tanstack/react-query";
@@ -30,6 +31,20 @@ const GetSurveyNormalApi = async (params: ISurveyNormalParams) => {
 export const useGetSurveyNormalQuery = (params: ISurveyNormalParams) => {
   const { isLoading, error, data } = useQuery(["surveyNormal", params], () =>
     GetSurveyNormalApi(params)
+  );
+  return { data, isLoading, error };
+};
+
+// get survey
+const GetSurveyApi = async (params: ISurveyParams) => {
+  const { data } = await defaultInstance.get('/surveys', { params });
+
+  return data;
+}
+
+export const useGetSurveyQuery = (params: ISurveyParams) => {
+  const { isLoading, error, data } = useQuery(['surveys', params], () =>
+    GetSurveyApi(params)
   );
   return { data, isLoading, error };
 };

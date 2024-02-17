@@ -12,8 +12,7 @@ export default function PremiumThinkingCollect() {
     dtos: [
       {
         thinkingId: 4,
-        thinkingThumbnail:
-          "https://assets.paintingco.com/dev-3/wp-content/uploads/20230802110655/shutterstock_1561397020-scaled.jpg",
+        thinkingThumbnail: null,
         thinkingWriter: "Jun Seo",
         thinkingTitle: "Is Thinker good?",
         isPremium: true,

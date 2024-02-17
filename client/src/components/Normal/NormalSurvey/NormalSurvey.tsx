@@ -26,7 +26,7 @@ function NormalSurvey({
         paddingLeft={"20px"}
         flexDirection={"column"}
       >
-        <SurveyTitle href={`/thinking/${surveyId}`}>{surveyTitle}</SurveyTitle>
+        <SurveyTitle href={`/survey/${surveyId}`}>{surveyTitle}</SurveyTitle>
         <Stack
           display={"flex"}
           flexDirection={"row"}

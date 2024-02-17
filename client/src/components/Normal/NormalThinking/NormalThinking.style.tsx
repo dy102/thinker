@@ -7,7 +7,7 @@ export const NormalThinkingBox = styled(Stack)({
   height: "250px",
   borderBottom: "1px solid #eee",
   flexDirection: "row",
-  ":nth-child(2n-1)": {
+  ":nth-of-type(2n-1)": {
     borderRight: "1px solid #eee",
   },
 });
@@ -16,13 +16,14 @@ export const NormalThinkingThumbnail = styled(Stack)(
   ({ imagesrc }: { imagesrc: string | null }) => ({
     backgroundImage:
       imagesrc === null
-        ? "url(https://t4.ftcdn.net/jpg/00/93/83/93/240_F_93839373_JT5cpdRmTyuOg6eert4Kexq8aO63iD5r.jpg)"
+        ? "url()"
         : `url(${imagesrc})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "150px 150px",
     width: "150px",
     height: "150px",
     margin: "50px 20px 0 0",
+    borderRadius: '15px',
   })
 );
 
@@ -34,8 +35,11 @@ export const ThinkingTitle = styled(Link)({
 });
 
 export const NormalThinkingNonThumbnail = styled(Stack)({
-  backgroundColor: "teal",
+  backgroundImage: 'url(https://ineducationonline.org/wp-content/uploads/2021/04/Importance-of-critical-thinking-Zealousness-Q1-2021.jpg)',
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "150px 150px",
   width: "150px",
   height: "150px",
   margin: "50px 20px 0 0",
+  borderRadius: '15px',
 });
