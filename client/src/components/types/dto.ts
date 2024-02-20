@@ -147,24 +147,29 @@ export interface ISurveyParams {
   surveyId: number;
 }
 
+interface multipleChoiceDto {
+  multipleChoiceId: number;
+  question: string;
+  items: {
+    itemId: number;
+    item: string;
+    isCheck: boolean;
+  }[];
+}
+
+interface subjectiveDto {
+  subjectiveId: number;
+  question: string;
+  answer: string;
+}
+
+// survey 반환값
 export interface ISurvey {
   isDone: boolean;
   isManager: boolean;
   surveyDto: {
     surveyId: number;
-    multipleChoiceDto: {
-      multipleChoiceId: number;
-      question: string;
-      items: {
-        itemId: number;
-        item: string;
-        isCheck: boolean;
-      };
-    };
-    subjectiveDto: {
-      subjectiveId: number;
-      question: string;
-      answer: string;
-    };
+    multipleChoiceDto: multipleChoiceDto;
+    subjectiveDto: subjectiveDto;
   };
 };
