@@ -79,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
         }
 
         if (memberRepository.findByName(name) != null) {
-            throw new IllegalArgumentException("이미 존재하는 이름입니다.");
+            throw new IllegalArgumentException("");
         }
     }
 
@@ -90,7 +90,7 @@ public class MemberServiceImpl implements MemberService {
                     memberDataRequest.month(),
                     memberDataRequest.day());
         } catch (DateTimeException e) {
-            throw new IllegalArgumentException("생년월일을 올바르게 입력해주세요.");
+            throw new IllegalArgumentException("");
         }
     }
 

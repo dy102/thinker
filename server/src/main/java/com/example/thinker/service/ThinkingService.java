@@ -11,9 +11,9 @@ import com.example.thinker.dto.response.ThinkingResponse;
 import java.io.IOException;
 
 public interface ThinkingService {
-    PremiumThinkingResponse findPremiumThinking(int page, int size);
+    PremiumThinkingResponse findPremiumThinkings(int page, int size);
 
-    ThinkingResponse findThinking(String kind, int size, Long lastId);
+    ThinkingResponse findThinkings(String kind, int size, Long lastId);
 
     Thinking makeThinking(ThinkingRequest thinkingRequest, Member loginMember) throws IOException;
 
