@@ -40,5 +40,7 @@ public class Survey {
     @OneToMany
     private List<SubjectiveForm> subjectiveForms;
 
-    private boolean isPremium;
+    private Boolean isPremium;
+
+    private Long participants;
 }

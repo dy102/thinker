@@ -28,7 +28,5 @@ public class Choice {
     @ManyToOne
     private Member participant;
 
-    private String question;
-
     private boolean isCheck;
 }

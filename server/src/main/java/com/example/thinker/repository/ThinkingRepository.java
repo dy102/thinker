@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ThinkingRepository extends JpaRepository<Thinking, Long> {
     Page<Thinking> findAllByOrderByIdDesc(Pageable pageable);
@@ -26,26 +28,30 @@ public interface ThinkingRepository extends JpaRepository<Thinking, Long> {
     //search title
     Page<Thinking> searchAllByTitleContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(String title, Long lastId, Pageable pageable);
 
-    Page<Thinking> searchAllByTitleContainingIgnoreCaseAndLikeCountIsLessThanOrderByLikeCountDesc(String title, Long lastId, Pageable pageable);
+    @Query("SELECT t FROM Thinking t WHERE LOWER(t.title) LIKE '%your_search_term%' ORDER BY t.likeCount desc LIMIT 100")
+    List<Thinking> search100ByTitleAndLikeCount();
 
-    Page<Thinking> searchAllByTitleContainingIgnoreCaseAndViewCountIsLessThanOrderByViewCountDesc(String title, Long lastId, Pageable pageable);
+    @Query("SELECT t FROM Thinking t WHERE LOWER(t.title) LIKE '%your_search_term%' ORDER BY t.viewCount desc LIMIT 100")
+    List<Thinking> search100ByTitleAndViewCount();
 
     //search contents
     Page<Thinking> searchAllByContentsContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(String content, Long lastId, Pageable pageable);
 
-    Page<Thinking> searchAllByContentsContainingIgnoreCaseAndLikeCountIsLessThanOrderByLikeCountDesc(String content, Long lastId, Pageable pageable);
+    @Query("SELECT t FROM Thinking t WHERE LOWER(t.contents) LIKE '%your_search_term%' ORDER BY t.likeCount desc LIMIT 100")
+    List<Thinking> search100ByContentsAndLikeCount();
 
-    Page<Thinking> searchAllByContentsContainingIgnoreCaseAndViewCountIsLessThanOrderByViewCountDesc(String content, Long lastId, Pageable pageable);
+    @Query("SELECT t FROM Thinking t WHERE LOWER(t.contents) LIKE '%your_search_term%' ORDER BY t.viewCount desc LIMIT 100")
+    List<Thinking> search100ByContentsAndViewCount();
 
     //search writer //writer 바꿔줘야함?
-    @Query("SELECT t FROM Thinking t WHERE t.writer.name=:name AND t.id <= :lastId")
-    Page<Thinking> searchAllByNameContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(@Param("name") String name, Long lastId, Pageable pageable);
 
-    @Query("SELECT t FROM Thinking t WHERE t.writer.name=:name AND t.id <= :lastId")
-    Page<Thinking> searchAllByNameContainingIgnoreCaseAndLikeCountIsLessThanOrderByLikeCountDesc(@Param("name") String name, Long lastId, Pageable pageable);
+    Page<Thinking> searchAllByWriter_NameContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(@Param("writer_name") String name, Long lastId, Pageable pageable);
 
-    @Query("SELECT t FROM Thinking t WHERE t.writer.name=:name AND t.id <= :lastId")
-    Page<Thinking> searchAllByNameContainingIgnoreCaseAndViewCountIsLessThanOrderByViewCountDesc(@Param("name") String name, @Param("lastId") Long lastId, Pageable pageable);
+    @Query("SELECT t FROM Thinking t WHERE LOWER(t.contents) LIKE '%your_search_term%' ORDER BY t.likeCount desc LIMIT 100")
+    List<Thinking> search100ByNameAndLikeCount();
+
+    @Query("SELECT t FROM Thinking t WHERE LOWER(t.contents) LIKE '%your_search_term%' ORDER BY t.viewCount desc LIMIT 100")
+    List<Thinking> search100ByNameAndViewCount();
 
     Page<Thinking> findAllByWriterAndIdLessThanOrderByIdDesc(Member member, Long lastId, Pageable pageable);
 

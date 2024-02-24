@@ -1,5 +1,6 @@
 package com.example.thinker.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,6 +31,6 @@ public class MultipleChoiceForm {
 
     private String question;
 
-    @OneToMany
+    @OneToMany(mappedBy = "multipleChoiceForm", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ChoiceForm> items;
 }

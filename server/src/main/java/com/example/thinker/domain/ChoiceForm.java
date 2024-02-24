@@ -16,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "choice")
+@Table(name = "choice_form")
 public class ChoiceForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

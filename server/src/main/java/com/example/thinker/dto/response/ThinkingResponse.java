@@ -26,12 +26,12 @@ public class ThinkingResponse {
         this.nextCursor = nextCursor;
     }
 
-    public static ThinkingResponse of(ScrollPaginationCollection<Thinking> thinkingScroll, long totalElements) {
+    public static ThinkingResponse form(ScrollPaginationCollection<Thinking> thinkingScroll, long totalElements) {
         if (thinkingScroll.isLastScroll()) {
             return ThinkingResponse.newLastScroll(thinkingScroll.getCurrentScrollItems(), totalElements);
         }
         return ThinkingResponse.newScrollHasNext(thinkingScroll.getCurrentScrollItems(), totalElements,
-                thinkingScroll.getNextCursor().getId());//getId X
+                thinkingScroll.getNextCursor().getId());
     }
 
     private static ThinkingResponse newLastScroll(List<Thinking> thinkingScroll, long totalElements) {

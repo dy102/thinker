@@ -1,10 +1,11 @@
 package com.example.thinker.dto.response;
 
-import com.example.thinker.dto.SurveyDto;
+import com.example.thinker.dto.SurveyDetailDto;
 
 public record SurveyDataResponse(
         boolean isDone,
+        boolean isOwner,
         boolean isManager,
-        SurveyDto surveyDto
+        SurveyDetailDto surveyDetailDto
 ) {
 }

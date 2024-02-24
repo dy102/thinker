@@ -38,14 +38,14 @@ public class ThinkingController {
 
     @GetMapping("/thinking/premium")
     public ResponseEntity<PremiumThinkingResponse> getPremiumThinking(@RequestParam int page) {
-        PremiumThinkingResponse premiumThinking = thinkingService.findPremiumThinking(page, PREMIUM_THINKING_SIZE);
+        PremiumThinkingResponse premiumThinking = thinkingService.findPremiumThinkings(page, PREMIUM_THINKING_SIZE);
         return new ResponseEntity<>(premiumThinking, HttpStatus.OK);
     }
 
     @GetMapping("/thinking/{kind}")
     public ResponseEntity<ThinkingResponse> getThinking(@PathVariable String kind,
-                                                        int size, Long lastId) {
-        ThinkingResponse thinkingResponse = thinkingService.findThinking(kind, size, lastId);
+                                                        Long lastId) {
+        ThinkingResponse thinkingResponse = thinkingService.findThinkings(kind, SCROLL_SIZE, lastId);
         return new ResponseEntity<>(thinkingResponse, HttpStatus.OK);
     }
 
@@ -116,7 +116,7 @@ public class ThinkingController {
         return new ResponseEntity<>(thinkingResponse, HttpStatus.OK);
     }
 
-    @GetMapping("/thinkings/manager")
+    @GetMapping("/thinking/manager")
     public ResponseEntity<ThinkingResponse> getActivityDetails(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember,
             @RequestParam Long memberId,
