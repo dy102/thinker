@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { defaultInstance } from "@/api";
-import { IThinkingParams, IThinkingPremiumParams } from "@/components/types/dto";
+import {
+  IThinkingNormalParams,
+  IThinkingParams,
+  IThinkingPremiumParams,
+} from "@/components/types/dto";
 
 // primium thinking get
 const GetThinkingPremiumApi = async (params: IThinkingPremiumParams) => {
@@ -17,14 +21,31 @@ export const useGetThinkingPremiumQuery = (params: IThinkingPremiumParams) => {
 };
 
 // normal thinking get
-const GetThinkingApi = async (params: IThinkingParams) => {
-  const { data } = await defaultInstance.get(`/thinking/${params.kind}`, { params });
+const GetThinkingNormalApi = async (params: IThinkingNormalParams) => {
+  const { data } = await defaultInstance.get(`/thinking/${params.kind}`, {
+    params,
+  });
 
   return data;
-}
+};
+
+export const useGetThinkingNormalQuery = (params: IThinkingNormalParams) => {
+  const { isLoading, error, data } = useQuery([`thinkingNormal`, params], () =>
+    GetThinkingNormalApi(params)
+  );
+  return { data, isLoading, error };
+};
+
+// get thinking
+const GetThinkingApi = async (params: IThinkingParams) => {
+  const { data } = await defaultInstance.get(`/thinking`, { params });
+
+  return data;
+};
 
 export const useGetThinkingQuery = (params: IThinkingParams) => {
-  const { isLoading, error, data } = useQuery([`thinking`, params], () => GetThinkingApi(params)
+  const { isLoading, error, data } = useQuery(["thinking", params], () =>
+    GetThinkingApi(params)
   );
   return { data, isLoading, error };
 };
