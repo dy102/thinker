@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.io.IOException;
 
+import static com.example.thinker.constants.ErrorConst.NEED_TO_LOGIN;
 import static com.example.thinker.constants.SessionConst.LOGIN_MEMBER;
 
 @RestController
@@ -32,7 +33,6 @@ public class ThinkingController {
     private static final int THINKING_LIST_SIZE = 8;
     private static final int PREMIUM_THINKING_SIZE = 3;
     private static final int SCROLL_SIZE = 8;
-    private static final String NEED_TO_LOGIN = "로그인이 필요합니다.";
 
     private final ThinkingService thinkingService;
 

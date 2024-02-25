@@ -14,7 +14,6 @@ import com.example.thinker.repository.MemberRepository;
 import com.example.thinker.repository.ReplyRepository;
 import com.example.thinker.repository.ThinkingRepository;
 import com.example.thinker.util.ScrollPaginationCollection;
-import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,8 +37,6 @@ public class ThinkingServiceImpl implements ThinkingService {
     private final ThinkingRepository thinkingRepository;
     private final ReplyRepository replyRepository;
     private final ImageRepository imageRepository;
-
-    private final JPAQueryFactory jpaQueryFactory;
 
     @Override
     public PremiumThinkingResponse findPremiumThinkings(int page, int size) {
@@ -222,7 +219,7 @@ public class ThinkingServiceImpl implements ThinkingService {
         PageRequest pageRequest = PageRequest.of(page, size);
 
         List<Thinking> thinkings = new ArrayList<>();
-        List<Reply> replies = replyRepository.findAllByMember(loginMember);
+        List<Reply> replies = replyRepository.findAllByMember_Id(loginMember.getId());
         for (Reply reply : replies) {
             thinkings.add(reply.getThinking());
         }
