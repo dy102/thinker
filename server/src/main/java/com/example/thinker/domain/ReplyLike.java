@@ -16,13 +16,14 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "reply_likes")
-public class ReplyLikeCount {
+@Table(name = "reply_like")
+public class ReplyLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long replyId;
+    @ManyToOne
+    private Reply reply;
 
     @ManyToOne
     private Member member;

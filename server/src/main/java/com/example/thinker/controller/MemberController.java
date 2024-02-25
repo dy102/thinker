@@ -25,12 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static com.example.thinker.constants.ErrorConst.NEED_TO_LOGIN;
 import static com.example.thinker.constants.SessionConst.LOGIN_MEMBER;
 
 @RestController
 @RequiredArgsConstructor
 public class MemberController {
-    private static final String NEED_TO_LOGIN = "로그인이 필요합니다.";
     private static final Long BASIC_IMAGE_ID = 1L;
 
     private final MemberService memberService;

@@ -6,7 +6,6 @@ import com.example.thinker.dto.request.SurveyMakeRequest;
 import com.example.thinker.dto.response.PremiumSurveysResponse;
 import com.example.thinker.dto.response.SurveyDataResponse;
 import com.example.thinker.dto.response.SurveysResponse;
-import com.example.thinker.repository.MemberRepository;
 import com.example.thinker.service.SurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
+import static com.example.thinker.constants.ErrorConst.NEED_TO_LOGIN;
 import static com.example.thinker.constants.SessionConst.LOGIN_MEMBER;
 
 @RestController
@@ -32,10 +32,8 @@ public class SurveyController {
     private static final int SURVEY_LIST_SIZE = 8;
     private static final int PREMIUM_SURVEY_SIZE = 3;
     private static final int SCROLL_SIZE = 8;
-    private static final String NEED_TO_LOGIN = "로그인이 필요합니다.";
 
     private final SurveyService surveyService;
-    private final MemberRepository memberRepository;
 
     @GetMapping("/surveys")
     public ResponseEntity<SurveyDataResponse> getSurvey(
