@@ -5,7 +5,7 @@ import com.example.thinker.domain.Reply;
 import com.example.thinker.domain.ReplyLike;
 import com.example.thinker.domain.Thinking;
 import com.example.thinker.dto.ReplyDto;
-import com.example.thinker.dto.ReplyDtos;
+import com.example.thinker.dto.TotalReplyDtos;
 import com.example.thinker.dto.response.RepliesResponse;
 import com.example.thinker.repository.MemberRepository;
 import com.example.thinker.repository.ReplyLikeRepository;
@@ -37,12 +37,12 @@ public class ReplyServiceImpl implements ReplyService {
             for (Reply reply : replies) {
                 makeReplyDto(loginMember, thinkingId, reply, thinking.get(), replyDtos);
             }
-            ReplyDtos replyDtos1 = new ReplyDtos(replyDtos);
+            TotalReplyDtos toTalReplyDtos = new TotalReplyDtos(replyDtos);
             boolean isManager = false;
             if (loginMember != null && loginMember.getGrade().equals("MANAGER")) {
                 isManager = true;
             }
-            return new RepliesResponse(isManager, replyDtos1);
+            return new RepliesResponse(isManager, toTalReplyDtos);
         }
         throw new IllegalArgumentException("존재하지 않는 게시물입니다.");
     }
@@ -158,8 +158,8 @@ public class ReplyServiceImpl implements ReplyService {
                 for (Reply reply : replies) {
                     makeReplyDto(loginMember, reply.getThinking().getId(), reply, reply.getThinking(), replyDtos);
                 }
-                ReplyDtos replyDtos1 = new ReplyDtos(replyDtos);
-                return new RepliesResponse(true, replyDtos1);
+                TotalReplyDtos totalReplyDtos1 = new TotalReplyDtos(replyDtos);
+                return new RepliesResponse(true, totalReplyDtos1);
             }
         }
         throw new IllegalArgumentException("권한이 없습니다.");
