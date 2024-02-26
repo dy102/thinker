@@ -96,12 +96,6 @@ public class SurveyServiceImpl implements SurveyService {
         survey.setTitle(surveyMakeRequest.title());
         survey.setIsPremium(surveyMakeRequest.isPremium());
 
-        Image image = new Image();
-        image.setData(multipartFile.getBytes());
-        image.setFileName(getFileName(survey, image));
-        imageRepository.save(image);
-        survey.setImage(image);
-
         List<MultipleChoiceForm> multipleChoiceForms = new ArrayList<>();//객관식 항목 list
         List<SubjectiveForm> subjectiveForms = new ArrayList<>();//주관식 항목 list
 
@@ -137,6 +131,15 @@ public class SurveyServiceImpl implements SurveyService {
         survey.setMultipleChoiceForms(multipleChoiceForms);
         survey.setSubjectiveForms(subjectiveForms);
         surveyRepository.save(survey);
+
+        Image image = imageRepository.findByData(multipartFile.getBytes());
+        if (image == null) {
+            image = new Image();
+            image.setData(multipartFile.getBytes());
+            image.setFileName(getFileName(survey, image));
+            imageRepository.save(image);
+        }
+        survey.setImage(image);
     }
 
     @Override

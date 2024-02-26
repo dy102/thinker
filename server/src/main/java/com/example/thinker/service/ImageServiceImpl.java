@@ -30,7 +30,7 @@ public class ImageServiceImpl implements ImageService {
         if (image == null) {
             image = new Image();
         }
-        image.setFileName(fileName);
+        image.setFileName(getFileName(loginMember, image));
         image.setData(file.getBytes());
         imageRepository.save(image);
 
@@ -73,5 +73,9 @@ public class ImageServiceImpl implements ImageService {
         image.setFileName(path.getFileName().toString());
 
         imageRepository.save(image);
+    }
+
+    private static String getFileName(Member member, Image image) {
+        return "member" + "[" + member.getId() + "]" + "[" + image.getId() + "]";
     }
 }

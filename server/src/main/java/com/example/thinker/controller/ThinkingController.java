@@ -15,13 +15,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 import static com.example.thinker.constants.ErrorConst.NEED_TO_LOGIN;
 import static com.example.thinker.constants.SessionConst.LOGIN_MEMBER;
@@ -60,9 +61,10 @@ public class ThinkingController {
     @PostMapping("/thinking")
     public ResponseEntity<String> postThinking(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember,
-            @RequestBody ThinkingRequest thinkingRequest) throws IOException {
+            @RequestPart List<MultipartFile> thinkingImage,
+            @RequestPart ThinkingRequest thinkingRequest) throws IOException {
         checkAuthorization(loginMember);
-        thinkingService.makeThinking(thinkingRequest, loginMember);
+        thinkingService.makeThinking(thinkingImage, thinkingRequest, loginMember);
         return new ResponseEntity<>("success save thinking", HttpStatus.OK);
     }
 
@@ -70,9 +72,10 @@ public class ThinkingController {
     public ResponseEntity<String> putThinking(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember,
             @RequestParam Long thinkingId,
+            @RequestPart List<MultipartFile> thinkingImage,
             @RequestPart ThinkingRequest thinkingRequest) throws IOException {
         checkAuthorization(loginMember);
-        thinkingService.updateThinking(thinkingId, thinkingRequest, loginMember);
+        thinkingService.updateThinking(thinkingId, thinkingImage, thinkingRequest, loginMember);
         return new ResponseEntity<>("success save thinking", HttpStatus.OK);
     }
 

@@ -68,9 +68,9 @@ public class ThinkingServiceImpl implements ThinkingService {
     }
 
     @Override
-    public Thinking makeThinking(ThinkingRequest thinkingRequest, Member loginMember) throws IOException {
+    public Thinking makeThinking(List<MultipartFile> multipartFiles, ThinkingRequest thinkingRequest, Member loginMember) throws IOException {
         Thinking thinking = new Thinking();
-        makeThinkingByThinkingRequest(thinkingRequest, thinking);
+        makeThinkingByThinkingRequest(multipartFiles, thinkingRequest, thinking);
 
         thinking.setWriter(loginMember);
         thinking.setDateTime(Timestamp.valueOf(LocalDateTime.now()));
@@ -82,11 +82,11 @@ public class ThinkingServiceImpl implements ThinkingService {
     }
 
     @Override
-    public Thinking updateThinking(Long thinkingId, ThinkingRequest thinkingRequest, Member loginMember) throws IOException {
+    public Thinking updateThinking(Long thinkingId, List<MultipartFile> multipartFiles, ThinkingRequest thinkingRequest, Member loginMember) throws IOException {
         Optional<Thinking> thinking = thinkingRepository.findById(thinkingId);
         if (thinking.isPresent()) {
-            if (thinking.get().getWriter().equals(loginMember)) {
-                makeThinkingByThinkingRequest(thinkingRequest, thinking.get());
+            if (thinking.get().getWriter().getId().equals(loginMember.getId())) {
+                makeThinkingByThinkingRequest(multipartFiles, thinkingRequest, thinking.get());
                 thinkingRepository.save(thinking.get());
             }
             throw new IllegalArgumentException("수정 권한이 없습니다.");
@@ -243,10 +243,11 @@ public class ThinkingServiceImpl implements ThinkingService {
         return ThinkingDtos.form(thinkings);
     }
 
-    private void makeThinkingByThinkingRequest(ThinkingRequest thinkingRequest, Thinking thinking) throws IOException {
+    private void makeThinkingByThinkingRequest(List<MultipartFile> multipartFiles, ThinkingRequest thinkingRequest, Thinking thinking) throws IOException {
+        thinkingRepository.save(thinking);
         List<Image> thinkingImages = new ArrayList<>();
-        if (thinkingRequest.thinkingImage() != null) {
-            for (MultipartFile multipartFile : thinkingRequest.thinkingImage()) {
+        if (multipartFiles != null) {
+            for (MultipartFile multipartFile : multipartFiles) {
                 if (multipartFile == null) {
                     continue;
                 }
