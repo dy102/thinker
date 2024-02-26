@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
@@ -85,7 +86,7 @@ public class MemberController {
     @PutMapping("/members/edit/image")
     public ResponseEntity<String> updateImage(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember,
-            @RequestParam MultipartFile file) {
+            @RequestPart MultipartFile file) {
         checkAuthorization(loginMember);
         String fileName = file.getOriginalFilename();
         try {

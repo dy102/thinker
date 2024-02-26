@@ -7,17 +7,19 @@ import com.example.thinker.dto.request.ThinkingRequest;
 import com.example.thinker.dto.response.PremiumThinkingResponse;
 import com.example.thinker.dto.response.ThinkingDetailResponse;
 import com.example.thinker.dto.response.ThinkingResponse;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface ThinkingService {
     PremiumThinkingResponse findPremiumThinkings(int page, int size);
 
     ThinkingResponse findThinkings(String kind, int size, Long lastId);
 
-    Thinking makeThinking(ThinkingRequest thinkingRequest, Member loginMember) throws IOException;
+    Thinking makeThinking(List<MultipartFile> multipartFiles, ThinkingRequest thinkingRequest, Member loginMember) throws IOException;
 
-    Thinking updateThinking(Long thinkingId, ThinkingRequest thinkingRequest, Member loginMember) throws IOException;
+    Thinking updateThinking(Long thinkingId, List<MultipartFile> multipartFiles, ThinkingRequest thinkingRequest, Member loginMember) throws IOException;
 
     ThinkingDetailResponse getThinkingDetail(Long thinkingId, Member loginMember);
 
