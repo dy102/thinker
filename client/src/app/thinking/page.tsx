@@ -79,7 +79,7 @@ function Page() {
         >
           <Button>
             <PageLink
-              href={"#"}
+              href={"/thinking/write"}
               style={{ fontSize: "18px", alignItems: "center" }}
             >
               게시물 작성하기

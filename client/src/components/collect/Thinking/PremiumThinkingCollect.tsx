@@ -8,7 +8,7 @@ import PremiumThinking from "../../Premium/PremiumThinking/PremiumThinking";
 
 export default function PremiumThinkingCollect() {
   const premiumThinkingResponse = {
-    premiumThinkingCount: 2,
+    premiumThinkingCount: 5,
     dtos: [
       {
         thinkingId: 4,
@@ -41,6 +41,26 @@ export default function PremiumThinkingCollect() {
         repliesCount: 5,
         viewCount: 123,
       },
+      {
+        thinkingId: 6,
+        thinkingThumbnail: "https://www.kocca.kr/trend/vol30/img/s11/img_1.jpg",
+        thinkingWriter: "netflix.Inc",
+        thinkingTitle: "New Netflix Subscription System",
+        isPremium: true,
+        likeCount: 20,
+        repliesCount: 5,
+        viewCount: 123,
+      },
+      {
+        thinkingId: 6,
+        thinkingThumbnail: "https://www.kocca.kr/trend/vol30/img/s11/img_1.jpg",
+        thinkingWriter: "netflix.Inc",
+        thinkingTitle: "New Netflix Subscription System",
+        isPremium: true,
+        likeCount: 20,
+        repliesCount: 5,
+        viewCount: 123,
+      },
     ],
   };
   const [page, setPage] = useState(0);
@@ -51,13 +71,25 @@ export default function PremiumThinkingCollect() {
   const { data: thinkingPremiumData } = useGetThinkingPremiumQuery({
     page: backendSendPage,
   });
-  const newDataButtonClick = () => {
-    if (page < (thinkingPremium?.premiumThinkingCount ?? 0)) {
+  console.log(`page : ${page}`)
+  const newDataLeftButtonClick = () => {
+    if (page > 0) {
+      setPage((prevPage) => prevPage - 1);
+      // {FIXME : 맞는건지 잘 모르겠음}
+      setBackendSendPage((prevPage) => prevPage - 1);
+    } else {
+      setToastOpen(true)
+    }
+  }
+  const newDataRightButtonClick = () => {
+    if (page < (premiumThinkingResponse?.premiumThinkingCount / 3) - 1) {
+      console.log((premiumThinkingResponse?.premiumThinkingCount / 3) - 1)
       setPage((prevPage) => prevPage + 1);
       setBackendSendPage((prevPage) => prevPage + 1);
     } else {
       setToastOpen(true);
     }
+    console.log(`front : ${page}`);
   };
   useEffect(() => {
     setThinkingPremium(thinkingPremiumData);
@@ -71,13 +103,11 @@ export default function PremiumThinkingCollect() {
       />
       <IconButton
         sx={{ width: "32px", height: "32px", margin: "auto" }}
-        onClick={() => {
-          page > 0 ? setPage((prevPage) => prevPage - 1) : setToastOpen(true);
-        }}
+        onClick={newDataLeftButtonClick}
       >
         <KeyboardArrowLeft />
       </IconButton>
-      {premiumThinkingResponse?.dtos?.map((thinking) => {
+      {premiumThinkingResponse?.dtos?.slice(page * 3, page * 3 + 3).map((thinking) => {
         return (
           <PremiumThinking
             key={thinking.thinkingId}
@@ -93,7 +123,7 @@ export default function PremiumThinkingCollect() {
       })}
       <IconButton
         sx={{ width: "32px", height: "32px", margin: "auto" }}
-        onClick={newDataButtonClick}
+        onClick={newDataRightButtonClick}
       >
         <KeyboardArrowRight />
       </IconButton>
