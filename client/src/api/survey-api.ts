@@ -1,5 +1,6 @@
 import { defaultInstance } from "@/api";
 import {
+  IMultipleChoice,
   ISurveyNormalParams,
   ISurveyParams,
   ISurveyPremiumParams,
@@ -37,14 +38,21 @@ export const useGetSurveyNormalQuery = (params: ISurveyNormalParams) => {
 
 // get survey
 const GetSurveyApi = async (params: ISurveyParams) => {
-  const { data } = await defaultInstance.get('/surveys', { params });
+  const { data } = await defaultInstance.get("/surveys", { params });
 
   return data;
-}
+};
 
 export const useGetSurveyQuery = (params: ISurveyParams) => {
-  const { isLoading, error, data } = useQuery(['surveys', params], () =>
+  const { isLoading, error, data } = useQuery(["surveys", params], () =>
     GetSurveyApi(params)
   );
   return { data, isLoading, error };
+};
+
+// multipleChoice survey post
+export const PostMultipleChoiceApi = async (body: IMultipleChoice) => {
+  const { data } = await defaultInstance.post("/surveys/multiple", body);
+
+  return data;
 };

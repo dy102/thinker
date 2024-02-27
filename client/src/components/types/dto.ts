@@ -141,7 +141,6 @@ export interface ISurveyNormal {
   nextCursor: number;
 }
 
-
 // survey 요청값
 export interface ISurveyParams {
   surveyId: number;
@@ -172,4 +171,11 @@ export interface ISurvey {
     multipleChoiceDto: multipleChoiceDto;
     subjectiveDto: subjectiveDto;
   };
-};
+}
+
+// multiple choice survey post
+export interface IMultipleChoice {
+  multipleChoiceId: number;
+  itemId: number;
+  isCheck: boolean;
+}
