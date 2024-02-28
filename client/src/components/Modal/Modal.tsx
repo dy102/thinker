@@ -1,6 +1,6 @@
-import React from "react";
-import { DialogStyle } from "./Modal.style";
 import { DialogProps } from "@mui/material";
+import { DialogStyle } from "./Modal.style";
+
 
 function Modal({ children, open, onClose, ...rest }: DialogProps) {
   return (

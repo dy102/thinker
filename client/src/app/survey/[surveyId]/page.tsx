@@ -3,13 +3,14 @@
 import { useGetSurveyQuery } from "@/api/survey-api";
 import { mainColor } from "@/components/Themes/color";
 import { ISurvey } from "@/components/types/dto";
-import { Stack } from "@mui/material";
+import { Modal, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Button from "@/components/Button/Button";
 import PageLink from "@/components/PageLink/PageLink";
 import MultipleChoice from "@/components/SurveyItems/MultipleChoice/MultipleChoice";
 import SubjectiveDone from "@/components/SurveyItems/Subjective/SubjectiveDone";
 import SubjectiveNotYet from "@/components/SurveyItems/Subjective/SubjectiveNotYet";
+import { ModalContent } from "@/components/Modal/Modal.style";
 
 function Page({ params }: { params: { surveyId: number } }) {
   const getSurveys = {
@@ -83,6 +84,8 @@ function Page({ params }: { params: { surveyId: number } }) {
     },
   };
 
+  const [ConfirmOpen, setConfirmOpen] = useState<boolean>(false);
+
   //get main survey contents
   const { data: surveyData } = useGetSurveyQuery({
     surveyId: params.surveyId,
@@ -140,11 +143,25 @@ function Page({ params }: { params: { surveyId: number } }) {
         <></>
       ) : (
         <Stack display="flex" alignItems={"flex-end"}>
-          <Button sx={{ padding: "10px 20px" }}>
-            <PageLink href={"/survey"}>{"제출하기 >>>"}</PageLink>
+          <Button onClick={() => setConfirmOpen(true)} sx={{ padding: "10px 20px" }}>
+            {"제출하기 >>>"}
           </Button>
         </Stack>
       )}
+
+      {/* 재확인 모달 */}
+      <Modal open={ConfirmOpen} onClose={() => setConfirmOpen(false)}>
+        <ModalContent>
+          <Stack>
+            설문조사를 제출하시겠습니까?
+          </Stack>
+          <Stack>
+            제출 후 수정할 수 없습니다.
+          </Stack>
+
+        </ModalContent>
+
+      </Modal>
     </Stack>
   );
 }
