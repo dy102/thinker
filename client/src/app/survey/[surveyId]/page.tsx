@@ -3,14 +3,14 @@
 import { useGetSurveyQuery } from "@/api/survey-api";
 import { mainColor } from "@/components/Themes/color";
 import { ISurvey } from "@/components/types/dto";
-import { Modal, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Button from "@/components/Button/Button";
-import PageLink from "@/components/PageLink/PageLink";
 import MultipleChoice from "@/components/SurveyItems/MultipleChoice/MultipleChoice";
 import SubjectiveDone from "@/components/SurveyItems/Subjective/SubjectiveDone";
 import SubjectiveNotYet from "@/components/SurveyItems/Subjective/SubjectiveNotYet";
 import { ModalContent } from "@/components/Modal/Modal.style";
+import Modal from "@/components/Modal/Modal";
 
 function Page({ params }: { params: { surveyId: number } }) {
   const getSurveys = {
@@ -143,24 +143,30 @@ function Page({ params }: { params: { surveyId: number } }) {
         <></>
       ) : (
         <Stack display="flex" alignItems={"flex-end"}>
-          <Button onClick={() => setConfirmOpen(true)} sx={{ padding: "10px 20px" }}>
+          <Button
+            onClick={() => setConfirmOpen(true)}
+            sx={{ padding: "10px 20px" }}
+          >
             {"제출하기 >>>"}
           </Button>
         </Stack>
       )}
 
       {/* 재확인 모달 */}
-      <Modal open={ConfirmOpen} onClose={() => setConfirmOpen(false)}>
+      <Modal
+        sx={{ borderRadius: "15px" }}
+        open={ConfirmOpen}
+        onClose={() => setConfirmOpen(false)}
+      >
         <ModalContent>
-          <Stack>
+          <Stack marginBottom={"20px"} fontSize={"20px"} color={mainColor}>
             설문조사를 제출하시겠습니까?
           </Stack>
-          <Stack>
-            제출 후 수정할 수 없습니다.
+          <Stack marginBottom={"40px"}>제출 후 수정할 수 없습니다.</Stack>
+          <Stack display={"flex"} alignItems={"flex-end"}>
+            <Button sx={{ width: "80px" }}>확인</Button>
           </Stack>
-
         </ModalContent>
-
       </Modal>
     </Stack>
   );

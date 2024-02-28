@@ -71,19 +71,19 @@ export default function PremiumThinkingCollect() {
   const { data: thinkingPremiumData } = useGetThinkingPremiumQuery({
     page: backendSendPage,
   });
-  console.log(`page : ${page}`)
+  console.log(`page : ${page}`);
   const newDataLeftButtonClick = () => {
     if (page > 0) {
       setPage((prevPage) => prevPage - 1);
       // {FIXME : 맞는건지 잘 모르겠음}
       setBackendSendPage((prevPage) => prevPage - 1);
     } else {
-      setToastOpen(true)
+      setToastOpen(true);
     }
-  }
+  };
   const newDataRightButtonClick = () => {
-    if (page < (premiumThinkingResponse?.premiumThinkingCount / 3) - 1) {
-      console.log((premiumThinkingResponse?.premiumThinkingCount / 3) - 1)
+    if (page < premiumThinkingResponse?.premiumThinkingCount / 3 - 1) {
+      console.log(premiumThinkingResponse?.premiumThinkingCount / 3 - 1);
       setPage((prevPage) => prevPage + 1);
       setBackendSendPage((prevPage) => prevPage + 1);
     } else {
@@ -107,20 +107,23 @@ export default function PremiumThinkingCollect() {
       >
         <KeyboardArrowLeft />
       </IconButton>
-      {premiumThinkingResponse?.dtos?.slice(page * 3, page * 3 + 3).map((thinking) => {
-        return (
-          <PremiumThinking
-            key={thinking.thinkingId}
-            thinkingId={thinking.thinkingId}
-            thinkingThumbnail={thinking.thinkingThumbnail}
-            thinkingWriter={thinking.thinkingWriter}
-            thinkingTitle={thinking.thinkingTitle}
-            likecount={thinking.likeCount}
-            repliesCount={thinking.repliesCount}
-            viewCount={thinking.viewCount}
-          />
-        );
-      })}
+      {premiumThinkingResponse?.dtos
+        ?.slice(page * 3, page * 3 + 3)
+        .map((thinking) => {
+          console.log("count");
+          return (
+            <PremiumThinking
+              key={thinking.thinkingId}
+              thinkingId={thinking.thinkingId}
+              thinkingThumbnail={thinking.thinkingThumbnail}
+              thinkingWriter={thinking.thinkingWriter}
+              thinkingTitle={thinking.thinkingTitle}
+              likecount={thinking.likeCount}
+              repliesCount={thinking.repliesCount}
+              viewCount={thinking.viewCount}
+            />
+          );
+        })}
       <IconButton
         sx={{ width: "32px", height: "32px", margin: "auto" }}
         onClick={newDataRightButtonClick}

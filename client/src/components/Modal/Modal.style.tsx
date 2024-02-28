@@ -1,6 +1,11 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, styled } from "@mui/material";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  styled,
+} from "@mui/material";
 import { boxColor, mainColor } from "../Themes/color";
-
 
 export const ModalTitle = styled(DialogTitle)({
   "&&.MuiDialogTitle-root": {
@@ -14,20 +19,37 @@ export const ModalTitle = styled(DialogTitle)({
 export const ModalContent = styled(DialogContent)({
   "&&.MuiDialogContent-root": {
     backgroundColor: boxColor,
-    padding: "20px 8px",
+    padding: "50px 60px",
   },
 });
 
 export const ModalActions = styled(DialogActions)({
-  "&&.MuiDialogActions-root": { width: "100%", backgroundColor: boxColor },
+  "&&.MuiDialogActions-root": {
+    width: "100%",
+    backgroundColor: boxColor,
+  },
 });
 
 export const DialogStyle = styled(Dialog)({
-  '&.MuiDialog-paper': {
-    padding: '10px 40px 20px 40px',
-    backgroundImage: 'none',
+  "&.MuiDialog-paper": {
+    padding: "30px 30px",
+    backgroundImage: "none",
     backgroundColor: boxColor,
-    border: `1px solid ${mainColor}`,
-    margin: 'auto',
+    border: `2px solid ${mainColor}`,
+    margin: "0px",
+  },
+  "&.MuiPaper-root": {
+    padding: "30px 30px",
+    backgroundImage: "none",
+    backgroundColor: boxColor,
+    border: `2px solid ${mainColor}`,
+    margin: "0px",
+  },
+  "&.MuiPaper-root-MuiDialog-paper": {
+    padding: "30px 30px",
+    backgroundImage: "none",
+    backgroundColor: boxColor,
+    border: `2px solid ${mainColor}`,
+    margin: "0px",
   },
 });
