@@ -16,6 +16,14 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.thinker.domain.Grade.ADVANCED;
+import static com.example.thinker.domain.Grade.BEGINNER;
+import static com.example.thinker.domain.Grade.EXPERT;
+import static com.example.thinker.domain.Grade.INTERMEDIATE;
+import static com.example.thinker.domain.Grade.MANAGER;
+import static com.example.thinker.domain.Grade.MASTER;
+import static com.example.thinker.domain.Grade.THINKER;
+
 @Service
 @RequiredArgsConstructor
 public class MemberServiceImpl implements MemberService {
@@ -29,6 +37,7 @@ public class MemberServiceImpl implements MemberService {
         Member member = new Member();
         makeMember(memberDataRequest, member);
         member.setPoint(0L);
+        member.setAccumulatedPoint(0L);
         member.setGrade(Grade.BEGINNER.getName());
         memberRepository.save(member);
 
@@ -110,7 +119,30 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDataDto read(Member loginMember) {
+        //포인트->등급계산
+        setGradeByAccumulatedPoint(loginMember);
         return MemberDataDto.form(loginMember);
+    }
+
+    @Override
+    public void setGradeByAccumulatedPoint(Member loginMember) {
+        Long gradePoint = loginMember.getAccumulatedPoint();
+        if (!loginMember.getGrade().equals(MANAGER.getName())) {
+            if (0 <= gradePoint && gradePoint <= 99) {
+                loginMember.setGrade(BEGINNER.getName());
+            } else if (100 <= gradePoint && gradePoint <= 299) {
+                loginMember.setGrade(INTERMEDIATE.getName());
+            } else if (300 <= gradePoint && gradePoint <= 999) {
+                loginMember.setGrade(ADVANCED.getName());
+            } else if (1000 <= gradePoint && gradePoint <= 1999) {
+                loginMember.setGrade(EXPERT.getName());
+            } else if (2000 <= gradePoint && gradePoint <= 4999) {
+                loginMember.setGrade(MASTER.getName());
+            } else if (5000 <= gradePoint) {
+                loginMember.setGrade(THINKER.getName());
+            }
+            memberRepository.save(loginMember);
+        }
     }
 
     @Override
@@ -119,6 +151,7 @@ public class MemberServiceImpl implements MemberService {
         if (member.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 멤버입니다.");
         }
+        setGradeByAccumulatedPoint(member.get());
         return MemberSimpleDto.form(member.get());
     }
 

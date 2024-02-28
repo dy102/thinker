@@ -52,7 +52,8 @@ public class MemberController {
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember
     ) {
         checkAuthorization(loginMember);
-        return new ResponseEntity<>(memberService.read(loginMember), HttpStatus.OK);
+        MemberDataDto memberDataDto = memberService.read(loginMember);
+        return new ResponseEntity<>(memberDataDto, HttpStatus.OK);
     }
 
     @GetMapping("/members/simple")

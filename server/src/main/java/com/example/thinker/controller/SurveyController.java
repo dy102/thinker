@@ -109,6 +109,16 @@ public class SurveyController {
         return new ResponseEntity<>(surveyId, HttpStatus.OK);
     }
 
+    @PostMapping("/surveys/participate")
+    public ResponseEntity<String> participateSurvey(
+            @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember,
+            @RequestParam Long surveyId
+    ) {
+        checkAuthorization(loginMember);
+        surveyService.participateSurvey(loginMember, surveyId);
+        return new ResponseEntity<>("success participate survey", HttpStatus.OK);
+    }
+
     @PostMapping("/surveys/make")
     public ResponseEntity<String> makeSurvey(
             @SessionAttribute(name = LOGIN_MEMBER, required = false) Member loginMember,

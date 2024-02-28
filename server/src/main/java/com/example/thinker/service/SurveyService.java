@@ -37,4 +37,6 @@ public interface SurveyService {
     SurveysResponse searchSurveysByWriter(Member loginMember, String kind, String name, Long lastId, int scrollSize);
 
     SurveyDtos getSurveysByMember(Member loginMember, Long memberId, int page, int scrollSize);
+
+    void participateSurvey(Member loginMember, Long surveyId);
 }

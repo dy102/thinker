@@ -15,4 +15,6 @@ public interface MemberService {
     void update(Member loginMember, MemberDataRequest memberDataRequest);
 
     Member login(String customId, String pw);
+
+    void setGradeByAccumulatedPoint(Member loginMember);
 }

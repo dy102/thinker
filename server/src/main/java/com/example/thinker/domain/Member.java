@@ -32,6 +32,8 @@ public class Member {
 
     private Long point; //기본 자료형은 null처리가 안됨, Wrapper class가 더 안전하고 유연하다.
 
+    private Long accumulatedPoint;
+
     private String grade;
 
     private LocalDate birthday;

@@ -2,6 +2,7 @@ package com.example.thinker.service;
 
 import com.example.thinker.domain.Image;
 import com.example.thinker.domain.Member;
+import com.example.thinker.domain.Point;
 import com.example.thinker.domain.Reply;
 import com.example.thinker.domain.Thinking;
 import com.example.thinker.dto.ThinkingDtos;
@@ -11,6 +12,7 @@ import com.example.thinker.dto.response.ThinkingDetailResponse;
 import com.example.thinker.dto.response.ThinkingResponse;
 import com.example.thinker.repository.ImageRepository;
 import com.example.thinker.repository.MemberRepository;
+import com.example.thinker.repository.PointRepository;
 import com.example.thinker.repository.ReplyRepository;
 import com.example.thinker.repository.ThinkingRepository;
 import com.example.thinker.util.ScrollPaginationCollection;
@@ -29,6 +31,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.thinker.constants.ServiceConst.PREMIUM_SURVEY_BONUS;
+import static com.example.thinker.constants.ServiceConst.PREMIUM_THINKING_COST;
+
 @Service
 @RequiredArgsConstructor
 public class ThinkingServiceImpl implements ThinkingService {
@@ -37,6 +42,7 @@ public class ThinkingServiceImpl implements ThinkingService {
     private final ThinkingRepository thinkingRepository;
     private final ReplyRepository replyRepository;
     private final ImageRepository imageRepository;
+    private final PointRepository pointRepository;
 
     @Override
     public PremiumThinkingResponse findPremiumThinkings(int page, int size) {
@@ -72,6 +78,23 @@ public class ThinkingServiceImpl implements ThinkingService {
         Thinking thinking = new Thinking();
         makeThinkingByThinkingRequest(multipartFiles, thinkingRequest, thinking);
 
+        if (thinkingRequest.isPremium()) {
+            if (loginMember.getPoint() >= PREMIUM_THINKING_COST) {
+                Point point = new Point();
+                point.setMember(loginMember);
+                point.setExplanation("프리미엄 게시글 생성");
+                point.setAmount(-PREMIUM_THINKING_COST);
+                pointRepository.save(point);
+
+                loginMember.setPoint(loginMember.getPoint() - PREMIUM_SURVEY_BONUS);
+                memberRepository.save(loginMember);
+
+                thinking.setIsPremium(thinkingRequest.isPremium());
+            } else {
+                throw new IllegalArgumentException("포인트가 부족합니다.");
+            }
+        }
+
         thinking.setWriter(loginMember);
         thinking.setDateTime(Timestamp.valueOf(LocalDateTime.now()));
         thinking.setLikeCount(0L);
@@ -87,6 +110,24 @@ public class ThinkingServiceImpl implements ThinkingService {
         if (thinking.isPresent()) {
             if (thinking.get().getWriter().getId().equals(loginMember.getId())) {
                 makeThinkingByThinkingRequest(multipartFiles, thinkingRequest, thinking.get());
+
+                if (thinkingRequest.isPremium()) {
+                    if (loginMember.getPoint() >= PREMIUM_THINKING_COST) {
+                        Point point = new Point();
+                        point.setMember(loginMember);
+                        point.setExplanation("프리미엄 게시글 생성");
+                        point.setAmount(-PREMIUM_THINKING_COST);
+                        pointRepository.save(point);
+
+                        loginMember.setPoint(loginMember.getPoint() - PREMIUM_THINKING_COST);
+                        memberRepository.save(loginMember);
+
+                        thinking.get().setIsPremium(thinkingRequest.isPremium());
+                    } else {
+                        throw new IllegalArgumentException("포인트가 부족합니다.");
+                    }
+                }
+
                 thinkingRepository.save(thinking.get());
             }
             throw new IllegalArgumentException("수정 권한이 없습니다.");
@@ -108,7 +149,9 @@ public class ThinkingServiceImpl implements ThinkingService {
         Optional<Thinking> thinking = thinkingRepository.findById(thinkingId);
         if (thinking.isPresent()) {
             if (thinking.get().getWriter().equals(loginMember)) {
-                thinkingRepository.delete(thinking.get());
+                thinkingRepository.delete(thinking.get());// 외래키 제약조건 위반
+                List<Reply> replies = replyRepository.findAllByThinking_Id(thinkingId);
+                replyRepository.deleteAll(replies);
                 return;
             }
             throw new IllegalArgumentException("권한이 없습니다.");
@@ -266,7 +309,6 @@ public class ThinkingServiceImpl implements ThinkingService {
         }
         thinking.setTitle(thinkingRequest.thinkingTitle());
         thinking.setContents(thinkingRequest.thinkingContents());
-        thinking.setIsPremium(thinkingRequest.isPremium());
     }
 
     private static String getFileName(Thinking thinking, Image image) {
