@@ -98,10 +98,10 @@ function Page() {
         >
           <Button>
             <PageLink
-              href={"#"}
+              href={"/survey/write"}
               style={{ fontSize: "18px", alignItems: "center" }}
             >
-              설문조사 작성하기
+              MAKE SURVEY
             </PageLink>
           </Button>
           <Stack flexDirection={"row"} justifyContent={"left"}>

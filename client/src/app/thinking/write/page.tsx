@@ -4,7 +4,7 @@ import PageLink from "@/components/PageLink/PageLink";
 import { QuillWrapper } from "@/components/ReactQuill/ReactQuill";
 import { Stack, TextField } from "@mui/material";
 
-function Write() {
+function ThinkingWrite() {
   const modules = {
     toolbar: [
       [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -62,4 +62,4 @@ function Write() {
   );
 }
 
-export default Write;
+export default ThinkingWrite;
