@@ -23,33 +23,9 @@ import { Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import IntroImg from "./premium_thinking.jpg";
 import Image from "next/image";
+import PremiumSurveyCollect from "@/components/collect/Survey/PremiumSurveyCollect";
 
 export default function Home() {
-  const [result, setResult] = useState(0);
-  const premiumSurveysResponse = {
-    premiumSurveysCount: 2,
-    SurveyDtos: [
-      {
-        surveyId: 1,
-        surveyImage:
-          "https://assets.paintingco.com/dev-3/wp-content/uploads/20230802110655/shutterstock_1561397020-scaled.jpg",
-        surveyWriter: "jsjsjsjs",
-        surveyTitle: "Is Thinker good?",
-        surveyItemCount: 5,
-        isDone: true,
-        isPremium: true,
-      },
-      {
-        surveyId: 2,
-        surveyImage: "string",
-        surveyWriter: "jsjsjsjs",
-        surveyTitle: "Is Thinker good?",
-        surveyItemCount: 5,
-        isDone: false,
-        isPremium: true,
-      },
-    ],
-  };
 
   return (
     <Stack display={"flex"} flexDirection={"column"}>
@@ -175,21 +151,7 @@ export default function Home() {
       >
         PREMIUM
       </Typography>
-      <Stack flexDirection={"row"}>
-        {premiumSurveysResponse.SurveyDtos.map((survey) => {
-          return (
-            <PremiumSurvey
-              key={survey.surveyId}
-              surveyImg={survey.surveyImage}
-              surveyWriter={survey.surveyWriter}
-              surveyTitle={survey.surveyTitle}
-              surveyItemCount={survey.surveyItemCount}
-              isDone={survey.isDone}
-            />
-          );
-        })}
-      </Stack>
-
+      <PremiumSurveyCollect />
       <PremiumThinkingCollect />
     </Stack>
   );

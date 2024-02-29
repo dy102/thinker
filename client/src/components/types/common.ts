@@ -4,14 +4,56 @@ export type ModalType = {
   onClose: () => void;
 };
 
+// Survey Types
+
 // PremiumSurvey Type
-export type PremiumSurveyType = {
-  surveyImg: string;
+export type SurveyType = {
+  surveyId: number;
+  surveyImg: string | null;
   surveyWriter: string;
   surveyTitle: string;
   surveyItemCount: number;
   isDone: boolean;
+  isPremium: boolean;
 };
+
+// MultipleChoice Survey Item Type
+export type MultipleSurveyItemType = {
+  itemId: number;
+  item: string;
+  isCheck: boolean;
+};
+
+export type MultipleSurveyItemComponentType = {
+  multipleChoiceId: number;
+  itemId: number;
+  item: string;
+  isCheck: boolean;
+  surveyPost: boolean;
+};
+
+// MultipleChoice Suevey Type
+export type MultipleSurveyType = {
+  multipleChoiceId: number;
+  question: string;
+  items: MultipleSurveyItemType[];
+  isDone: boolean;
+  surveyPost: boolean;
+};
+
+// Subjective Survey Type
+export type SubjectiveContentDoneType = {
+  subjectiveFormId: number;
+  question: string;
+  answer: string;
+};
+export type SubjectiveContentNotYetType = {
+  subjectiveFormId: number;
+  question: string;
+  surveyPost: boolean;
+};
+
+// Thinking types
 
 // PremiumThinking Type
 export type ThinkingType = {

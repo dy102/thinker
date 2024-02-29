@@ -107,3 +107,86 @@ export interface IReply {
   thinkingId: number;
   replyContent: string;
 }
+
+// premium survey 요청값
+export interface ISurveyPremiumParams {
+  page: number;
+}
+
+interface SurveyDto {
+  surveyId: number;
+  surveyImage: string;
+  surveyWriter: string;
+  surveyTitle: string;
+  surveyItemCount: number;
+  isDone: boolean;
+  isPremium: boolean;
+}
+
+// premium survey 반환값
+export interface ISurveyPremium {
+  premiumSurveysCount: number;
+  SurveyDtos: SurveyDto[];
+}
+
+// normal survey 요청값
+export interface ISurveyNormalParams {
+  lastId: number | null;
+  kind: string;
+}
+
+// normal survey 반환값
+export interface ISurveyNormal {
+  surveyDtos: SurveyDto[];
+  nextCursor: number;
+}
+
+// survey 요청값
+export interface ISurveyParams {
+  surveyId: number;
+}
+
+interface multipleChoiceDto {
+  multipleChoiceId: number;
+  question: string;
+  items: {
+    itemId: number;
+    item: string;
+    isCheck: boolean;
+  }[];
+}
+
+interface subjectiveDto {
+  subjectiveId: number;
+  question: string;
+  answer: string;
+}
+
+// survey 반환값
+export interface ISurvey {
+  isDone: boolean;
+  isManager: boolean;
+  surveyDto: {
+    surveyId: number;
+    multipleChoiceDto: multipleChoiceDto;
+    subjectiveDto: subjectiveDto;
+  };
+}
+
+// multiple choice survey post
+export interface IMultipleChoice {
+  multipleChoiceId: number;
+  itemId: number;
+  isCheck: boolean;
+}
+
+// subjective survey post
+export interface ISubjective {
+  subjectiveId: number;
+  answer: string;
+}
+
+// when surveys participate post
+export interface ISurveysParticipate {
+  surveyId: number;
+}

@@ -78,13 +78,13 @@ function PremiumThinking({
             </Stack>
           </Stack>
         </Stack>
-        <PremiumThinkingTitle href={`/thinking/${thinkingId}`}>
+        <PremiumThinkingTitle>
           {thinkingTitle}
         </PremiumThinkingTitle>
 
         <Stack width={"200px"} margin={"10px auto auto auto"}>
           <Button sx={{ position: "relative" }}>
-            <PageLink href={"#"}>보러가기</PageLink>
+            <PageLink href={`/thinking/${thinkingId}`}>보러가기</PageLink>
           </Button>
         </Stack>
       </Stack>

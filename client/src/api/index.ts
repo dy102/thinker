@@ -11,6 +11,4 @@ const axiosApi = (url: string, data?: any) => {
   return instance;
 };
 
-export const defaultInstance = axiosApi(
-  "http://43.200.182.88:8081/swagger-ui/index.html#/"
-);
+export const defaultInstance = axiosApi("http://43.200.182.88:8081");

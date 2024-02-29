@@ -1,6 +1,5 @@
 import { mainColor, shadowColor } from "@/components/Themes/color";
 import { Stack, styled } from "@mui/material";
-import Link from "next/link";
 
 export const ThinkingyBox = styled(Stack)({
   width: "300px",
@@ -21,7 +20,7 @@ export const ThinkingThumbnail = styled(Stack)(
   ({ imagesrc }: { imagesrc: string | null }) => ({
     backgroundImage:
       imagesrc === null
-        ? "url(https://t4.ftcdn.net/jpg/00/93/83/93/240_F_93839373_JT5cpdRmTyuOg6eert4Kexq8aO63iD5r.jpg)"
+        ? "url(https://www.timeshighereducation.com/sites/default/files/styles/the_breaking_news_image_style/public/heads-with-lightbulb-brains-illustration.jpg?itok=agSPU0EP)"
         : `url(${imagesrc})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "300px 200px",
@@ -37,12 +36,11 @@ export const PopularCount = styled(Stack)({
   marginRight: "10px",
 });
 
-export const PremiumThinkingTitle = styled(Link)({
+export const PremiumThinkingTitle = styled(Stack)({
   marginTop: "10px",
   fontSize: "20px",
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
   textDecoration: "none",
-  color: `${mainColor}`,
 });
