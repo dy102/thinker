@@ -11,6 +11,7 @@ function MultipleChoice({
   question,
   items,
   isDone,
+  surveyPost,
 }: MultipleSurveyType) {
   const [value, setValue] = React.useState((0).toString());
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,27 +33,37 @@ function MultipleChoice({
         <Stack fontSize={"25px"}>{question}</Stack>
       </Stack>
       <RadioGroup value={value} onChange={handleChange}>
-        {items.map((item) => {
-          return (
-            <Stack>
-              {isDone ? (
+        {isDone ? (
+          <Stack>
+            {items.map((item) => {
+              return (
                 <SurveyRadioGroupDone
+                  key={item.itemId}
                   multipleChoiceId={multipleChoiceId}
                   itemId={item.itemId}
                   item={item.item}
                   isCheck={item.isCheck}
+                  surveyPost={surveyPost}
                 />
-              ) : (
+              );
+            })}
+          </Stack>
+        ) : (
+          <Stack>
+            {items.map((item) => {
+              return (
                 <SurveyRadioGroupNotYet
+                  key={item.itemId}
                   multipleChoiceId={multipleChoiceId}
                   itemId={item.itemId}
                   item={item.item}
                   isCheck={item.isCheck}
+                  surveyPost={surveyPost}
                 />
-              )}
-            </Stack>
-          );
-        })}
+              );
+            })}
+          </Stack>
+        )}
       </RadioGroup>
     </SurveyBox>
   );

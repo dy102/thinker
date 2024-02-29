@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetSurveyQuery } from "@/api/survey-api";
+import { PostSurveysParticipate, useGetSurveyQuery } from "@/api/survey-api";
 import { mainColor } from "@/components/Themes/color";
 import { ISurvey } from "@/components/types/dto";
 import { Stack } from "@mui/material";
@@ -11,6 +11,7 @@ import SubjectiveDone from "@/components/SurveyItems/Subjective/SubjectiveDone";
 import SubjectiveNotYet from "@/components/SurveyItems/Subjective/SubjectiveNotYet";
 import { ModalContent } from "@/components/Modal/Modal.style";
 import Modal from "@/components/Modal/Modal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function Page({ params }: { params: { surveyId: number } }) {
   const getSurveys = {
@@ -85,12 +86,28 @@ function Page({ params }: { params: { surveyId: number } }) {
   };
 
   const [ConfirmOpen, setConfirmOpen] = useState<boolean>(false);
+  const [surveyPost, setSurveyPost] = useState(false);
 
   //get main survey contents
   const { data: surveyData } = useGetSurveyQuery({
     surveyId: params.surveyId,
   });
   const [survey, setSurvey] = useState<ISurvey>();
+
+  const queryClient = useQueryClient();
+  const postSurveyParticipateCreateQuery = useMutation(PostSurveysParticipate, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(["surveys"]);
+    },
+  });
+
+  const SurveyParticipateOnClick = () => {
+    const newSurveyParticipateBody = {
+      surveyId: params.surveyId,
+    };
+
+    postSurveyParticipateCreateQuery.mutate(newSurveyParticipateBody);
+  };
   useEffect(() => {
     setSurvey(surveyData);
   }, [surveyData]);
@@ -107,10 +124,12 @@ function Page({ params }: { params: { surveyId: number } }) {
       {getSurveys.surveyDetailDto.multipleChoiceDtos.map((multi) => {
         return (
           <MultipleChoice
+            key={multi.multipleChoiceId}
             multipleChoiceId={multi.multipleChoiceId}
             question={multi.question}
             items={multi.items}
             isDone={getSurveys.isDone}
+            surveyPost={surveyPost}
           />
         );
       })}
@@ -119,6 +138,7 @@ function Page({ params }: { params: { surveyId: number } }) {
           {getSurveys.surveyDetailDto.subjectiveDtos.map((subj) => {
             return (
               <SubjectiveDone
+                key={subj.subjectiveFormId}
                 subjectiveFormId={subj.subjectiveFormId}
                 question={subj.question}
                 answer={subj.answer}
@@ -131,8 +151,10 @@ function Page({ params }: { params: { surveyId: number } }) {
           {getSurveys.surveyDetailDto.subjectiveDtos.map((subj) => {
             return (
               <SubjectiveNotYet
+                key={subj.subjectiveFormId}
                 subjectiveFormId={subj.subjectiveFormId}
                 question={subj.question}
+                surveyPost={surveyPost}
               />
             );
           })}
@@ -164,7 +186,15 @@ function Page({ params }: { params: { surveyId: number } }) {
           </Stack>
           <Stack marginBottom={"40px"}>제출 후 수정할 수 없습니다.</Stack>
           <Stack display={"flex"} alignItems={"flex-end"}>
-            <Button sx={{ width: "80px" }}>확인</Button>
+            <Button
+              sx={{ width: "80px" }}
+              onClick={() => {
+                setSurveyPost(true);
+                SurveyParticipateOnClick;
+              }}
+            >
+              확인
+            </Button>
           </Stack>
         </ModalContent>
       </Modal>

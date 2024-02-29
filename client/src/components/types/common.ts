@@ -29,6 +29,7 @@ export type MultipleSurveyItemComponentType = {
   itemId: number;
   item: string;
   isCheck: boolean;
+  surveyPost: boolean;
 };
 
 // MultipleChoice Suevey Type
@@ -37,6 +38,7 @@ export type MultipleSurveyType = {
   question: string;
   items: MultipleSurveyItemType[];
   isDone: boolean;
+  surveyPost: boolean;
 };
 
 // Subjective Survey Type
@@ -48,6 +50,7 @@ export type SubjectiveContentDoneType = {
 export type SubjectiveContentNotYetType = {
   subjectiveFormId: number;
   question: string;
+  surveyPost: boolean;
 };
 
 // Thinking types

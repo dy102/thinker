@@ -1,4 +1,4 @@
-import { FormControlLabel, Radio, Stack } from "@mui/material";
+import { FormControlLabel, Radio } from "@mui/material";
 import { MultipleSurveyItemComponentType } from "../../types/common";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { PostMultipleChoiceApi } from "@/api/survey-api";
@@ -9,6 +9,7 @@ function SurveyRadioGroupNotYet({
   itemId,
   item,
   isCheck,
+  surveyPost,
 }: MultipleSurveyItemComponentType) {
   const [choice, setChoice] = useState(false);
   const ChoiceOnClick = () => {
@@ -23,7 +24,7 @@ function SurveyRadioGroupNotYet({
     },
   });
 
-  const MultipleChoiceOnClick = () => {
+  const MultipleChoicePost = () => {
     const newMultipleChoiceBody = {
       multipleChoiceId: multipleChoiceId,
       itemId: itemId,
@@ -31,8 +32,11 @@ function SurveyRadioGroupNotYet({
     };
 
     postMultipleChoiceCreateQuery.mutate(newMultipleChoiceBody);
-    console.log(newMultipleChoiceBody);
   };
+  if (surveyPost) {
+    MultipleChoicePost;
+    console.log(surveyPost);
+  }
   return (
     <FormControlLabel
       value={itemId.toString()}

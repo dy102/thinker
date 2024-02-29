@@ -6,6 +6,7 @@ function SurveyRadioGroupDone({
   itemId,
   item,
   isCheck,
+  surveyPost,
 }: MultipleSurveyItemComponentType) {
   return (
     <FormControlLabel

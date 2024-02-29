@@ -1,9 +1,11 @@
 import { defaultInstance } from "@/api";
 import {
   IMultipleChoice,
+  ISubjective,
   ISurveyNormalParams,
   ISurveyParams,
   ISurveyPremiumParams,
+  ISurveysParticipate,
 } from "@/components/types/dto";
 import { useQuery } from "@tanstack/react-query";
 
@@ -53,6 +55,20 @@ export const useGetSurveyQuery = (params: ISurveyParams) => {
 // multipleChoice survey post
 export const PostMultipleChoiceApi = async (body: IMultipleChoice) => {
   const { data } = await defaultInstance.post("/surveys/multiple", body);
+
+  return data;
+};
+
+// subjective survey post
+export const PostSubjectiveApi = async (body: ISubjective) => {
+  const { data } = await defaultInstance.post("/surveys/subjective", body);
+
+  return data;
+};
+
+// when surveys participate
+export const PostSurveysParticipate = async (body: ISurveysParticipate) => {
+  const { data } = await defaultInstance.post("/surveys/participate", body);
 
   return data;
 };

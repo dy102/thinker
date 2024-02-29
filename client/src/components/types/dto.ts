@@ -179,3 +179,14 @@ export interface IMultipleChoice {
   itemId: number;
   isCheck: boolean;
 }
+
+// subjective survey post
+export interface ISubjective {
+  subjectiveId: number;
+  answer: string;
+}
+
+// when surveys participate post
+export interface ISurveysParticipate {
+  surveyId: number;
+}
