@@ -58,6 +58,8 @@ public class SurveyServiceImpl implements SurveyService {
     private final MemberRepository memberRepository;
     private final PointRepository pointRepository;
 
+    private final MemberService memberService;
+
     @Override
     public Long postSubjective(Member loginMember, Long subjectiveFormId, String answer) {
         //해당 설문조사에 답변내용이 존재하는지 검증하는 로직이 필요함.
@@ -217,6 +219,8 @@ public class SurveyServiceImpl implements SurveyService {
                 loginMember.setAccumulatedPoint(loginMember.getAccumulatedPoint() + amount);
                 memberRepository.save(loginMember);
             }
+            memberService.setGradeByAccumulatedPoint(loginMember);
+            
             survey.get().setParticipants(survey.get().getParticipants() + 1);
             surveyRepository.save(survey.get());
             return;

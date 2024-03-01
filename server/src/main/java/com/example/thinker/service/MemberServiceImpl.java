@@ -119,8 +119,6 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDataDto read(Member loginMember) {
-        //포인트->등급계산
-        setGradeByAccumulatedPoint(loginMember);
         return MemberDataDto.form(loginMember);
     }
 
@@ -151,7 +149,6 @@ public class MemberServiceImpl implements MemberService {
         if (member.isEmpty()) {
             throw new IllegalArgumentException("존재하지 않는 멤버입니다.");
         }
-        setGradeByAccumulatedPoint(member.get());
         return MemberSimpleDto.form(member.get());
     }
 
