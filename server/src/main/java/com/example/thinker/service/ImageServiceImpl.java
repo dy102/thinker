@@ -53,14 +53,15 @@ public class ImageServiceImpl implements ImageService {
         return member.getImage();
     }
 
-    public void makeBasicImage(Member member, Long imageId) {
+    public void makeBasicImage(Member member, Long imageId) throws IOException {
         Optional<Image> image = imageRepository.findById(imageId);
-        if (image.isPresent()) {
-            member.setImage(image.get());
-            memberRepository.save(member);
-        } else {
-            throw new IllegalArgumentException("기본 이미지가 설정되지 않았습니다.");
+        if (image.isEmpty()) {
+            saveImage("server/image/person.jpeg");
         }
+        Optional<Image> image1 = imageRepository.findById(imageId);
+        member.setImage(image1.get());
+        memberRepository.save(member);
+
     }
 
     public void saveImage(String filePath) throws IOException {

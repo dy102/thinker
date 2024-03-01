@@ -1,6 +1,7 @@
 package com.example.thinker.service;
 
 import com.example.thinker.domain.Member;
+import com.example.thinker.domain.Point;
 import com.example.thinker.domain.Reply;
 import com.example.thinker.domain.ReplyReply;
 import com.example.thinker.domain.ReplyReplyLike;
@@ -9,6 +10,8 @@ import com.example.thinker.dto.ReplyReplyDto;
 import com.example.thinker.dto.TotalReplyDtos;
 import com.example.thinker.dto.request.ContentsRequest;
 import com.example.thinker.dto.response.RepliesResponse;
+import com.example.thinker.repository.MemberRepository;
+import com.example.thinker.repository.PointRepository;
 import com.example.thinker.repository.ReplyReplyLikeRepository;
 import com.example.thinker.repository.ReplyReplyRepository;
 import com.example.thinker.repository.ReplyRepository;
@@ -22,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.thinker.constants.ServiceConst.PREMIUM_THINKING_BONUS;
+
 @Service
 @RequiredArgsConstructor
 public class ReplyReplyServiceImpl implements ReplyReplyService {
@@ -29,6 +34,11 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
     private final ReplyReplyRepository replyReplyRepository;
     private final ThinkingRepository thinkingRepository;
     private final ReplyReplyLikeRepository replyReplyLikeRepository;
+    private final PointRepository pointRepository;
+    private final MemberRepository memberRepository;
+
+    private final MemberService memberService;
+
 
     @Override
     public RepliesResponse getReplyReplies(Member loginMember, Long thinkingId, Long replyId) {
@@ -92,6 +102,35 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
                     null, reply.get(), loginMember,
                     contentsRequest.contents(), 0L, Timestamp.valueOf(LocalDateTime.now())
             );
+            //포인트 추가
+            if (reply.get().getThinking().getIsPremium()) {
+                int sizePoint = contentsRequest.contents().length() / 10;
+                if (sizePoint > 26) {
+                    sizePoint = 26;
+                }
+                Long amount = sizePoint + PREMIUM_THINKING_BONUS;
+                Point point = new Point();
+                point.setMember(loginMember);
+                point.setExplanation("댓글 작성(프리미엄)");
+                point.setAmount(amount);
+                pointRepository.save(point);
+
+                loginMember.setPoint(loginMember.getPoint() + amount);
+                loginMember.setAccumulatedPoint(loginMember.getAccumulatedPoint() + amount);
+                memberRepository.save(loginMember);
+            } else {
+                Long amount = (long) (contentsRequest.contents().length() / 10);
+                Point point = new Point();
+                point.setMember(loginMember);
+                point.setExplanation("댓글 작성");
+                point.setAmount(amount);
+                pointRepository.save(point);
+
+                loginMember.setPoint(loginMember.getPoint() + amount);
+                loginMember.setAccumulatedPoint(loginMember.getAccumulatedPoint() + amount);
+                memberRepository.save(loginMember);
+            }
+            memberService.setGradeByAccumulatedPoint(loginMember);
             replyReplyRepository.save(replyReply);
             return;
         }

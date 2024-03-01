@@ -5,6 +5,7 @@ import com.example.thinker.domain.ChoiceForm;
 import com.example.thinker.domain.Image;
 import com.example.thinker.domain.Member;
 import com.example.thinker.domain.MultipleChoiceForm;
+import com.example.thinker.domain.Point;
 import com.example.thinker.domain.Subjective;
 import com.example.thinker.domain.SubjectiveForm;
 import com.example.thinker.domain.Survey;
@@ -25,6 +26,7 @@ import com.example.thinker.repository.ChoiceRepository;
 import com.example.thinker.repository.ImageRepository;
 import com.example.thinker.repository.MemberRepository;
 import com.example.thinker.repository.MultipleChoiceFormRepository;
+import com.example.thinker.repository.PointRepository;
 import com.example.thinker.repository.SubjectiveFormRepository;
 import com.example.thinker.repository.SubjectiveRepository;
 import com.example.thinker.repository.SurveyRepository;
@@ -40,6 +42,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.thinker.constants.ServiceConst.PREMIUM_SURVEY_BONUS;
+import static com.example.thinker.constants.ServiceConst.PREMIUM_SURVEY_COST;
+
 @Service
 @RequiredArgsConstructor
 public class SurveyServiceImpl implements SurveyService {
@@ -51,6 +56,9 @@ public class SurveyServiceImpl implements SurveyService {
     private final SubjectiveRepository subjectiveRepository;
     private final ImageRepository imageRepository;
     private final MemberRepository memberRepository;
+    private final PointRepository pointRepository;
+
+    private final MemberService memberService;
 
     @Override
     public Long postSubjective(Member loginMember, Long subjectiveFormId, String answer) {
@@ -94,7 +102,23 @@ public class SurveyServiceImpl implements SurveyService {
         Survey survey = new Survey();
         survey.setWriter(loginMember);
         survey.setTitle(surveyMakeRequest.title());
-        survey.setIsPremium(surveyMakeRequest.isPremium());
+
+        if (surveyMakeRequest.isPremium()) {
+            if (loginMember.getPoint() >= PREMIUM_SURVEY_COST) {
+                Point point = new Point();
+                point.setMember(loginMember);
+                point.setExplanation("프리미엄 설문조사 생성");
+                point.setAmount(-PREMIUM_SURVEY_COST);
+                pointRepository.save(point);
+
+                loginMember.setPoint(loginMember.getPoint() - PREMIUM_SURVEY_COST);
+                memberRepository.save(loginMember);
+
+                survey.setIsPremium(surveyMakeRequest.isPremium());
+            } else {
+                throw new IllegalArgumentException("포인트가 부족합니다.");
+            }
+        }
 
         List<MultipleChoiceForm> multipleChoiceForms = new ArrayList<>();//객관식 항목 list
         List<SubjectiveForm> subjectiveForms = new ArrayList<>();//주관식 항목 list
@@ -130,16 +154,78 @@ public class SurveyServiceImpl implements SurveyService {
         }
         survey.setMultipleChoiceForms(multipleChoiceForms);
         survey.setSubjectiveForms(subjectiveForms);
-        surveyRepository.save(survey);
 
         Image image = imageRepository.findByData(multipartFile.getBytes());
-        if (image == null) {
+        if (image == null && !multipartFile.isEmpty()) {
             image = new Image();
             image.setData(multipartFile.getBytes());
             image.setFileName(getFileName(survey, image));
             imageRepository.save(image);
         }
         survey.setImage(image);
+        surveyRepository.save(survey);
+
+
+    }
+
+    @Override
+    public void participateSurvey(Member loginMember, Long surveyId) {
+        Optional<Survey> survey = surveyRepository.findById(surveyId);
+        if (survey.isPresent()) {
+            for (MultipleChoiceForm multipleChoiceForm : survey.get().getMultipleChoiceForms()) {
+                for (ChoiceForm choiceForm : multipleChoiceForm.getItems()) {
+                    if (choiceRepository
+                            .findByChoiceForm_IdAndParticipant_Id(choiceForm.getId(), loginMember.getId())
+                            == null) {
+                        throw new IllegalArgumentException("참여하지 않은 설문조사입니다.");
+                    }
+                }
+            }
+            for (SubjectiveForm subjectiveForm : survey.get().getSubjectiveForms()) {
+                if (subjectiveRepository
+                        .findBySubjectiveForm_IdAndParticipant_Id(subjectiveForm.getId(), loginMember.getId())
+                        == null) {
+                    throw new IllegalArgumentException("참여하지 않은 설문조사입니다.");
+                }
+            }
+            //설문조사 참여 확인절차 완료
+
+            //포인트 추가
+            int sizePoint = (survey.get().getSubjectiveForms().size()
+                    + survey.get().getMultipleChoiceForms().size()) * 2;
+            if (sizePoint > 26) {
+                sizePoint = 26;
+            }
+            if (survey.get().getIsPremium()) {
+                Long amount = sizePoint + PREMIUM_SURVEY_BONUS;
+                Point point = new Point();
+                point.setMember(loginMember);
+                point.setExplanation("설문조사 참여(프리미엄)");
+                point.setAmount(amount);
+                pointRepository.save(point);
+
+                loginMember.setPoint(loginMember.getPoint() + amount);
+                loginMember.setAccumulatedPoint(loginMember.getAccumulatedPoint() + amount);
+                memberRepository.save(loginMember);
+            } else {
+                Long amount = (long) sizePoint;
+                Point point = new Point();
+                point.setMember(loginMember);
+                point.setExplanation("댓글 작성");
+                point.setAmount(amount);
+                pointRepository.save(point);
+
+                loginMember.setPoint(loginMember.getPoint() + amount);
+                loginMember.setAccumulatedPoint(loginMember.getAccumulatedPoint() + amount);
+                memberRepository.save(loginMember);
+            }
+            memberService.setGradeByAccumulatedPoint(loginMember);
+            
+            survey.get().setParticipants(survey.get().getParticipants() + 1);
+            surveyRepository.save(survey.get());
+            return;
+        }
+        throw new IllegalArgumentException("존재하지 않는 설문조사입니다.");
     }
 
     @Override
@@ -198,6 +284,22 @@ public class SurveyServiceImpl implements SurveyService {
         Optional<Survey> survey = surveyRepository.findById(surveyId);
         if (survey.isPresent()) {
             if (survey.get().getWriter().equals(loginMember)) {
+                if (isPremium) {
+                    if (loginMember.getPoint() >= PREMIUM_SURVEY_COST) {
+                        Point point = new Point();
+                        point.setMember(loginMember);
+                        point.setExplanation("프리미엄 설문조사 생성");
+                        point.setAmount(-PREMIUM_SURVEY_COST);
+                        pointRepository.save(point);
+
+                        loginMember.setPoint(loginMember.getPoint() - PREMIUM_SURVEY_COST);
+                        memberRepository.save(loginMember);
+
+                        survey.get().setIsPremium(isPremium);
+                    } else {
+                        throw new IllegalArgumentException("포인트가 부족합니다.");
+                    }
+                }
                 if (isPremium && !survey.get().getIsPremium()) {
                     surveyRepository.delete(survey.get());//최신 프리미엄으로 등록하기 위한 과정
                 }
@@ -213,26 +315,29 @@ public class SurveyServiceImpl implements SurveyService {
     public void deleteSurvey(Member loginMember, Long surveyId) {
         Optional<Survey> survey = surveyRepository.findById(surveyId);
         if (survey.isPresent()) {
-            if (survey.get().getWriter().equals(loginMember)) {
-                surveyRepository.delete(survey.get());
-                for (MultipleChoiceForm multipleChoiceForm : survey.get().getMultipleChoiceForms()) {
-                    multipleChoiceFormRepository.delete(multipleChoiceForm);
-                    for (ChoiceForm choiceForm : multipleChoiceForm.getItems()) {
-                        choiceFormRepository.delete(choiceForm);
-                        List<Choice> choicesByParticipants = choiceRepository.findAllByChoiceForm_Id(choiceForm.getId());
-                        for (Choice choice : choicesByParticipants) {
-                            choiceRepository.delete(choice);
-                        }
-                    }
-                }
+            if (survey.get().getWriter().getId().equals(loginMember.getId())) {
+
                 for (SubjectiveForm subjectiveForm : survey.get().getSubjectiveForms()) {
-                    subjectiveFormRepository.delete(subjectiveForm);
+
                     List<Subjective> subjectivesByParticipants
                             = subjectiveRepository.findAllBySubjectiveForm_Id(subjectiveForm.getId());
-                    for (Subjective subjective : subjectivesByParticipants) {
-                        subjectiveRepository.delete(subjective);
-                    }
+                    subjectiveRepository.deleteAll(subjectivesByParticipants);
+                    subjectiveFormRepository.delete(subjectiveForm);
                 }
+
+                for (MultipleChoiceForm multipleChoiceForm : survey.get().getMultipleChoiceForms()) {
+
+                    for (ChoiceForm choiceForm : multipleChoiceForm.getItems()) {
+
+                        List<Choice> choicesByParticipants = choiceRepository.findAllByChoiceForm_Id(choiceForm.getId());
+                        choiceRepository.deleteAll(choicesByParticipants);
+                        choiceFormRepository.delete(choiceForm);
+                    }
+                    multipleChoiceFormRepository.delete(multipleChoiceForm);
+                }
+
+                surveyRepository.delete(survey.get());
+                return;
                 //설문조사에 딸린 모든 도메인 정보를 삭제해야한다.....//참여한 내용도 전부 삭제해야하는데, 함께 삭제해야할까?
                 //그러면 3중 for문을 사용해야하는데, 시간이 너무 오래걸리는 건 아닐까?
             }
