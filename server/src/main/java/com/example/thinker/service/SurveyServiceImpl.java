@@ -254,8 +254,13 @@ public class SurveyServiceImpl implements SurveyService {
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         List<Survey> surveys;
         if (kind.equals("recent")) {
-            Page<Survey> page = surveyRepository.findAllByIdLessThanOrderByIdDesc(lastId, pageRequest);
-            surveys = page.getContent();
+            if (lastId == null) {
+                Page<Survey> page = surveyRepository.findAllByOrderByIdDesc(pageRequest);
+                surveys = page.getContent();
+            } else {
+                Page<Survey> page = surveyRepository.findAllByIdLessThanOrderByIdDesc(lastId, pageRequest);
+                surveys = page.getContent();
+            }
         } else if (kind.equals("popular")) {
             surveys = surveyRepository.find100ByPopular();
             size = 100;//100개를 한꺼번에 보낸다.
@@ -313,8 +318,13 @@ public class SurveyServiceImpl implements SurveyService {
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         List<Survey> surveys;
         if (kind.equals("recent")) {
-            surveys = surveyRepository
-                    .findAllByTitleContainingIgnoreCaseOrderByIdDesc(title, lastId, pageRequest).getContent();
+            if (lastId == null) {
+                surveys = surveyRepository
+                        .findAllByTitleContainingIgnoreCaseOrderByIdDesc(title, pageRequest).getContent();
+            } else {
+                surveys = surveyRepository
+                        .findAllByTitleContainingIgnoreCaseAndIdLessThanOrderByIdDesc(title, lastId, pageRequest).getContent();
+            }
         } else if (kind.equals("popular")) {
             surveys = surveyRepository.search100ByTitleAndPopular();
         } else {
@@ -330,8 +340,14 @@ public class SurveyServiceImpl implements SurveyService {
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         List<Survey> surveys;
         if (kind.equals("recent")) {
-            surveys = surveyRepository
-                    .findAllByWriter_NameContainingIgnoreCaseOrderByIdDesc(name, lastId, pageRequest).getContent();
+            if (lastId == null) {
+                surveys = surveyRepository
+                        .findAllByWriter_NameContainingIgnoreCaseAndIdLessThanOrderByIdDesc(name, lastId, pageRequest).getContent();
+            } else {
+                surveys = surveyRepository
+                        .findAllByWriter_NameContainingIgnoreCaseOrderByIdDesc(name, pageRequest).getContent();
+            }
+
         } else if (kind.equals("popular")) {
             surveys = surveyRepository.search100ByNameAndPopular();
         } else {

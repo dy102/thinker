@@ -126,7 +126,7 @@ public class ThinkingController {
             @RequestParam Long lastId
     ) {
         checkAuthorization(loginMember);
-        ThinkingResponse thinkingResponse = thinkingService.getMemberActivityDetails(memberId, SCROLL_SIZE, lastId);
+        ThinkingResponse thinkingResponse = thinkingService.getMemberActivityDetails(loginMember, memberId, SCROLL_SIZE, lastId);
         return new ResponseEntity<>(thinkingResponse, HttpStatus.OK);
     }
 

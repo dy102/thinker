@@ -16,6 +16,8 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
 
     Page<Survey> findAllByIdLessThanOrderByIdDesc(Long lastId, PageRequest pageRequest);
 
+    Page<Survey> findAllByOrderByIdDesc(PageRequest pageRequest);
+
     @Query("SELECT s FROM Survey s ORDER BY s.participants LIMIT 100")
     List<Survey> find100ByPopular();
 
@@ -23,12 +25,16 @@ public interface SurveyRepository extends JpaRepository<Survey, Long> {
 
     Page<Survey> findAllByWriterOrderByParticipantsDesc(Member member, PageRequest pageRequest);
 
-    Page<Survey> findAllByTitleContainingIgnoreCaseOrderByIdDesc(String title, Long lastId, PageRequest pageRequest);
+    Page<Survey> findAllByTitleContainingIgnoreCaseAndIdLessThanOrderByIdDesc(String title, Long lastId, PageRequest pageRequest);
+
+    Page<Survey> findAllByTitleContainingIgnoreCaseOrderByIdDesc(String title, PageRequest pageRequest);
 
     @Query("SELECT s FROM Survey s WHERE LOWER(s.title) LIKE '%your_search_term%' ORDER BY s.participants desc LIMIT 100")
     List<Survey> search100ByTitleAndPopular();
 
-    Page<Survey> findAllByWriter_NameContainingIgnoreCaseOrderByIdDesc(String name, Long lastId, PageRequest pageRequest);
+    Page<Survey> findAllByWriter_NameContainingIgnoreCaseAndIdLessThanOrderByIdDesc(String name, Long lastId, PageRequest pageRequest);
+
+    Page<Survey> findAllByWriter_NameContainingIgnoreCaseOrderByIdDesc(String name, PageRequest pageRequest);
 
     @Query("SELECT s FROM Survey s WHERE LOWER(s.writer.name) LIKE '%your_search_term%' ORDER BY s.participants desc LIMIT 100")
     List<Survey> search100ByNameAndPopular();

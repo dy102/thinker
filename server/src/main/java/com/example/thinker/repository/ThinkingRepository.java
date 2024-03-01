@@ -19,14 +19,19 @@ public interface ThinkingRepository extends JpaRepository<Thinking, Long> {
 
     Page<Thinking> findAllByIdLessThanOrderByIdDesc(Long lastId, Pageable pageable);
 
-    Page<Thinking> findAllByLikeCountIsLessThanOrderByLikeCountDesc(Long likeCount, Pageable pageable);
+    @Query("SELECT t FROM Thinking t ORDER BY t.likeCount desc LIMIT 100")
+    List<Thinking> find100ByLikeCount();
 
-    Page<Thinking> findAllByViewCountLessThanOrderByViewCountDesc(Long viewCount, Pageable pageable);
+    @Query("SELECT t FROM Thinking t ORDER BY t.viewCount desc LIMIT 100")
+    List<Thinking> find100ByViewCount();
+
 
     Long countThinkingByIdIsNotNull();
 
     //search title
     Page<Thinking> searchAllByTitleContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(String title, Long lastId, Pageable pageable);
+
+    Page<Thinking> searchAllByTitleContainingIgnoreCaseOrderByIdDesc(String title, Pageable pageable);
 
     @Query("SELECT t FROM Thinking t WHERE LOWER(t.title) LIKE '%your_search_term%' ORDER BY t.likeCount desc LIMIT 100")
     List<Thinking> search100ByTitleAndLikeCount();
@@ -37,6 +42,8 @@ public interface ThinkingRepository extends JpaRepository<Thinking, Long> {
     //search contents
     Page<Thinking> searchAllByContentsContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(String content, Long lastId, Pageable pageable);
 
+    Page<Thinking> searchAllByContentsContainingIgnoreCaseOrderByIdDesc(String content, Pageable pageable);
+
     @Query("SELECT t FROM Thinking t WHERE LOWER(t.contents) LIKE '%your_search_term%' ORDER BY t.likeCount desc LIMIT 100")
     List<Thinking> search100ByContentsAndLikeCount();
 
@@ -46,6 +53,8 @@ public interface ThinkingRepository extends JpaRepository<Thinking, Long> {
     //search writer //writer 바꿔줘야함?
 
     Page<Thinking> searchAllByWriter_NameContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(@Param("writer_name") String name, Long lastId, Pageable pageable);
+
+    Page<Thinking> searchAllByWriter_NameContainingIgnoreCaseOrderByIdDesc(@Param("writer_name") String name, Pageable pageable);
 
     @Query("SELECT t FROM Thinking t WHERE LOWER(t.contents) LIKE '%your_search_term%' ORDER BY t.likeCount desc LIMIT 100")
     List<Thinking> search100ByNameAndLikeCount();

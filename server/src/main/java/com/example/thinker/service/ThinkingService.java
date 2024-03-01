@@ -31,7 +31,7 @@ public interface ThinkingService {
 
     ThinkingResponse findThinkingByWriter(String writer, String kind, int size, Long lastId);
 
-    ThinkingResponse getMemberActivityDetails(Long memberId, int size, Long lastId);
+    ThinkingResponse getMemberActivityDetails(Member loginMember, Long memberId, int size, Long lastId);
 
     ThinkingDtos getMyThinkings(Member loginMember, String kind, int page, int size);
 
