@@ -1,6 +1,7 @@
 package com.example.thinker.service;
 
 import com.example.thinker.domain.Member;
+import com.example.thinker.domain.Point;
 import com.example.thinker.domain.Reply;
 import com.example.thinker.domain.ReplyLike;
 import com.example.thinker.domain.Thinking;
@@ -8,6 +9,7 @@ import com.example.thinker.dto.ReplyDto;
 import com.example.thinker.dto.TotalReplyDtos;
 import com.example.thinker.dto.response.RepliesResponse;
 import com.example.thinker.repository.MemberRepository;
+import com.example.thinker.repository.PointRepository;
 import com.example.thinker.repository.ReplyLikeRepository;
 import com.example.thinker.repository.ReplyRepository;
 import com.example.thinker.repository.ThinkingRepository;
@@ -20,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.example.thinker.constants.ServiceConst.PREMIUM_THINKING_BONUS;
+
 @Service
 @RequiredArgsConstructor
 public class ReplyServiceImpl implements ReplyService {
@@ -27,6 +31,9 @@ public class ReplyServiceImpl implements ReplyService {
     private final ThinkingRepository thinkingRepository;
     private final ReplyLikeRepository replyLikeRepository;
     private final MemberRepository memberRepository;
+    private final PointRepository pointRepository;
+
+    private final MemberService memberService;
 
     @Override
     public RepliesResponse getReplies(Member loginMember, Long thinkingId) {
@@ -88,6 +95,38 @@ public class ReplyServiceImpl implements ReplyService {
             reply.setCreatedAt(Timestamp.valueOf(LocalDateTime.now()));
             reply.setLikeCount(0L);
             replyRepository.save(reply);
+
+            //포인트 추가
+            if (!thinking.get().getWriter().getId().equals(loginMember.getId())) {
+                if (thinking.get().getIsPremium()) {
+                    int sizePoint = replyContent.length() / 10;
+                    if (sizePoint > 26) {
+                        sizePoint = 26;
+                    }
+                    Long amount = sizePoint + PREMIUM_THINKING_BONUS;
+                    Point point = new Point();
+                    point.setMember(loginMember);
+                    point.setExplanation("댓글 작성(프리미엄)");
+                    point.setAmount(amount);
+                    pointRepository.save(point);
+
+                    loginMember.setPoint(loginMember.getPoint() + amount);
+                    loginMember.setAccumulatedPoint(loginMember.getAccumulatedPoint() + amount);
+                    memberRepository.save(loginMember);
+                } else {
+                    Long amount = (long) (replyContent.length() / 10);
+                    Point point = new Point();
+                    point.setMember(loginMember);
+                    point.setExplanation("댓글 작성");
+                    point.setAmount(amount);
+                    pointRepository.save(point);
+
+                    loginMember.setPoint(loginMember.getPoint() + amount);
+                    loginMember.setAccumulatedPoint(loginMember.getAccumulatedPoint() + amount);
+                    memberRepository.save(loginMember);
+                }
+            }
+            memberService.setGradeByAccumulatedPoint(loginMember);
             return;
         }
         throw new IllegalArgumentException("존재하지 않는 게시물입니다.");
