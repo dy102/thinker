@@ -16,6 +16,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.thinker.constants.ErrorConst.NO_MEMBER;
 import static com.example.thinker.domain.Grade.ADVANCED;
 import static com.example.thinker.domain.Grade.BEGINNER;
 import static com.example.thinker.domain.Grade.EXPERT;
@@ -126,28 +127,32 @@ public class MemberServiceImpl implements MemberService {
     public void setGradeByAccumulatedPoint(Member loginMember) {
         Long gradePoint = loginMember.getAccumulatedPoint();
         if (!loginMember.getGrade().equals(MANAGER.getName())) {
-            if (0 <= gradePoint && gradePoint <= 99) {
+            if (checkGrade(BEGINNER, gradePoint)) {
                 loginMember.setGrade(BEGINNER.getName());
-            } else if (100 <= gradePoint && gradePoint <= 299) {
+            } else if (checkGrade(INTERMEDIATE, gradePoint)) {
                 loginMember.setGrade(INTERMEDIATE.getName());
-            } else if (300 <= gradePoint && gradePoint <= 999) {
+            } else if (checkGrade(ADVANCED, gradePoint)) {
                 loginMember.setGrade(ADVANCED.getName());
-            } else if (1000 <= gradePoint && gradePoint <= 1999) {
+            } else if (checkGrade(EXPERT, gradePoint)) {
                 loginMember.setGrade(EXPERT.getName());
-            } else if (2000 <= gradePoint && gradePoint <= 4999) {
+            } else if (checkGrade(MASTER, gradePoint)) {
                 loginMember.setGrade(MASTER.getName());
-            } else if (5000 <= gradePoint) {
+            } else if (checkGrade(THINKER, gradePoint)) {
                 loginMember.setGrade(THINKER.getName());
             }
             memberRepository.save(loginMember);
         }
     }
 
+    private static boolean checkGrade(Grade grade, Long gradePoint) {
+        return grade.getMinimumPoint() <= gradePoint && gradePoint <= grade.getMaximumPoint();
+    }
+
     @Override
     public MemberSimpleDto readSimple(Long memberId) {
         Optional<Member> member = memberRepository.findById(memberId);
         if (member.isEmpty()) {
-            throw new IllegalArgumentException("존재하지 않는 멤버입니다.");
+            throw new IllegalArgumentException(NO_MEMBER);
         }
         return MemberSimpleDto.form(member.get());
     }
@@ -170,12 +175,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Member login(String customId, String pw) {
         Member member = memberRepository.findByCustomId(customId);
-        if (member != null) {
-            if (member.getPw().equals(pw)) {
-                return member;
-            }
-            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        if (member != null && (member.getPw().equals(pw))) {
+            return member;
         }
-        throw new IllegalArgumentException("잘못된 아이디입니다.");
+        throw new IllegalArgumentException(NO_MEMBER);
     }
 }

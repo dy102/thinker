@@ -42,8 +42,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.thinker.constants.ServiceConst.PREMIUM_SURVEY_BONUS;
-import static com.example.thinker.constants.ServiceConst.PREMIUM_SURVEY_COST;
+import static com.example.thinker.constants.ErrorConst.LAST_PAGE;
+import static com.example.thinker.constants.ErrorConst.NOT_PARTICIPATE;
+import static com.example.thinker.constants.ErrorConst.NO_CHOICE_FORM;
+import static com.example.thinker.constants.ErrorConst.NO_MEMBER;
+import static com.example.thinker.constants.ErrorConst.NO_MULTIPLE_CHOICE_FORM;
+import static com.example.thinker.constants.ErrorConst.NO_ORDER;
+import static com.example.thinker.constants.ErrorConst.NO_PERMISSION;
+import static com.example.thinker.constants.ErrorConst.NO_SUBJECTIVE_FORM;
+import static com.example.thinker.constants.ErrorConst.NO_SURVEY;
+import static com.example.thinker.constants.PointConst.CREATE_PREMIUM_SURVEY;
+import static com.example.thinker.constants.PointConst.MULTIPLY_TO_SURVEY_SIZE;
+import static com.example.thinker.constants.PointConst.NO_POINT;
+import static com.example.thinker.constants.PointConst.POINT_MAX_BOUND_IN_SURVEY;
+import static com.example.thinker.constants.PointConst.PREMIUM_SURVEY_BONUS;
+import static com.example.thinker.constants.PointConst.PREMIUM_SURVEY_COST;
+import static com.example.thinker.constants.ServiceConst.MAX_POST_COUNT;
+import static com.example.thinker.constants.ServiceConst.MAX_PREMIUM_PAGE;
+import static com.example.thinker.constants.ServiceConst.ORDER_BY_POPULAR;
+import static com.example.thinker.constants.ServiceConst.ORDER_BY_RECENT;
+import static com.example.thinker.domain.Grade.MANAGER;
 
 @Service
 @RequiredArgsConstructor
@@ -73,7 +91,7 @@ public class SurveyServiceImpl implements SurveyService {
             subjectiveRepository.save(subjective);
             return subjectiveForm.get().getSurvey().getId();
         }
-        throw new IllegalArgumentException("존재하지 않는 주관식 항목입니다.");
+        throw new IllegalArgumentException(NO_SUBJECTIVE_FORM);
     }
 
     @Override
@@ -90,9 +108,9 @@ public class SurveyServiceImpl implements SurveyService {
                 choiceRepository.save(choice);
                 return multipleChoiceForm.get().getSurvey().getId();
             }
-            throw new IllegalArgumentException("존재하지 않는 객관식 항목입니다.");
+            throw new IllegalArgumentException(NO_MULTIPLE_CHOICE_FORM);
         }
-        throw new IllegalArgumentException("존재하지 않는 선택지입니다.");
+        throw new IllegalArgumentException(NO_CHOICE_FORM);
     }
 
     @Override
@@ -177,7 +195,7 @@ public class SurveyServiceImpl implements SurveyService {
                     if (choiceRepository
                             .findByChoiceForm_IdAndParticipant_Id(choiceForm.getId(), loginMember.getId())
                             == null) {
-                        throw new IllegalArgumentException("참여하지 않은 설문조사입니다.");
+                        throw new IllegalArgumentException(NOT_PARTICIPATE);
                     }
                 }
             }
@@ -185,16 +203,16 @@ public class SurveyServiceImpl implements SurveyService {
                 if (subjectiveRepository
                         .findBySubjectiveForm_IdAndParticipant_Id(subjectiveForm.getId(), loginMember.getId())
                         == null) {
-                    throw new IllegalArgumentException("참여하지 않은 설문조사입니다.");
+                    throw new IllegalArgumentException(NOT_PARTICIPATE);
                 }
             }
             //설문조사 참여 확인절차 완료
 
             //포인트 추가
             int sizePoint = (survey.get().getSubjectiveForms().size()
-                    + survey.get().getMultipleChoiceForms().size()) * 2;
-            if (sizePoint > 26) {
-                sizePoint = 26;
+                    + survey.get().getMultipleChoiceForms().size()) * MULTIPLY_TO_SURVEY_SIZE;
+            if (sizePoint > POINT_MAX_BOUND_IN_SURVEY) {
+                sizePoint = POINT_MAX_BOUND_IN_SURVEY;
             }
             if (survey.get().getIsPremium()) {
                 Long amount = sizePoint + PREMIUM_SURVEY_BONUS;
@@ -220,12 +238,12 @@ public class SurveyServiceImpl implements SurveyService {
                 memberRepository.save(loginMember);
             }
             memberService.setGradeByAccumulatedPoint(loginMember);
-            
+
             survey.get().setParticipants(survey.get().getParticipants() + 1);
             surveyRepository.save(survey.get());
             return;
         }
-        throw new IllegalArgumentException("존재하지 않는 설문조사입니다.");
+        throw new IllegalArgumentException(NO_SURVEY);
     }
 
     @Override
@@ -276,7 +294,7 @@ public class SurveyServiceImpl implements SurveyService {
             SurveyDetailDto surveyDetailDto = new SurveyDetailDto(surveyId, survey.get().getTitle(), multipleChoiceDtos, subjectiveDtos);
             return new SurveyDataResponse(isDone, isOwner, isManager, surveyDetailDto);
         }
-        throw new IllegalArgumentException("존재하지 않는 설문조사입니다.");
+        throw new IllegalArgumentException(NO_SURVEY);
     }
 
     @Override
@@ -288,7 +306,7 @@ public class SurveyServiceImpl implements SurveyService {
                     if (loginMember.getPoint() >= PREMIUM_SURVEY_COST) {
                         Point point = new Point();
                         point.setMember(loginMember);
-                        point.setExplanation("프리미엄 설문조사 생성");
+                        point.setExplanation(CREATE_PREMIUM_SURVEY);
                         point.setAmount(-PREMIUM_SURVEY_COST);
                         pointRepository.save(point);
 
@@ -297,7 +315,7 @@ public class SurveyServiceImpl implements SurveyService {
 
                         survey.get().setIsPremium(isPremium);
                     } else {
-                        throw new IllegalArgumentException("포인트가 부족합니다.");
+                        throw new IllegalArgumentException(NO_POINT);
                     }
                 }
                 if (isPremium && !survey.get().getIsPremium()) {
@@ -306,9 +324,9 @@ public class SurveyServiceImpl implements SurveyService {
                 survey.get().setIsPremium(isPremium);
                 surveyRepository.save(survey.get());
             }
-            throw new IllegalArgumentException("권한이 없습니다.");
+            throw new IllegalArgumentException(NO_PERMISSION);
         }
-        throw new IllegalArgumentException("존재하지 않는 설문조사입니다.");
+        throw new IllegalArgumentException(NO_SURVEY);
     }
 
     @Override
@@ -341,13 +359,16 @@ public class SurveyServiceImpl implements SurveyService {
                 //설문조사에 딸린 모든 도메인 정보를 삭제해야한다.....//참여한 내용도 전부 삭제해야하는데, 함께 삭제해야할까?
                 //그러면 3중 for문을 사용해야하는데, 시간이 너무 오래걸리는 건 아닐까?
             }
-            throw new IllegalArgumentException("권한이 없습니다.");
+            throw new IllegalArgumentException(NO_PERMISSION);
         }
-        throw new IllegalArgumentException("존재하지 않는 설문조사입니다.");
+        throw new IllegalArgumentException(NO_SURVEY);
     }
 
     @Override
     public PremiumSurveysResponse getPremiumSurveys(Member loginMember, int page, int size) {
+        if (page > MAX_PREMIUM_PAGE) {
+            throw new IllegalArgumentException(LAST_PAGE);
+        }
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Survey> surveys = surveyRepository.findByIsPremiumIsTrueOrderByIdDesc(pageRequest);
         List<SurveyDto> surveyDtos = getSurveyDtos(loginMember, surveys.getContent());
@@ -358,7 +379,7 @@ public class SurveyServiceImpl implements SurveyService {
     public SurveysResponse getSurveys(Member loginMember, String kind, int size, Long lastId) {
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         List<Survey> surveys;
-        if (kind.equals("recent")) {
+        if (kind.equals(ORDER_BY_RECENT)) {
             if (lastId == null) {
                 Page<Survey> page = surveyRepository.findAllByOrderByIdDesc(pageRequest);
                 surveys = page.getContent();
@@ -366,11 +387,11 @@ public class SurveyServiceImpl implements SurveyService {
                 Page<Survey> page = surveyRepository.findAllByIdLessThanOrderByIdDesc(lastId, pageRequest);
                 surveys = page.getContent();
             }
-        } else if (kind.equals("popular")) {
+        } else if (kind.equals(ORDER_BY_POPULAR)) {
             surveys = surveyRepository.find100ByPopular();
-            size = 100;//100개를 한꺼번에 보낸다.
+            size = MAX_POST_COUNT;//100개를 한꺼번에 보낸다.
         } else {
-            throw new IllegalArgumentException("잘못된 정렬 기준입니다.");
+            throw new IllegalArgumentException(NO_ORDER);
         }
         List<SurveyDto> surveyDtos = getSurveyDtos(loginMember, surveys);//isDone 때문에 미리 Dto로 변환 필요
         ScrollPaginationCollection<SurveyDto> cursor = new ScrollPaginationCollection<>(surveyDtos, size);
@@ -381,14 +402,14 @@ public class SurveyServiceImpl implements SurveyService {
     public SurveyDtos getMySurveys(Member loginMember, String kind, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         List<SurveyDto> surveyDtos;
-        if (kind.equals("recent")) {
+        if (kind.equals(ORDER_BY_RECENT)) {
             List<Survey> surveys = surveyRepository.findAllByWriterOrderByIdDesc(loginMember, pageRequest).getContent();
             surveyDtos = getSurveyDtos(loginMember, surveys);
-        } else if (kind.equals("popular")) {
+        } else if (kind.equals(ORDER_BY_POPULAR)) {
             List<Survey> surveys = surveyRepository.findAllByWriterOrderByParticipantsDesc(loginMember, pageRequest).getContent();
             surveyDtos = getSurveyDtos(loginMember, surveys);
         } else {
-            throw new IllegalArgumentException("잘못된 정렬 기준입니다.");
+            throw new IllegalArgumentException(NO_ORDER);
         }
         return new SurveyDtos(surveyDtos);
     }
@@ -398,14 +419,14 @@ public class SurveyServiceImpl implements SurveyService {
         PageRequest pageRequest = PageRequest.of(page, size);
         List<SurveyDto> surveyDtos;
         List<Survey> surveys = new ArrayList<>();
-        if (kind.equals("recent")) {
+        if (kind.equals(ORDER_BY_RECENT)) {
             Page<Subjective> subjectives = subjectiveRepository.findAllByParticipantByRecent(loginMember, pageRequest);
             for (Subjective subjective : subjectives) {
                 surveys.add(subjective.getSubjectiveForm().getSurvey());
             }
             surveys = surveys.stream().distinct().toList();
             surveyDtos = getSurveyDtos(loginMember, surveys);
-        } else if (kind.equals("popular")) {
+        } else if (kind.equals(ORDER_BY_POPULAR)) {
             Page<Subjective> subjectives = subjectiveRepository.findAllByParticipantByPopular(loginMember, pageRequest);
             for (Subjective subjective : subjectives) {
                 surveys.add(subjective.getSubjectiveForm().getSurvey());
@@ -413,7 +434,7 @@ public class SurveyServiceImpl implements SurveyService {
             surveys = surveys.stream().distinct().toList();
             surveyDtos = getSurveyDtos(loginMember, surveys);
         } else {
-            throw new IllegalArgumentException("잘못된 정렬 기준입니다.");
+            throw new IllegalArgumentException(NO_ORDER);
         }
         return new SurveyDtos(surveyDtos);
     }
@@ -422,7 +443,7 @@ public class SurveyServiceImpl implements SurveyService {
     public SurveysResponse searchSurveysByTitle(Member loginMember, String kind, String title, Long lastId, int size) {
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         List<Survey> surveys;
-        if (kind.equals("recent")) {
+        if (kind.equals(ORDER_BY_RECENT)) {
             if (lastId == null) {
                 surveys = surveyRepository
                         .findAllByTitleContainingIgnoreCaseOrderByIdDesc(title, pageRequest).getContent();
@@ -430,10 +451,10 @@ public class SurveyServiceImpl implements SurveyService {
                 surveys = surveyRepository
                         .findAllByTitleContainingIgnoreCaseAndIdLessThanOrderByIdDesc(title, lastId, pageRequest).getContent();
             }
-        } else if (kind.equals("popular")) {
+        } else if (kind.equals(ORDER_BY_POPULAR)) {
             surveys = surveyRepository.search100ByTitleAndPopular();
         } else {
-            throw new IllegalArgumentException("잘못된 정렬 기준입니다.");
+            throw new IllegalArgumentException(NO_ORDER);
         }
         List<SurveyDto> surveyDtos = getSurveyDtos(loginMember, surveys);//isDone 때문에 미리 Dto로 변환 필요
         ScrollPaginationCollection<SurveyDto> cursor = new ScrollPaginationCollection<>(surveyDtos, size);
@@ -444,7 +465,7 @@ public class SurveyServiceImpl implements SurveyService {
     public SurveysResponse searchSurveysByWriter(Member loginMember, String kind, String name, Long lastId, int size) {
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         List<Survey> surveys;
-        if (kind.equals("recent")) {
+        if (kind.equals(ORDER_BY_RECENT)) {
             if (lastId == null) {
                 surveys = surveyRepository
                         .findAllByWriter_NameContainingIgnoreCaseAndIdLessThanOrderByIdDesc(name, lastId, pageRequest).getContent();
@@ -453,10 +474,10 @@ public class SurveyServiceImpl implements SurveyService {
                         .findAllByWriter_NameContainingIgnoreCaseOrderByIdDesc(name, pageRequest).getContent();
             }
 
-        } else if (kind.equals("popular")) {
+        } else if (kind.equals(ORDER_BY_POPULAR)) {
             surveys = surveyRepository.search100ByNameAndPopular();
         } else {
-            throw new IllegalArgumentException("잘못된 정렬 기준입니다.");
+            throw new IllegalArgumentException(NO_ORDER);
         }
         List<SurveyDto> surveyDtos = getSurveyDtos(loginMember, surveys);//isDone 때문에 미리 Dto로 변환 필요
         ScrollPaginationCollection<SurveyDto> cursor = new ScrollPaginationCollection<>(surveyDtos, size);
@@ -467,16 +488,16 @@ public class SurveyServiceImpl implements SurveyService {
     public SurveyDtos getSurveysByMember(Member loginMember, Long memberId, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         List<SurveyDto> surveyDtos;
-        if (loginMember.getGrade().equals("MANAGER")) {
+        if (loginMember.getGrade().equals(MANAGER.getName())) {
             Optional<Member> member = memberRepository.findById(memberId);
             if (member.isPresent()) {
                 List<Survey> surveys = surveyRepository.findAllByWriterOrderByIdDesc(member.get(), pageRequest).getContent();
                 surveyDtos = getSurveyDtos(loginMember, surveys);
             } else {
-                throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+                throw new IllegalArgumentException(NO_MEMBER);
             }
         } else {
-            throw new IllegalArgumentException("접근 권한이 없습니다.");
+            throw new IllegalArgumentException(NO_PERMISSION);
         }
         return new SurveyDtos(surveyDtos);
     }
@@ -499,7 +520,7 @@ public class SurveyServiceImpl implements SurveyService {
     }
 
     private boolean isManager(Member member) {
-        return member.getGrade().equals("MANAGER");
+        return member.getGrade().equals(MANAGER.getName());
     }
 
     private static String getFileName(Survey survey, Image image) {

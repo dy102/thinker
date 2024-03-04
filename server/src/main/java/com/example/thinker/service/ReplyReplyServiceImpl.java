@@ -25,7 +25,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.thinker.constants.ServiceConst.PREMIUM_THINKING_BONUS;
+import static com.example.thinker.constants.ErrorConst.NO_PERMISSION;
+import static com.example.thinker.constants.ErrorConst.NO_POST;
+import static com.example.thinker.constants.ErrorConst.NO_REPLY;
+import static com.example.thinker.constants.ErrorConst.NO_REPLY_REPLY;
+import static com.example.thinker.constants.PointConst.POINT_LENGTH;
+import static com.example.thinker.constants.PointConst.POINT_MAX_BOUND_IN_REPLY;
+import static com.example.thinker.constants.PointConst.PREMIUM_THINKING_BONUS;
+import static com.example.thinker.constants.PointConst.REPLY_TO_PREMIUM_THINKING;
+import static com.example.thinker.constants.PointConst.REPLY_TO_THINKING;
+import static com.example.thinker.constants.ServiceConst.AUTHOR_AND_ME;
+import static com.example.thinker.constants.ServiceConst.AUTHOR_AND_NOT_ME;
+import static com.example.thinker.constants.ServiceConst.NOT_AUTHOR_AND_ME;
+import static com.example.thinker.constants.ServiceConst.NOT_AUTHOR_AND_NOT_ME;
+import static com.example.thinker.domain.Grade.MANAGER;
 
 @Service
 @RequiredArgsConstructor
@@ -53,19 +66,19 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
                 }
                 TotalReplyDtos totalReplyDtos = new TotalReplyDtos(replyReplyDtos);
                 boolean isManager = false;
-                if (loginMember != null && loginMember.getGrade().equals("MANAGER")) {
+                if (loginMember != null && loginMember.getGrade().equals(MANAGER.getName())) {
                     isManager = true;
                 }
                 return new RepliesResponse(isManager, totalReplyDtos);
             }
-            throw new IllegalArgumentException("존재하지 않는 댓글입니다.");
+            throw new IllegalArgumentException(NO_REPLY);
         }
-        throw new IllegalArgumentException("존재하지 않는 게시물입니다.");
+        throw new IllegalArgumentException(NO_POST);
     }
 
     private void makeReplyReplyDto(Member loginMember, ReplyReply replyReply, Thinking thinking, Reply reply, List<ReplyReplyDto> replyReplyDtos) {
         boolean isLiked = false;
-        String who = "other";
+        String who = NOT_AUTHOR_AND_NOT_ME;
 
         if (loginMember != null
                 && replyReplyLikeRepository
@@ -77,13 +90,13 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
         if (loginMember != null) {
             if (thinking.getWriter().getId().equals(loginMember.getId())) {
                 if (replyReply.getMember().getId().equals(loginMember.getId())) {
-                    who = "me(author)";
+                    who = AUTHOR_AND_ME;
                 } else {
-                    who = "author";
+                    who = AUTHOR_AND_NOT_ME;
                 }
             } else {
                 if (replyReply.getMember().getId().equals(loginMember.getId())) {
-                    who = "me";
+                    who = NOT_AUTHOR_AND_ME;
                 }
             }
         }
@@ -104,14 +117,14 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
             );
             //포인트 추가
             if (reply.get().getThinking().getIsPremium()) {
-                int sizePoint = contentsRequest.contents().length() / 10;
-                if (sizePoint > 26) {
-                    sizePoint = 26;
+                int sizePoint = contentsRequest.contents().length() / POINT_LENGTH;
+                if (sizePoint > POINT_MAX_BOUND_IN_REPLY) {
+                    sizePoint = POINT_MAX_BOUND_IN_REPLY;
                 }
                 Long amount = sizePoint + PREMIUM_THINKING_BONUS;
                 Point point = new Point();
                 point.setMember(loginMember);
-                point.setExplanation("댓글 작성(프리미엄)");
+                point.setExplanation(REPLY_TO_PREMIUM_THINKING);
                 point.setAmount(amount);
                 pointRepository.save(point);
 
@@ -122,7 +135,7 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
                 Long amount = (long) (contentsRequest.contents().length() / 10);
                 Point point = new Point();
                 point.setMember(loginMember);
-                point.setExplanation("댓글 작성");
+                point.setExplanation(REPLY_TO_THINKING);
                 point.setAmount(amount);
                 pointRepository.save(point);
 
@@ -134,7 +147,7 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
             replyReplyRepository.save(replyReply);
             return;
         }
-        throw new IllegalArgumentException("존재하지 않는 댓글입니다.");
+        throw new IllegalArgumentException(NO_REPLY);
     }
 
     @Override
@@ -145,9 +158,9 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
                 replyReply.get().setContents(contentsRequest.contents());
                 return;
             }
-            throw new IllegalArgumentException("수정 권한이 없습니다.");
+            throw new IllegalArgumentException(NO_PERMISSION);
         }
-        throw new IllegalArgumentException("존재하지 않는 대댓글입니다.");
+        throw new IllegalArgumentException(NO_REPLY_REPLY);
     }
 
     @Override
@@ -158,9 +171,9 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
                 replyReplyRepository.delete(replyReply.get());
                 return;
             }
-            throw new IllegalArgumentException("권한이 없습니다.");
+            throw new IllegalArgumentException(NO_PERMISSION);
         }
-        throw new IllegalArgumentException("존재하지 않는 대댓글입니다.");
+        throw new IllegalArgumentException(NO_REPLY_REPLY);
     }
 
     @Override
@@ -180,7 +193,7 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
                 return false;
             }
         }
-        throw new IllegalArgumentException("존재하지 않는 대댓글입니다.");
+        throw new IllegalArgumentException(NO_REPLY_REPLY);
     }
 
 }

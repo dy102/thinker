@@ -3,22 +3,34 @@ package com.example.thinker.domain;
 import java.util.Arrays;
 
 public enum Grade {
-    BEGINNER("BEGINNER"),
-    INTERMEDIATE("INTERMEDIATE"),
-    ADVANCED("ADVANCED"),
-    EXPERT("EXPERT"),
-    MASTER("MASTER"),
-    THINKER("THINKER"),
-    MANAGER("MANAGER");
+    BEGINNER("BEGINNER", 0L, 99L),
+    INTERMEDIATE("INTERMEDIATE", 100L, 299L),
+    ADVANCED("ADVANCED", 300L, 999L),
+    EXPERT("EXPERT", 1000L, 1999L),
+    MASTER("MASTER", 2000L, 4999L),
+    THINKER("THINKER", 5000L, 999999999L),
+    MANAGER("MANAGER", null, null);
 
     private final String name;
+    private final Long minimumPoint;
+    private final Long maximumPoint;
 
-    private Grade(String name) {
+    private Grade(String name, Long minimumPoint, Long maximumPoint) {
         this.name = name;
+        this.minimumPoint = minimumPoint;
+        this.maximumPoint = maximumPoint;
     }
 
     public String getName() {
         return name;
+    }
+
+    public Long getMinimumPoint() {
+        return minimumPoint;
+    }
+
+    public Long getMaximumPoint() {
+        return maximumPoint;
     }
 
     public static Grade of(String name) {

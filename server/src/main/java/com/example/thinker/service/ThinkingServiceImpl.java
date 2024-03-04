@@ -31,14 +31,25 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.thinker.constants.ServiceConst.PREMIUM_SURVEY_BONUS;
-import static com.example.thinker.constants.ServiceConst.PREMIUM_THINKING_COST;
+import static com.example.thinker.constants.ErrorConst.LAST_PAGE;
+import static com.example.thinker.constants.ErrorConst.NO_MEMBER;
+import static com.example.thinker.constants.ErrorConst.NO_ORDER;
+import static com.example.thinker.constants.ErrorConst.NO_PERMISSION;
+import static com.example.thinker.constants.ErrorConst.NO_POST;
+import static com.example.thinker.constants.PointConst.CREATE_PREMIUM_THINKING;
+import static com.example.thinker.constants.PointConst.NO_POINT;
+import static com.example.thinker.constants.PointConst.PREMIUM_SURVEY_BONUS;
+import static com.example.thinker.constants.PointConst.PREMIUM_THINKING_COST;
+import static com.example.thinker.constants.ServiceConst.MAX_POST_COUNT;
+import static com.example.thinker.constants.ServiceConst.MAX_PREMIUM_PAGE;
+import static com.example.thinker.constants.ServiceConst.ORDER_BY_LIKE;
+import static com.example.thinker.constants.ServiceConst.ORDER_BY_RECENT;
+import static com.example.thinker.constants.ServiceConst.ORDER_BY_VIEW;
 import static com.example.thinker.domain.Grade.MANAGER;
 
 @Service
 @RequiredArgsConstructor
 public class ThinkingServiceImpl implements ThinkingService {
-    private static final String THINKING_NULL = "존재하지 않는 게시물입니다.";
     private final MemberRepository memberRepository;
     private final ThinkingRepository thinkingRepository;
     private final ReplyRepository replyRepository;
@@ -48,6 +59,9 @@ public class ThinkingServiceImpl implements ThinkingService {
 
     @Override
     public PremiumThinkingResponse findPremiumThinkings(int page, int size) {
+        if (page > MAX_PREMIUM_PAGE) {
+            throw new IllegalArgumentException(LAST_PAGE);
+        }
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Thinking> thinkings = thinkingRepository.findByIsPremiumIsTrueOrderByIdDesc(pageRequest);
         return PremiumThinkingResponse.form(thinkings);
@@ -57,19 +71,19 @@ public class ThinkingServiceImpl implements ThinkingService {
     public ThinkingResponse findThinkings(String kind, int size, Long lastId) {//무한 스크롤
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         List<Thinking> thinkings;
-        if (kind.equals("recent")) {
+        if (kind.equals(ORDER_BY_RECENT)) {
             if (lastId == null) {
                 thinkings = thinkingRepository.findAllByOrderByIdDesc(pageRequest).getContent();
             } else {
                 Page<Thinking> page = thinkingRepository.findAllByIdLessThanOrderByIdDesc(lastId, pageRequest);
                 thinkings = page.getContent();
             }
-        } else if (kind.equals("like")) {
+        } else if (kind.equals(ORDER_BY_LIKE)) {
             thinkings = thinkingRepository.find100ByLikeCount();
-        } else if (kind.equals("view")) {
+        } else if (kind.equals(ORDER_BY_VIEW)) {
             thinkings = thinkingRepository.find100ByViewCount();
         } else {
-            throw new IllegalArgumentException("잘못된 정렬 기준입니다.");
+            throw new IllegalArgumentException(NO_ORDER);
         }
         ScrollPaginationCollection<Thinking> cursor = new ScrollPaginationCollection<>(thinkings, size);
         return ThinkingResponse.form(cursor, thinkingRepository.countThinkingByIdIsNotNull());
@@ -84,7 +98,7 @@ public class ThinkingServiceImpl implements ThinkingService {
             if (loginMember.getPoint() >= PREMIUM_THINKING_COST) {
                 Point point = new Point();
                 point.setMember(loginMember);
-                point.setExplanation("프리미엄 게시글 생성");
+                point.setExplanation(CREATE_PREMIUM_THINKING);
                 point.setAmount(-PREMIUM_THINKING_COST);
                 pointRepository.save(point);
 
@@ -93,7 +107,7 @@ public class ThinkingServiceImpl implements ThinkingService {
 
                 thinking.setIsPremium(thinkingRequest.isPremium());
             } else {
-                throw new IllegalArgumentException("포인트가 부족합니다.");
+                throw new IllegalArgumentException(NO_POINT);
             }
         }
 
@@ -114,9 +128,9 @@ public class ThinkingServiceImpl implements ThinkingService {
                 makeThinkingByThinkingRequest(multipartFiles, thinkingRequest, thinking.get());
                 thinkingRepository.save(thinking.get());
             }
-            throw new IllegalArgumentException("수정 권한이 없습니다.");
+            throw new IllegalArgumentException(NO_PERMISSION);
         }
-        throw new IllegalArgumentException(THINKING_NULL);
+        throw new IllegalArgumentException(NO_POST);
     }
 
     @Override
@@ -125,7 +139,7 @@ public class ThinkingServiceImpl implements ThinkingService {
         if (thinking.isPresent()) {
             return ThinkingDetailResponse.form(thinking.get(), loginMember);
         }
-        throw new IllegalArgumentException(THINKING_NULL);
+        throw new IllegalArgumentException(NO_POST);
     }
 
     @Override
@@ -138,17 +152,17 @@ public class ThinkingServiceImpl implements ThinkingService {
                 replyRepository.deleteAll(replies);
                 return;
             }
-            throw new IllegalArgumentException("권한이 없습니다.");
+            throw new IllegalArgumentException(NO_PERMISSION);
         }
-        throw new IllegalArgumentException(THINKING_NULL);
+        throw new IllegalArgumentException(NO_POST);
     }
 
     @Override
     public ThinkingResponse findThinkingByTitle(String title, String kind, int size, Long lastId) {
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         Page<Thinking> thinkingPage;
-        List<Thinking> thinkings = new ArrayList<>();
-        if (kind.equals("recent")) {
+        List<Thinking> thinkings;
+        if (kind.equals(ORDER_BY_RECENT)) {
             if (lastId == null) {
                 thinkingPage = thinkingRepository
                         .searchAllByTitleContainingIgnoreCaseOrderByIdDesc(title, pageRequest);
@@ -159,12 +173,14 @@ public class ThinkingServiceImpl implements ThinkingService {
                                 .searchAllByTitleContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(title, lastId, pageRequest);
                 thinkings = thinkingPage.getContent();
             }
-        } else if (kind.equals("like")) {
+        } else if (kind.equals(ORDER_BY_LIKE)) {
             thinkings = thinkingRepository.search100ByTitleAndLikeCount();
-            size = 100;//100개를 한꺼번에 보낸다.
-        } else if (kind.equals("view")) {
+            size = MAX_POST_COUNT;//100개를 한꺼번에 보낸다.
+        } else if (kind.equals(ORDER_BY_VIEW)) {
             thinkings = thinkingRepository.search100ByTitleAndViewCount();
-            size = 100;//100개를 한꺼번에 보낸다.
+            size = MAX_POST_COUNT;//100개를 한꺼번에 보낸다.
+        } else {
+            throw new IllegalArgumentException(NO_ORDER);
         }
         ScrollPaginationCollection<Thinking> cursor = new ScrollPaginationCollection<>(thinkings, size);
         return ThinkingResponse.form(cursor, thinkingRepository.countThinkingByIdIsNotNull());
@@ -174,8 +190,8 @@ public class ThinkingServiceImpl implements ThinkingService {
     public ThinkingResponse findThinkingByContent(String content, String kind, int size, Long lastId) {
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         Page<Thinking> thinkingPage;
-        List<Thinking> thinkings = new ArrayList<>();
-        if (kind.equals("recent")) {
+        List<Thinking> thinkings;
+        if (kind.equals(ORDER_BY_RECENT)) {
             if (lastId == null) {
                 thinkingPage =
                         thinkingRepository
@@ -187,12 +203,14 @@ public class ThinkingServiceImpl implements ThinkingService {
                                 .searchAllByContentsContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(content, lastId, pageRequest);
                 thinkings = thinkingPage.getContent();
             }
-        } else if (kind.equals("like")) {
+        } else if (kind.equals(ORDER_BY_LIKE)) {
             thinkings = thinkingRepository.search100ByContentsAndLikeCount();
             size = 100;//100개를 한꺼번에 보낸다.
-        } else if (kind.equals("view")) {
+        } else if (kind.equals(ORDER_BY_VIEW)) {
             thinkings = thinkingRepository.search100ByContentsAndViewCount();
             size = 100;//100개를 한꺼번에 보낸다.
+        } else {
+            throw new IllegalArgumentException(NO_ORDER);
         }
         ScrollPaginationCollection<Thinking> cursor = new ScrollPaginationCollection<>(thinkings, size);
         return ThinkingResponse.form(cursor, thinkingRepository.countThinkingByIdIsNotNull());
@@ -202,8 +220,8 @@ public class ThinkingServiceImpl implements ThinkingService {
     public ThinkingResponse findThinkingByWriter(String writer, String kind, int size, Long lastId) {
         PageRequest pageRequest = PageRequest.of(0, size + 1);
         Page<Thinking> thinkingPage;
-        List<Thinking> thinkings = new ArrayList<>();
-        if (kind.equals("recent")) {
+        List<Thinking> thinkings;
+        if (kind.equals(ORDER_BY_RECENT)) {
             if (lastId == null) {
                 thinkingPage =
                         thinkingRepository
@@ -215,12 +233,14 @@ public class ThinkingServiceImpl implements ThinkingService {
                                 .searchAllByWriter_NameContainingIgnoreCaseAndIdIsLessThanOrderByIdDesc(writer, lastId, pageRequest);
                 thinkings = thinkingPage.getContent();
             }
-        } else if (kind.equals("like")) {
+        } else if (kind.equals(ORDER_BY_LIKE)) {
             thinkings = thinkingRepository.search100ByNameAndLikeCount();
             size = 100;//100개를 한꺼번에 보낸다.
-        } else if (kind.equals("view")) {
+        } else if (kind.equals(ORDER_BY_VIEW)) {
             thinkings = thinkingRepository.search100ByNameAndViewCount();
             size = 100;//100개를 한꺼번에 보낸다.
+        } else {
+            throw new IllegalArgumentException(NO_ORDER);
         }
         ScrollPaginationCollection<Thinking> cursor = new ScrollPaginationCollection<>(thinkings, size);
         return ThinkingResponse.form(cursor, thinkingRepository.countThinkingByIdIsNotNull());//totalElement값 수정필요
@@ -245,28 +265,30 @@ public class ThinkingServiceImpl implements ThinkingService {
                     thinkings = thinkingPage.getContent();
                 }
             } else {
-                throw new IllegalArgumentException("존재하지 않는 회원입니다.");
+                throw new IllegalArgumentException(NO_MEMBER);
             }
             ScrollPaginationCollection<Thinking> cursor = new ScrollPaginationCollection<>(thinkings, size);
             return ThinkingResponse.form(cursor, thinkingRepository.countThinkingByIdIsNotNull());
         }
-        throw new IllegalArgumentException("권한이 없습니다.");
+        throw new IllegalArgumentException(NO_PERMISSION);
     }
 
     @Override
     public ThinkingDtos getMyThinkings(Member loginMember, String kind, int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Thinking> thinkingPage;
-        List<Thinking> thinkings = new ArrayList<>();
-        if (kind.equals("recent")) {
+        List<Thinking> thinkings;
+        if (kind.equals(ORDER_BY_RECENT)) {
             thinkingPage = thinkingRepository.findAllByWriterOrderByIdDesc(loginMember, pageRequest);
             thinkings = thinkingPage.getContent();
-        } else if (kind.equals("like")) {
+        } else if (kind.equals(ORDER_BY_LIKE)) {
             thinkingPage = thinkingRepository.findAllByWriterOrderByLikeCountDesc(loginMember, pageRequest);
             thinkings = thinkingPage.getContent();
-        } else if (kind.equals("view")) {
+        } else if (kind.equals(ORDER_BY_VIEW)) {
             thinkingPage = thinkingRepository.findAllByWriterOrderByViewCountDesc(loginMember, pageRequest);
             thinkings = thinkingPage.getContent();
+        } else {
+            throw new IllegalArgumentException(NO_ORDER);
         }
         return ThinkingDtos.form(thinkings);
     }
@@ -280,18 +302,20 @@ public class ThinkingServiceImpl implements ThinkingService {
         for (Reply reply : replies) {
             thinkings.add(reply.getThinking());
         }
-        if (kind.equals("recent")) {
+        if (kind.equals(ORDER_BY_RECENT)) {
             thinkings = thinkings.stream()
                     .sorted(Comparator.comparingLong(Thinking::getId).reversed())
                     .toList();
-        } else if (kind.equals("like")) {
+        } else if (kind.equals(ORDER_BY_LIKE)) {
             thinkings = thinkings.stream()
                     .sorted(Comparator.comparingLong(Thinking::getLikeCount).reversed())
                     .toList();
-        } else if (kind.equals("view")) {
+        } else if (kind.equals(ORDER_BY_VIEW)) {
             thinkings = thinkings.stream()
                     .sorted(Comparator.comparingLong(Thinking::getViewCount).reversed())
                     .toList();
+        } else {
+            throw new IllegalArgumentException(NO_ORDER);
         }
         int start = (int) pageRequest.getOffset();
         int end = Math.min((start + pageRequest.getPageSize()), thinkings.size());
