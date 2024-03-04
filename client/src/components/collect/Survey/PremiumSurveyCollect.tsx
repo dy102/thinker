@@ -8,7 +8,7 @@ import PremiumSurvey from "@/components/Premium/PremiumSurvey/PremiumSurvey";
 
 export default function PremiumSurveyCollect() {
   const premiumSurveysResponse = {
-    premiumSurveysCount: 2,
+    premiumSurveysCount: 4,
     SurveyDtos: [
       {
         surveyId: 1,
@@ -40,6 +40,16 @@ export default function PremiumSurveyCollect() {
         isDone: false,
         isPremium: true,
       },
+      {
+        surveyId: 4,
+        surveyImage:
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3l2fb-6xT3Krier-wokMNXGNpM-t6qvSghg&usqp=CAU",
+        surveyWriter: "Walt Disney",
+        surveyTitle: "Disney Plus Subscribe prise",
+        surveyItemCount: 12,
+        isDone: false,
+        isPremium: true,
+      },
     ],
   };
 
@@ -59,6 +69,22 @@ export default function PremiumSurveyCollect() {
       setToastOpen(true);
     }
   };
+  const newDataLeftButtonClick = () => {
+    if (page > 0) {
+      setPage((prevPage) => prevPage - 1);
+      setBackendSendPage((prevPage) => prevPage - 1);
+    } else {
+      setToastOpen(true);
+    }
+  };
+  const newDataRightButtonClick = () => {
+    if (page < Math.ceil(premiumSurveysResponse.premiumSurveysCount / 3) - 1) {
+      setPage((prevPage) => prevPage + 1);
+      setBackendSendPage((prevPage) => prevPage + 1);
+    } else {
+      setToastOpen(true);
+    }
+  };
   useEffect(() => {
     setSurveyPremium(surveyPremiumData);
   }, [surveyPremiumData]);
@@ -71,13 +97,10 @@ export default function PremiumSurveyCollect() {
       />
       <IconButton
         sx={{ width: "32px", height: "32px", margin: "auto" }}
-        onClick={() => {
-          page > 0 ? setPage((prevPage) => prevPage - 1) : setToastOpen(true);
-        }}
-      >
+        onClick={newDataLeftButtonClick}>
         <KeyboardArrowLeft />
       </IconButton>
-      {premiumSurveysResponse.SurveyDtos.map((survey) => {
+      {premiumSurveysResponse.SurveyDtos.slice(page * 3, page * 3 + 3).map((survey) => {
         return (
           <PremiumSurvey
             key={survey.surveyId}
@@ -93,7 +116,7 @@ export default function PremiumSurveyCollect() {
       })}
       <IconButton
         sx={{ width: "32px", height: "32px", margin: "auto" }}
-        onClick={newDataButtonClick}
+        onClick={newDataRightButtonClick}
       >
         <KeyboardArrowRight />
       </IconButton>

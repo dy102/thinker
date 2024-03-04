@@ -13,7 +13,7 @@ export default function PremiumThinkingCollect() {
       {
         thinkingId: 4,
         thinkingThumbnail: null,
-        thinkingWriter: "Jun Seo",
+        thinkingWriter: "1",
         thinkingTitle: "Is Thinker good?",
         isPremium: true,
         likeCount: 9,
@@ -24,7 +24,7 @@ export default function PremiumThinkingCollect() {
         thinkingId: 5,
         thinkingThumbnail:
           "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3l2fb-6xT3Krier-wokMNXGNpM-t6qvSghg&usqp=CAU",
-        thinkingWriter: "Walt Disney",
+        thinkingWriter: "2",
         thinkingTitle: "Disney Land Open Run",
         isPremium: true,
         likeCount: 3,
@@ -34,7 +34,7 @@ export default function PremiumThinkingCollect() {
       {
         thinkingId: 6,
         thinkingThumbnail: "https://www.kocca.kr/trend/vol30/img/s11/img_1.jpg",
-        thinkingWriter: "netflix.Inc",
+        thinkingWriter: "3",
         thinkingTitle: "New Netflix Subscription System",
         isPremium: true,
         likeCount: 20,
@@ -42,9 +42,9 @@ export default function PremiumThinkingCollect() {
         viewCount: 123,
       },
       {
-        thinkingId: 6,
+        thinkingId: 7,
         thinkingThumbnail: "https://www.kocca.kr/trend/vol30/img/s11/img_1.jpg",
-        thinkingWriter: "netflix.Inc",
+        thinkingWriter: "4",
         thinkingTitle: "New Netflix Subscription System",
         isPremium: true,
         likeCount: 20,
@@ -52,9 +52,9 @@ export default function PremiumThinkingCollect() {
         viewCount: 123,
       },
       {
-        thinkingId: 6,
+        thinkingId: 8,
         thinkingThumbnail: "https://www.kocca.kr/trend/vol30/img/s11/img_1.jpg",
-        thinkingWriter: "netflix.Inc",
+        thinkingWriter: "5",
         thinkingTitle: "New Netflix Subscription System",
         isPremium: true,
         likeCount: 20,
@@ -71,25 +71,21 @@ export default function PremiumThinkingCollect() {
   const { data: thinkingPremiumData } = useGetThinkingPremiumQuery({
     page: backendSendPage,
   });
-  console.log(`page : ${page}`);
   const newDataLeftButtonClick = () => {
     if (page > 0) {
       setPage((prevPage) => prevPage - 1);
-      // {FIXME : 맞는건지 잘 모르겠음}
       setBackendSendPage((prevPage) => prevPage - 1);
     } else {
       setToastOpen(true);
     }
   };
   const newDataRightButtonClick = () => {
-    if (page < premiumThinkingResponse?.premiumThinkingCount / 3 - 1) {
-      console.log(premiumThinkingResponse?.premiumThinkingCount / 3 - 1);
+    if (page < Math.ceil(premiumThinkingResponse?.premiumThinkingCount / 3) - 1) {
       setPage((prevPage) => prevPage + 1);
       setBackendSendPage((prevPage) => prevPage + 1);
     } else {
       setToastOpen(true);
     }
-    console.log(`front : ${page}`);
   };
   useEffect(() => {
     setThinkingPremium(thinkingPremiumData);
@@ -110,7 +106,6 @@ export default function PremiumThinkingCollect() {
       {premiumThinkingResponse?.dtos
         ?.slice(page * 3, page * 3 + 3)
         .map((thinking) => {
-          console.log("count");
           return (
             <PremiumThinking
               key={thinking.thinkingId}
