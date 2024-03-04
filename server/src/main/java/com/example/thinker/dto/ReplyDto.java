@@ -8,6 +8,7 @@ public record ReplyDto(
         Long likeCount,
         String createdAt,
         boolean isLiked,
-        String who
+        String who,
+        boolean isReplied
 ) implements ReplyDtoBase {
 }

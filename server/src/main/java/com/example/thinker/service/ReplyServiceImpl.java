@@ -11,6 +11,7 @@ import com.example.thinker.dto.response.RepliesResponse;
 import com.example.thinker.repository.MemberRepository;
 import com.example.thinker.repository.PointRepository;
 import com.example.thinker.repository.ReplyLikeRepository;
+import com.example.thinker.repository.ReplyReplyRepository;
 import com.example.thinker.repository.ReplyRepository;
 import com.example.thinker.repository.ThinkingRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,7 @@ public class ReplyServiceImpl implements ReplyService {
     private final ReplyLikeRepository replyLikeRepository;
     private final MemberRepository memberRepository;
     private final PointRepository pointRepository;
+    private final ReplyReplyRepository replyReplyRepository;
 
     private final MemberService memberService;
 
@@ -91,9 +93,13 @@ public class ReplyServiceImpl implements ReplyService {
                 }
             }
         }
+        boolean isReplied = false;
+        if (!replyReplyRepository.findAllByReply_Id(reply.getId()).isEmpty()) {
+            isReplied = true;
+        }
         ReplyDto replyDto = new ReplyDto(thinkingId, reply.getId(), reply.getMember().getId(),
                 reply.getContents(), reply.getLikeCount(), reply.getCreatedAt().toString(),
-                isLiked, who);
+                isLiked, who, isReplied);
         replyDtos.add(replyDto);
     }
 
