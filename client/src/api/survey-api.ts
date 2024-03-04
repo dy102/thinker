@@ -1,5 +1,6 @@
 import { defaultInstance } from "@/api";
 import {
+  IMakeSurveys,
   IMultipleChoice,
   ISubjective,
   ISurveyNormalParams,
@@ -72,3 +73,10 @@ export const PostSurveysParticipate = async (body: ISurveysParticipate) => {
 
   return data;
 };
+
+// make survey post
+export const PostMakeSurveys = async (body: IMakeSurveys) => {
+  const { data } = await defaultInstance.post("surveys/make", body);
+
+  return data
+}

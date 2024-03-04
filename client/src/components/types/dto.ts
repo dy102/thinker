@@ -190,3 +190,26 @@ export interface ISubjective {
 export interface ISurveysParticipate {
   surveyId: number;
 }
+
+export interface makeMultipleChoiceDto {
+  question: string;
+  items: string[];
+}
+
+export interface makeSubjectiveDto {
+  questions: string;
+}
+
+export interface surveyResponstDtosType {
+  multipleChoiceRequestDtos: makeMultipleChoiceDto[];
+  subjectiveRequestDtos: makeSubjectiveDto[];
+}
+
+// make surveys post
+export interface IMakeSurveys {
+  surveyMakeRequest: {
+    ispremium: boolean;
+    title: string;
+    surveyResponstDtos: surveyResponstDtosType[];
+  }
+}
