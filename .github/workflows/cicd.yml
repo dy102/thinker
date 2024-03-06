@@ -9,7 +9,7 @@ name: Java CI with Gradle
 
 on:
   push: 
-    branches: [ "master" ] #push할 branch의 이름 
+    branches: [ "master" ] #push할 branch의 이름
   pull_request:
     branches: [ "master" ] #pull request할 branch의 이름
 
