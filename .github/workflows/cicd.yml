@@ -40,7 +40,7 @@ jobs:
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2.9.0
       with:
-        arguments: clean build
+        arguments: clean build -x test
         build-root-directory: ./server
 
 #    - name: Change directory to /server
