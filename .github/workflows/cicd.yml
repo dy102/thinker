@@ -62,7 +62,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: testServer
-        path: server/build/libs # 배포에 활용할 경로
+        path: ./ # 배포에 활용할 경로
 
     - name: SCP to server
       uses: appleboy/scp-action@master
@@ -70,9 +70,8 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         host: ${{ secrets.SERVER_IP }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "build/libs/*-SNAPSHOT.jar"
-        target: "/home/ec2-user/server"
-        strip_components: 2
+        source: "*-SNAPSHOT.jar"
+        target: "/home/ec2-user/server/app.jar"
 
     - name: Deploy
       uses: appleboy/ssh-action@v1.0.0
