@@ -61,7 +61,7 @@ jobs:
         path: ./ # 배포에 활용할 경로
 
     - name: SCP to server
-      uses: appleboy/scp-action@v1.0.3
+      uses: appleboy/scp-action@v0.1.7
       with:
         username: ${{ secrets.SSH_USER }}
         host: ${{ secrets.SERVER_IP }}
