@@ -43,10 +43,6 @@ jobs:
         arguments: clean build -x test
         build-root-directory: ./server
 
-#    - name: Change directory to /server
-#      run: |
-#       chmod +x server/build/libs/thinker-0.0.1-SNAPSHOT.jar
-
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
@@ -70,7 +66,7 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         host: ${{ secrets.SERVER_IP }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "*-SNAPSHOT.jar"
+        source: "./thinker-0.0.1-SNAPSHOT.jar"
         target: "/home/ec2-user/server"
 
     - name: Deploy
