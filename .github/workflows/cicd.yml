@@ -64,12 +64,22 @@ jobs:
         name: testServer
         path: server/build/libs # 배포에 활용할 경로
 
-    - name: Deploy to EC2 # EC2를 활용한 배포 설명
-      run: | 
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > mykey.pem # 사용할 SSH키를 mykey.pem으로 저장
-        chmod 400 mykey.pem # mykey.pem를 사용할 수 있도록 권한 설정      
-        # 배포할 jar파일 이름 + 사용할 유저 IP (두 과정에서 모두 SSH 유저 정보 명기)
-        scp -i mykey.pem -o StrictHostKeyChecking=no server/build/libs/thinker-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/server/app.jar
-        # nohup 활용 (SSH서버 연결이 없어도 서버가 계속 돌기 위함)
-        ssh -i mykey.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar /home/${{ secrets.SSH_USER }}/app.jar > app.log 2>&1 &"
-        rm -f mykey.pem
+    - name: SCP to prod server
+      uses: appleboy/scp-action@master
+      with:
+        username: ${{ secrets.SSH_USER }}
+        host: ${{ secrets.HOST }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        source: "build/libs/*-SNAPSHOT.jar"
+        target: "/home/ec2-user/server"
+        strip_components: 2
+
+    - name: Deploy
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          pgrep java | xargs kill -9
+          nohup java -jar /home/${{ secrets.SSH_USER }}/server/app.jar > app.log 2>&1 &
