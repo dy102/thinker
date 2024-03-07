@@ -27,10 +27,7 @@ jobs:
       with:
         java-version: '17' # 사용할 Java언어 버전
         distribution: 'temurin'
-        
-    - name: Create directory if not exists
-      run: mkdir -p server/src/main/resources
-      
+
     - name: Set yml file 
       env:
           DEV_APPLICATION_YML: ${{ secrets.DB_APPLICATION_YML }}
@@ -38,19 +35,6 @@ jobs:
           DEV_APPLICATION_YML_FILE_NAME: application.yml
       run: |
         echo $DEV_APPLICATION_YML | base64 --decode > $DEV_APPLICATION_YML_DIR/$DEV_APPLICATION_YML_FILE_NAME
-        chmod 400 server/src/main/resources/application.yml
-
-    - name: Permission about image
-      run: |
-       cd server
-       cd image
-       ls
-       chmod +x person.jpeg
-       
-    - name: Change directory to /server
-      run: |
-       cd server
-       chmod +x gradlew
 
     # - name: Grant execute permission for gradlew # gradlew에 대한 권한 부여 설명
     #   run: chmod +x gradlew # gradlew에 대한 권한 부여 설정
@@ -69,17 +53,13 @@ jobs:
 
     - name: Change directory to /server
       run: |
-       cd server
-       cd build
-       cd libs
-       ls
-       chmod +x thinker-0.0.1-SNAPSHOT.jar
+       chmod +x server/build/libs/thinker-0.0.1-SNAPSHOT.jar
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: testServer
-        path: server/build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
+        path: server/build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성된 jar 파일
 
   deploy:
     needs: build # 배포를 위해 필요한 과정
@@ -93,13 +73,11 @@ jobs:
         path: server/build/libs # 배포에 활용할 경로
 
     - name: Deploy to EC2 # EC2를 활용한 배포 설명
-      env:
-        SERVER_PORT: ${{ secrets.SERVER_PORT }}
       run: | 
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > mykey.pem # 사용할 SSH키를 mykey.pem으로 저장
-        chmod 600 mykey.pem # mykey.pem를 사용할 수 있도록 권한 설정      
+        chmod 400 mykey.pem # mykey.pem를 사용할 수 있도록 권한 설정      
         # 배포할 jar파일 이름 + 사용할 유저 IP (두 과정에서 모두 SSH 유저 정보 명기)
-        scp -i mykey.pem -o StrictHostKeyChecking=no server/build/libs/thinker-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/testServer.jar
+        scp -i mykey.pem -o StrictHostKeyChecking=no server/build/libs/thinker-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/server/app.jar
         # nohup 활용 (SSH서버 연결이 없어도 서버가 계속 돌기 위함)
-          ssh -i mykey.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar -Dserver.port=${SERVER_PORT} /home/${{ secrets.SSH_USER }}/testServer.jar > app.log 2>&1 &"
+        ssh -i mykey.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar /home/${{ secrets.SSH_USER }}/app.jar > app.log 2>&1 &"
         rm -f mykey.pem
