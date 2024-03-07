@@ -55,7 +55,7 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: testServer
-        path: ./app.jar # 배포에 활용할 경로
+        path: ./ # 배포에 활용할 경로
 
     - name: SCP to server
       uses: appleboy/scp-action@v0.1.7
@@ -63,7 +63,7 @@ jobs:
         username: ${{ secrets.SSH_USER }}
         host: ${{ secrets.SERVER_IP }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
-        source: "./app.jar"
+        source: "./*-SNAPSHOT.jar"
         target: "/home/ec2-user/server"
 
     - name: Deploy
@@ -74,4 +74,4 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         script: |
           pgrep java | xargs kill -9
-          nohup java -jar /home/${{ secrets.SSH_USER }}/server/app.jar > app.log 2>&1 &
+          nohup java -jar /home/${{ secrets.SSH_USER }}/server/thinker-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
