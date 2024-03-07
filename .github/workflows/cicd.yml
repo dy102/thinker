@@ -35,15 +35,7 @@ jobs:
           DEV_APPLICATION_YML_FILE_NAME: application.yml
       run: |
         echo $DEV_APPLICATION_YML | base64 --decode > $DEV_APPLICATION_YML_DIR/$DEV_APPLICATION_YML_FILE_NAME
-
-    # - name: Grant execute permission for gradlew # gradlew에 대한 권한 부여 설명
-    #   run: chmod +x gradlew # gradlew에 대한 권한 부여 설정
-
-    # - name: Build with Gradle # Gradle에 대한 빌드 (일반적으로 기본 설정을 사용)
-    #   uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-    #   with:
-    #     arguments: build
-      #run : ./gradlew clean build
+        chmod +x server/gradlew
 
     - name: Build with Gradle
       uses: gradle/gradle-build-action@v2.9.0
