@@ -71,7 +71,7 @@ jobs:
         host: ${{ secrets.SERVER_IP }}
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         source: "*-SNAPSHOT.jar"
-        target: "/home/ec2-user/server/app.jar"
+        target: "/home/ec2-user/server"
 
     - name: Deploy
       uses: appleboy/ssh-action@v1.0.0
