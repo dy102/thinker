@@ -13,9 +13,6 @@ on:
   pull_request:
     branches: [ "master" ] #pull request할 branch의 이름
 
-permissions:
-  contents: read #권한 설정
-
 jobs: 
   build:
     runs-on: ubuntu-latest #빌드할 환경
@@ -27,10 +24,7 @@ jobs:
       with:
         java-version: '17' # 사용할 Java언어 버전
         distribution: 'temurin'
-        
-    - name: Create directory if not exists
-      run: mkdir -p server/src/main/resources
-      
+
     - name: Set yml file 
       env:
           DEV_APPLICATION_YML: ${{ secrets.DB_APPLICATION_YML }}
@@ -38,48 +32,19 @@ jobs:
           DEV_APPLICATION_YML_FILE_NAME: application.yml
       run: |
         echo $DEV_APPLICATION_YML | base64 --decode > $DEV_APPLICATION_YML_DIR/$DEV_APPLICATION_YML_FILE_NAME
-        chmod 400 server/src/main/resources/application.yml
+        chmod +x server/gradlew
 
-    - name: Permission about image
-      run: |
-       cd server
-       cd image
-       ls
-       chmod +x person.jpeg
-       
-    - name: Change directory to /server
-      run: |
-       cd server
-       chmod +x gradlew
-
-    # - name: Grant execute permission for gradlew # gradlew에 대한 권한 부여 설명
-    #   run: chmod +x gradlew # gradlew에 대한 권한 부여 설정
-
-    # - name: Build with Gradle # Gradle에 대한 빌드 (일반적으로 기본 설정을 사용)
-    #   uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
-    #   with:
-    #     arguments: build
-      #run : ./gradlew clean build
-
-    - name: Build with Gradle # Gradle에 대한 빌드 (일반적으로 기본 설정을 사용)
-      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@v2.9.0
       with:
-        arguments: build
+        arguments: clean build -x test
         build-root-directory: ./server
-
-    - name: Change directory to /server
-      run: |
-       cd server
-       cd build
-       cd libs
-       ls
-       chmod +x thinker-0.0.1-SNAPSHOT.jar
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: testServer
-        path: server/build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성할 jar 파일
+        path: server/build/libs/thinker-0.0.1-SNAPSHOT.jar # 빌드 후 생성된 jar 파일
 
   deploy:
     needs: build # 배포를 위해 필요한 과정
@@ -90,16 +55,23 @@ jobs:
       uses: actions/download-artifact@v2
       with:
         name: testServer
-        path: server/build/libs # 배포에 활용할 경로
+        path: ./ # 배포에 활용할 경로
 
-    - name: Deploy to EC2 # EC2를 활용한 배포 설명
-      env:
-        SERVER_PORT: ${{ secrets.SERVER_PORT }}
-      run: | 
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > mykey.pem # 사용할 SSH키를 mykey.pem으로 저장
-        chmod 600 mykey.pem # mykey.pem를 사용할 수 있도록 권한 설정      
-        # 배포할 jar파일 이름 + 사용할 유저 IP (두 과정에서 모두 SSH 유저 정보 명기)
-        scp -i mykey.pem -o StrictHostKeyChecking=no server/build/libs/thinker-0.0.1-SNAPSHOT.jar ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }}:/home/${{ secrets.SSH_USER }}/testServer.jar
-        # nohup 활용 (SSH서버 연결이 없어도 서버가 계속 돌기 위함)
-          ssh -i mykey.pem -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} "pgrep java | xargs kill -9; nohup java -jar -Dserver.port=${SERVER_PORT} /home/${{ secrets.SSH_USER }}/testServer.jar > app.log 2>&1 &"
-        rm -f mykey.pem
+    - name: SCP to server
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        username: ${{ secrets.SSH_USER }}
+        host: ${{ secrets.SERVER_IP }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        source: "./*-SNAPSHOT.jar"
+        target: "/home/ec2-user/server"
+
+    - name: Deploy
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.SERVER_IP }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          pgrep java | xargs kill -9
+          nohup java -jar /home/${{ secrets.SSH_USER }}/server/thinker-0.0.1-SNAPSHOT.jar > app.log 2>&1 &
