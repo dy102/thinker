@@ -7,6 +7,7 @@ import com.example.thinker.dto.MemberSimpleDto;
 import com.example.thinker.dto.request.MemberDataRequest;
 import com.example.thinker.service.ImageService;
 import com.example.thinker.service.MemberService;
+import com.example.thinker.util.MyLogger;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -37,10 +38,16 @@ public class MemberController {
     private final MemberService memberService;
     private final ImageService imageService;
 
+    private final MyLogger myLogger;
+
     @GetMapping("/members/login")
     public ResponseEntity<String> login(@RequestParam String customId,
                                         @RequestParam String password,
                                         HttpServletRequest request) {
+        String requestURL = request.getRequestURI();
+        myLogger.setRequestURL(requestURL);
+        myLogger.log("login");
+
         Member loginMember = memberService.login(customId, password);
         HttpSession session = request.getSession();
         session.setAttribute(LOGIN_MEMBER, loginMember);
