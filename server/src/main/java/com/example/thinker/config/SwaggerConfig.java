@@ -19,27 +19,17 @@ public class SwaggerConfig {
                 .title("API 타이틀")
                 .description("API Description");
 
-        String key = "Access Token (Bearer)";
-        String refreshKey = "Refresh Token";
+        SecurityScheme auth = new SecurityScheme()
+                .type(SecurityScheme.Type.APIKEY)
+                .in(SecurityScheme.In.COOKIE)
+                .name("JSESSIONID");
 
-        SecurityRequirement securityRequirement = new SecurityRequirement()
-                .addList(key)
-                .addList(refreshKey);
-
-        SecurityScheme accessTokenSecurityScheme = new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("Bearer")
-                .bearerFormat("JWT")
-                .in(SecurityScheme.In.HEADER)
-                .name(HttpHeaders.AUTHORIZATION);
-
-        Components components = new Components()
-                .addSecuritySchemes(key, accessTokenSecurityScheme);
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList("basicAuth");
 
         return new OpenAPI()
                 .info(info)
                 .addSecurityItem(securityRequirement)
-                .components(components);
+                .components(new Components().addSecuritySchemes("basicAuth",auth));
     }
 }
 
