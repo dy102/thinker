@@ -6,6 +6,7 @@ import com.example.thinker.domain.Reply;
 import com.example.thinker.domain.ReplyReply;
 import com.example.thinker.domain.ReplyReplyLike;
 import com.example.thinker.domain.Thinking;
+import com.example.thinker.dto.ReplyDtoBase;
 import com.example.thinker.dto.ReplyReplyDto;
 import com.example.thinker.dto.TotalReplyDtos;
 import com.example.thinker.dto.request.ContentsRequest;
@@ -60,7 +61,7 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
             Optional<Reply> reply = replyRepository.findById(replyId);
             if (reply.isPresent()) {
                 List<ReplyReply> replyReplies = replyReplyRepository.findAllByReply_Id(replyId);
-                List<ReplyReplyDto> replyReplyDtos = new ArrayList<>();
+                List<ReplyDtoBase> replyReplyDtos = new ArrayList<>();
                 for (ReplyReply replyReply : replyReplies) {
                     makeReplyReplyDto(loginMember, replyReply, thinking.get(), reply.get(), replyReplyDtos);
                 }
@@ -76,7 +77,7 @@ public class ReplyReplyServiceImpl implements ReplyReplyService {
         throw new IllegalArgumentException(NO_POST);
     }
 
-    private void makeReplyReplyDto(Member loginMember, ReplyReply replyReply, Thinking thinking, Reply reply, List<ReplyReplyDto> replyReplyDtos) {
+    private void makeReplyReplyDto(Member loginMember, ReplyReply replyReply, Thinking thinking, Reply reply, List<ReplyDtoBase> replyReplyDtos) {
         boolean isLiked = false;
         String who = NOT_AUTHOR_AND_NOT_ME;
 

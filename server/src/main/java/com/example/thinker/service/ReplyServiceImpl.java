@@ -6,6 +6,7 @@ import com.example.thinker.domain.Reply;
 import com.example.thinker.domain.ReplyLike;
 import com.example.thinker.domain.Thinking;
 import com.example.thinker.dto.ReplyDto;
+import com.example.thinker.dto.ReplyDtoBase;
 import com.example.thinker.dto.TotalReplyDtos;
 import com.example.thinker.dto.response.RepliesResponse;
 import com.example.thinker.repository.MemberRepository;
@@ -55,7 +56,7 @@ public class ReplyServiceImpl implements ReplyService {
         Optional<Thinking> thinking = thinkingRepository.findById(thinkingId);
         if (thinking.isPresent()) {
             List<Reply> replies = replyRepository.findAllByThinking_Id(thinkingId);
-            List<ReplyDto> replyDtos = new ArrayList<>();
+            List<ReplyDtoBase> replyDtos = new ArrayList<>();
             for (Reply reply : replies) {
                 makeReplyDto(loginMember, thinkingId, reply, thinking.get(), replyDtos);
             }
@@ -69,7 +70,7 @@ public class ReplyServiceImpl implements ReplyService {
         throw new IllegalArgumentException(NO_POST);
     }
 
-    private void makeReplyDto(Member loginMember, Long thinkingId, Reply reply, Thinking thinking, List<ReplyDto> replyDtos) {
+    private void makeReplyDto(Member loginMember, Long thinkingId, Reply reply, Thinking thinking, List<ReplyDtoBase> replyDtos) {
         boolean isLiked = false;
         String who = NOT_AUTHOR_AND_NOT_ME;
 
@@ -212,7 +213,7 @@ public class ReplyServiceImpl implements ReplyService {
             Optional<Member> member = memberRepository.findById(memberId);
             if (member.isPresent()) {
                 List<Reply> replies = replyRepository.findAllByMember_Id(member.get().getId());
-                List<ReplyDto> replyDtos = new ArrayList<>();
+                List<ReplyDtoBase> replyDtos = new ArrayList<>();
                 for (Reply reply : replies) {
                     makeReplyDto(loginMember, reply.getThinking().getId(), reply, reply.getThinking(), replyDtos);
                 }
